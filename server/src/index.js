@@ -5,8 +5,9 @@ const mongoose = require('mongoose')
 const app = express()
 
 // routes
-const authRoutes  = require('./routes/auth');
-const adminRoutes = require('./routes/admin/auth');
+const authRoutes     = require('./routes/auth')
+const adminRoutes    = require('./routes/admin/auth')
+const categoryRoutes = require('./routes/category')
 
 env.config()
 
@@ -17,20 +18,12 @@ const MONGO_DB_PASSWORD = process.env.MONGO_DB_PASSWORD
 const MONGO_DB_DATABASE = process.env.MONGO_DB_DATABASE
 const MONGODB_URL       = `mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@cluster0.m9htn.mongodb.net/${MONGO_DB_DATABASE}?retryWrites=true&w=majority`
 
-// mongodb connection
-mongoose.connect(
-    MONGODB_URL, 
-    { 
-        useNewUrlParser: true, 
-        useUnifiedTopology: true,
-        useCreateIndex: true
-    }
-).then(() => console.log('Database connected'))
-
 app.use(express.json())
 
 app.use('/api', authRoutes)
 app.use('/api', adminRoutes)
+app.use('/api', categoryRoutes)
+
 
 app.get('/', (req, res, next) => {
     res.status(200).json({
@@ -44,6 +37,20 @@ app.post('/data', (req, res, next) => {
     })
 })
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
+// mongodb connection
+mongoose.connect(
+    MONGODB_URL, 
+    { 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true,
+        useCreateIndex: true
+    }
+).then(() => {
+    console.log('Database connected')
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`)
+    })
 })
+.catch((err) => console.log(err))
+
+
