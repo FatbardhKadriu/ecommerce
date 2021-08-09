@@ -27,7 +27,7 @@ const signin = async (req, res) => {
 
     if (!(user.authenticate(password))) return res.status(404).json({ message: 'Username or password incorrect'})
 
-    const token = jwt.sign({ _id: user._id}, process.env.JWT_SECRET, { expiresIn: '1h' })
+    const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' })
 
     const { _id, firstName, lastName, email, role, fullName } = user;
 
