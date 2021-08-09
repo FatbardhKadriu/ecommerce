@@ -16,25 +16,29 @@ exports.addItemToCart = async (req, res) => {
     }
 
     // cart already exists, update it
+
     const product = req.body.cartItems.product 
     const item = cartExist.cartItems.find(c => c.product == product)
-    let updatedCart
+    let condition, update
+
     if (item) {
-
-        updatedCart = await Cart.findOneAndUpdate(
-            { user: req.user._id, "cartItems.product": product },
-            { $set: { "cartItems": { ...req.body.cartItems, quantity: item.quantity + req.body.cartItems.quantity } } },
-            { new: true }
-        )
-    } else {
-
-        updatedCart = await Cart.findOneAndUpdate(
-            { user: req.user._id },
-            { $push: { "cartItems": req.body.cartItems } },
-            { new: true }
-            )
-    
+        condition = { user: req.user._id, "cartItems.product": product }
+        
+        update = { $set: { 
+            "cartItems.$": { 
+                ...req.body.cartItems, quantity: item.quantity + req.body.cartItems.quantity 
+            }
+          }
         }
-        res.status(200).json({ message: updatedCart })
+    } 
+    else {
+        condition = { user: req.user._id }
+
+        update = { $push: { "cartItems": req.body.cartItems } }
     }
+    
+    const updatedCart = await Cart.findOneAndUpdate( condition, update, { new: true } )
+
+    res.status(200).json({ "Updated cart": updatedCart })
+}
     

@@ -1,6 +1,8 @@
 const express  = require('express')
 const env      = require('dotenv')
 const mongoose = require('mongoose')
+const path = require('path')
+
 
 const app = express()
 
@@ -21,6 +23,7 @@ const MONGO_DB_DATABASE = process.env.MONGO_DB_DATABASE
 const MONGODB_URL       = `mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@cluster0.m9htn.mongodb.net/${MONGO_DB_DATABASE}?retryWrites=true&w=majority`
 
 app.use(express.json())
+app.use('/public', express.static(path.join(__dirname, 'uploads')))
 
 app.use('/api', authRoutes)
 app.use('/api', adminRoutes)
@@ -28,16 +31,9 @@ app.use('/api', categoryRoutes)
 app.use('/api', productRoutes)
 app.use('/api', cartRoutes)
 
-
 app.get('/', (req, res, next) => {
     res.status(200).json({
         message: 'Hello from Server'
-    })
-})
-
-app.post('/data', (req, res, next) => {
-    res.status(200).json({
-        message: req.body
     })
 })
 
@@ -45,15 +41,14 @@ app.post('/data', (req, res, next) => {
 mongoose.connect(
     MONGODB_URL, 
     { 
-        useNewUrlParser: true, 
+        useNewUrlParser:    true, 
         useUnifiedTopology: true,
-        useCreateIndex: true,
-        useFindAndModify: false
+        useCreateIndex:     true,
+        useFindAndModify:   false
     }
 ).then(() => {
-    console.log('Database connected')
     app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`)
+        console.log(`Server is running: http://localhost:${PORT}`)
     })
 })
 .catch((err) => console.log(err))
