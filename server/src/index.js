@@ -1,7 +1,8 @@
 const express  = require('express')
 const env      = require('dotenv')
 const mongoose = require('mongoose')
-const path = require('path')
+const path     = require('path')
+const cors     = require('cors')
 
 
 const app = express()
@@ -24,6 +25,7 @@ const MONGODB_URL       = `mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@c
 
 app.use(express.json())
 app.use('/public', express.static(path.join(__dirname, 'uploads')))
+app.use(cors())
 
 app.use('/api', authRoutes)
 app.use('/api', adminRoutes)
