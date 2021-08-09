@@ -12,8 +12,8 @@ const INITIAL_STATE = {
     authenticating: false
 };
  
-export default (state = INITIAL_STATE, action) => {
-    // console.log(action)
+const authReducer = (state = INITIAL_STATE, action) => {
+    console.log(action)
     switch (action.type) {
         case authConstants.LOGIN_REQUEST: 
             return {
@@ -28,7 +28,13 @@ export default (state = INITIAL_STATE, action) => {
                 authenticate:   true,
                 authenticating: false
             }
+        case authConstants.LOGOUT_REQUEST: 
+            return {
+                ...INITIAL_STATE
+            }
         default:
             return state
     }
 }
+
+export default authReducer

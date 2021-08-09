@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Layout from '../../components/Layout'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Input from '../../components/UI/Input'
-import { isUserLoggedIn, login } from '../../actions'
+import { login } from '../../actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
@@ -11,15 +11,9 @@ const Signin = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
+    // const [error, setError] = useState('')
     const dispatch = useDispatch()
     const auth = useSelector(state => state.auth)
-
-    useEffect(() => {        
-        if (!auth.authenticate) {
-            dispatch(isUserLoggedIn())
-        }
-    })
 
     const userLogin = (e) => {
         e.preventDefault()
