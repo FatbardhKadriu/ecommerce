@@ -9,7 +9,10 @@ const INITIAL_STATE = {
         picture:   ''
     },
     authenticate:   false,
-    authenticating: false
+    authenticating: false,
+    loading:        false,
+    error:          null,
+    message:        ''
 };
  
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -30,8 +33,19 @@ const authReducer = (state = INITIAL_STATE, action) => {
             }
         case authConstants.LOGOUT_REQUEST: 
             return {
-                ...INITIAL_STATE
+                ...state,
+                loading: true
             }
+        case authConstants.LOGOUT_SUCCESS: 
+            return {
+                ...INITIAL_STATE
+            }     
+        case authConstants.LOGOUT_FAILURE: 
+            return {
+                ...state,
+                error:   action.payload.error,
+                loading: false
+            }       
         default:
             return state
     }

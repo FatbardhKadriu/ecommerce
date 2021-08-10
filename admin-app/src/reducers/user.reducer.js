@@ -2,7 +2,7 @@ import { userConstants } from "../actions/constants";
 
 const INITIAL_STATE = {
     error: null,
-    message: 'aaaa',
+    message: '',
     loading: false
 };
  

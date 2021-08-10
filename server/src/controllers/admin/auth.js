@@ -29,6 +29,8 @@ const signin = async (req, res) => {
 
     const { _id, firstName, lastName, email, role, fullName } = user;
 
+    res.cookie('token', token, { expiresIn: '1h' })
+
     res.status(200).json({
         token,
         user: {
@@ -42,7 +44,16 @@ const signin = async (req, res) => {
     })
 }
 
+const signout = async (req, res) => {
+
+    res.clearCookie('token')
+    res.status(200).json({
+        message: 'Signout successfully...!'
+    })
+}
+
 module.exports = {
     signin,
     signup,
+    signout
 }
