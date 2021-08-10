@@ -30,7 +30,7 @@ const Category = () => {
         form.append('parentId', parentCategoryId)
         form.append('categoryImage', categoryImage)
         dispatch(addCategory(form))
-        handleShow()
+        handleClose()
     }
 
     const renderCategories = (categories) => {

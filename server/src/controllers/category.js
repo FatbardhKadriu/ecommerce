@@ -13,9 +13,10 @@ function createCategories(categories, parentId = null) {
 
     for (let c of category) {
         categoryList.push({ 
-            _id: c._id,
-            name: c.name,
-            slug: c.slug,
+            _id:      c._id,
+            name:     c.name,
+            slug:     c.slug,
+            parentId: c.parentId,
             children: createCategories(categories, c._id)
 
          })
