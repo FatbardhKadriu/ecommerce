@@ -28,7 +28,8 @@ exports.initialData = async (req, res) => {
 
     const categories = await Category.find({})
     const products = await Product.find({})
-        .select("_id name price quantity slug description productPictures category")
+        .select('_id name price quantity slug description productPictures category')
+        .populate({ path: 'category', select: '_id name' })
 
     res.status(200).json({
         categories: createCategories(categories),

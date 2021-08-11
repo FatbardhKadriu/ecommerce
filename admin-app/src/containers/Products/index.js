@@ -4,7 +4,9 @@ import { Row, Col, FormLabel, Button, Table } from 'react-bootstrap'
 import Input from '../../components/UI/Input'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProduct } from '../../actions/product.action'
-import NewModal from '../../components/UI/Modal'
+import Modal from '../../components/UI/Modal'
+import './style.css'
+import { generatePublicUrl } from '../../urlConfig'
 
 const Products = () => {
 
@@ -19,9 +21,13 @@ const Products = () => {
     const dispatch = useDispatch()
 
     const [show, setShow] = useState(false)
-
+    const [productDetailsModal, setProductDetailModal] = useState(false)
+    const [productDetails, setProductDetails] = useState(null)
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
+
+    const handleCloseProductDetails = () => setProductDetailModal(false)
+    const handleShowProductDetails = () => setProductDetailModal(true)
 
     const handleAddProduct = (e) => {
 
@@ -39,6 +45,13 @@ const Products = () => {
         dispatch(addProduct(form))
 
         handleClose()
+    }
+
+
+    const showProductDetailsModal = product => {
+        handleShowProductDetails()
+        setProductDetails(product)
+        console.log("Produktet: ", product)
     }
 
     const createCategoryList = (categories, options = []) => {
@@ -60,55 +73,40 @@ const Products = () => {
 
     const renderProducts = () => {
         return (
-            <Table responsive="sm">
+            <Table style={{ fontSize: 12 }} responsive="sm">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        <th>Description</th>
                         <th>Category</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         product.products.length > 0 &&
-                            product.products.map(product => (
-                                <tr key={product._id}>
-                                    <td>1</td>
-                                    <td>{ product.name }</td>
-                                    <td>{ product.price }</td>
-                                    <td>{ product.quantity }</td>
-                                    <td>{ product.description }</td>
-                                    <td>{ product.category }</td>
-                                </tr>
-                            ))
+                        product.products.map((product, index) => (
+                            <tr onClick={() => showProductDetailsModal(product)} key={product._id}>
+                                <td>{index + 1} </td>
+                                <td>{product.name}</td>
+                                <td>{product.price}</td>
+                                <td>{product.quantity}</td>
+                                <td>{product.category.name}</td>
+                            </tr>
+                        ))
                     }
                 </tbody>
             </Table>
         )
     }
 
-    return (
-        <Layout sidebar>
-            <Row>
-                <Col md={12}>
-                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                        <h3>Products</h3>
-                        <Button variant="success" onClick={handleShow}>Add new</Button>
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    {renderProducts()}
-                </Col>
-            </Row>
-            <NewModal
+    const renderAddProductModal = () => {
+        return (
+            <Modal
                 show={show}
                 handleClose={handleClose}
-                handleAdd={handleAddProduct}
+                handleIt={handleAddProduct}
                 modalTitle={'Add new product'}
             >
                 <Input
@@ -153,7 +151,84 @@ const Products = () => {
 
                 <br />
                 <input type="file" name="productPicture" onChange={handleProductPictures} />
-            </NewModal>
+            </Modal>
+        )
+    }
+
+    const handleProductDetailsModal = () => {
+        handleCloseProductDetails()
+    }
+
+    const renderProductDetailsModal = () => {
+
+        if (!productDetails) {
+            return null
+        }
+        return (
+            <Modal
+                size="lg"
+                show={productDetailsModal}
+                handleClose={handleCloseProductDetails}
+                modalTitle={'Product Details'}
+                handleIt={handleProductDetailsModal}
+            >
+                <Row>
+                    <Col md="6">
+                        <label className='key'>Name</label>
+                        <p className='value'>{productDetails.name}</p>
+                    </Col>
+                    <Col md="6">
+                        <label className='key'>Price</label>
+                        <p className='value'>{productDetails.price}</p>
+                    </Col>
+                    <Col md="6">
+                        <label className='key'>Quantity</label>
+                        <p className='value'>{productDetails.quantity}</p>
+                    </Col>
+                    <Col md="6">
+                        <label className='key'>Category</label>
+                        <p className='value'> {productDetails.category.name}</p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md="12">
+                        <label className='key'>Description</label>
+                        <p className='value'>{productDetails.description}</p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <label className="key">Product Pictures</label><br />
+                        <div style={{ display: 'flex' }}>
+                            {productDetails.productPictures.map(picture =>
+                                <div id={picture._id} className="productImgContainer">
+                                    <img src={generatePublicUrl(picture.img)} />
+                                </div>
+                            )}
+                        </div>
+                    </Col>
+                </Row>
+            </Modal>
+        )
+    }
+
+    return (
+        <Layout sidebar>
+            <Row>
+                <Col md={12}>
+                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                        <h3>Products</h3>
+                        <Button variant="success" onClick={handleShow}>Add new</Button>
+                    </div>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    {renderProducts()}
+                </Col>
+            </Row>
+            {renderAddProductModal()}
+            {renderProductDetailsModal()}
         </Layout>
     )
 }

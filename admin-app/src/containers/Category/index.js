@@ -84,7 +84,7 @@ const Category = () => {
             <NewModal
                 show={show}
                 handleClose={handleClose}
-                handleAdd={handleAddCategory}
+                handleIt={handleAddCategory}
                 modalTitle={'Add new category'}
             >
                 <Input

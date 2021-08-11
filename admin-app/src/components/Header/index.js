@@ -36,7 +36,7 @@ const Header = (props) => {
     )
   }
     return (
-    <Navbar style={{zIndex: 1}} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar style={{zIndex: 1}} collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid>
         {/* <Navbar.Brand href="/">Admin Dashboard</Navbar.Brand> */}
         <Link to="/" className="navbar-brand">Admin Dashboard</Link>  
