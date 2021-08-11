@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Col, Container, Row, Modal, Button } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Col, Container, Row, FormLabel, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCategory, getAllCategories } from '../../actions'
+import { addCategory } from '../../actions'
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input'
+import NewModal from '../../components/UI/Modal'
 
 const Category = () => {
 
@@ -15,11 +16,6 @@ const Category = () => {
     const category = useSelector(state => state.category)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(getAllCategories())
-
-    }, [])
-
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
@@ -30,6 +26,8 @@ const Category = () => {
         form.append('parentId', parentCategoryId)
         form.append('categoryImage', categoryImage)
         dispatch(addCategory(form))
+        setCategoryName('')
+        setParentCategoryId('')
         handleClose()
     }
 
@@ -71,7 +69,7 @@ const Category = () => {
                     <Col md={12}>
                         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                             <h3>Category</h3>
-                            <button onClick={handleShow}>Add</button>
+                            <Button variant="success" onClick={handleShow}>Add new</Button>
                         </div>
                     </Col>
                 </Row>
@@ -83,34 +81,31 @@ const Category = () => {
                     </Col>
                 </Row>
             </Container>
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add New Category </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Input
-                        value={categoryName}
-                        placeholder={'Category Name'}
-                        onChange={(e) => setCategoryName(e.target.value)}
-                    />
+            <NewModal
+                show={show}
+                handleClose={handleClose}
+                handleAdd={handleAddCategory}
+                modalTitle={'Add new category'}
+            >
+                <Input
+                    label="Name"
+                    value={categoryName}
+                    placeholder={'Category Name'}
+                    onChange={(e) => setCategoryName(e.target.value)}
+                />
 
-                    <select value={parentCategoryId} className="form-control" onChange={(e) => setParentCategoryId(e.target.value)}>
-                        <option>Select category</option>
-                        {
-                            createCategoryList(category.categories).map(option => 
-                                <option key={option.value} value={option.value}>{option.name}</option>
-                                )
-                        }
-                    </select>
-
-                    <input type="file" name="categoryImage" onChange={handleCategoryImage} />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="primary" onClick={handleAddCategory}>
-                        Add Category
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                <FormLabel>Category</FormLabel>
+                <select value={parentCategoryId} className="form-control" onChange={(e) => setParentCategoryId(e.target.value)}>
+                    <option>Select category</option>
+                    {
+                        createCategoryList(category.categories).map(option =>
+                            <option key={option.value} value={option.value}>{option.name}</option>
+                        )
+                    }
+                </select>
+                    <br/>
+                <input type="file" name="categoryImage" onChange={handleCategoryImage} />
+            </NewModal>
         </Layout>
     )
 }

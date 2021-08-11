@@ -4,7 +4,7 @@ import './App.css';
 import PrivateRoute from './components/HOC/PrivateRoute';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { isUserLoggedIn } from './actions'
+import { isUserLoggedIn, getInitialData } from './actions'
 
 import Home   from './containers/Home';
 import Signin from './containers/Signin';
@@ -22,6 +22,7 @@ function App() {
       if (!auth.authenticate) {
           dispatch(isUserLoggedIn())
       }
+      dispatch(getInitialData())
   })
   
   return (
