@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const shortid = require('shortid')
 
 const User = require('../../models/User')
 
@@ -13,7 +14,7 @@ const signup = async (req, res) => {
     if (userExist)
         return res.status(400).json({ message: 'Admin already registered' })
 
-    const _user = new User({ firstName, lastName, email, hash_password, username: Math.random().toString(), role: 'admin' })
+    const _user = new User({ firstName, lastName, email, hash_password, username: shortid.generate(), role: 'admin' })
 
     await _user.save()
     
