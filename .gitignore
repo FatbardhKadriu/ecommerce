@@ -2,6 +2,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,vs,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,vs,react
 
+# Ignore upload folder
+src/uploads
 ### Node ###
 # Logs
 logs

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './style.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAllCategories } from '../../actions'
+import { Spinner } from 'react-bootstrap'
 
 const MenuHeader = () => {
 
@@ -17,8 +18,8 @@ const MenuHeader = () => {
         for (let category of categories) {
             categoriesList.push(
                 <li key={category.name}>
-                    { category.parentId ? <a href={category.slug}>{category.name}</a> :
-                            <span>{category.name}</span>
+                    {category.parentId ? <a href={category.slug}>{category.name}</a> :
+                        <span>{category.name}</span>
                     }
                     {category.children.length > 0 && (
                         <ul> {renderCategories(category.children)}</ul>
@@ -32,7 +33,9 @@ const MenuHeader = () => {
     return (
         <div className="menuHeader">
             <ul>
-                { category.categories.length > 0 && renderCategories(category.categories) }
+                {category.categories.length > 0 ? renderCategories(category.categories) :
+                        <Spinner animation="border" variant="primary" />
+                }
             </ul>
         </div>
     )
