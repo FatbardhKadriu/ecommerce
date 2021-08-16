@@ -2,9 +2,9 @@ const slugify = require('slugify')
 const Category = require('../models/Category')
 
 function createCategories(categories, parentId = null) {
-    
+
     const categoryList = []
-    let category 
+    let category
     if (parentId == null) {
         category = categories.filter(cat => cat.parentId == undefined)
     } else {
@@ -12,14 +12,14 @@ function createCategories(categories, parentId = null) {
     }
 
     for (let c of category) {
-        categoryList.push({ 
-            _id:      c._id,
-            name:     c.name,
-            slug:     c.slug,
+        categoryList.push({
+            _id: c._id,
+            name: c.name,
+            slug: c.slug,
             parentId: c.parentId,
             children: createCategories(categories, c._id)
 
-         })
+        })
     }
     return categoryList
 }
@@ -54,4 +54,36 @@ exports.getCategories = async (req, res) => {
     const categoryList = createCategories(categories)
 
     res.status(200).json({ categoryList })
+}
+
+exports.updateCategories = async (req, res) => {
+
+    const { _id, name, parentId, type } = req.body
+    const updatedCategories = []
+    if (name instanceof Array) {
+        for (let i = 0; i < name.length; i++) {
+            const category = {
+                name: name[i],
+                type: type[i],
+            }
+            if (parentId[i] !== "") {
+                category.parentId = parentId[i]
+            }
+
+            const updatedCategory = await Category.findOneAndUpdate({ _id: _id[i] }, category, { new: true })
+            updatedCategories.push(updatedCategory)
+        }
+        return res.status(201).json({ body: req.body })
+    } else {
+        const category = {
+            name,
+            type
+        }
+        if (parentId !== "") {
+            category.parentId = parentId
+        }
+        const updatedCategory = await Category.findOneAndUpdate({ _id }, category, { new: true })
+        return res.status(201).json({ updatedCategory })
+    }
+
 }
