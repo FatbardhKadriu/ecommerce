@@ -202,7 +202,7 @@ const Products = () => {
                         <div style={{ display: 'flex' }}>
                             {productDetails.productPictures.map(picture =>
                                 <div id={picture._id} className="productImgContainer">
-                                    <img src={generatePublicUrl(picture.img)} />
+                                    <img src={generatePublicUrl(picture.img)} alt="" />
                                 </div>
                             )}
                         </div>

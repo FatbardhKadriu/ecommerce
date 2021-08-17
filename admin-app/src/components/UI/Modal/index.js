@@ -16,8 +16,12 @@ const NewModal = (props) => {
                         <Button key={index} variant={btn.color} onClick={btn.onClick}>
                             {btn.label}
                         </Button>) :
-                        <Button variant="success" onClick={props.handleIt}>
-                            Save Changes
+                        <Button
+                            {...props}
+                            style={{backgroundColor: '#333'}}
+                            className="btn-sm"
+                            onClick={props.handleIt}>
+                            Save
                         </Button>
                 }
             </Modal.Footer>
