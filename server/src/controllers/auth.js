@@ -25,7 +25,7 @@ const signin = async (req, res) => {
 
     const user = await User.findOne({ email: req.body.email })
 
-    if (!user) return res.status(404).json({ message: "User doesn't exists " })
+    if (!user) return res.status(400).json({ message: "User doesn't exists " })
 
     if (!(user.authenticate(req.body.password))) return res.status(400).json({ message: 'Username or password incorrect' })
 
