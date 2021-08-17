@@ -55,6 +55,21 @@ export const updateCategories = (form) => async (dispatch) => {
         return true
     }
     else {
-        console.log(res)
+        return false
+    }
+}
+
+export const deleteCategories = (ids) => async (dispatch) => {
+    const res = await axios.post('/category/delete', {
+        payload: {
+            ids
+        }
+    })
+
+    if (res.status === 200) {
+        return true
+    }
+    else {
+        return false
     }
 }

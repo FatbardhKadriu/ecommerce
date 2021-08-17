@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Col, Container, Row, FormLabel, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCategory, getAllCategories, updateCategories } from '../../actions'
+import { addCategory, getAllCategories, updateCategories, deleteCategories as deleteCategoriesAction } from '../../actions'
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input'
 import Modal from '../../components/UI/Modal'
@@ -22,6 +22,7 @@ const Category = () => {
     const [checkedArray, setCheckedArray] = useState([])
     const [expandedArray, setExpandedArray] = useState([])
     const [updateCategoryModal, setUpdateCategoryModal] = useState(false)
+    const [deleteCategoryModal, setdDeleteCategoryModal] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -67,7 +68,11 @@ const Category = () => {
     }
 
     const updateCategory = () => {
+        updateCheckedAndExpandedCategories()
         setUpdateCategoryModal(true)
+    }
+
+    const updateCheckedAndExpandedCategories = () => {
         const categories = createCategoryList(category.categories)
 
         const checkedArray = []
@@ -82,7 +87,6 @@ const Category = () => {
         })
         setCheckedArray(checkedArray)
         setExpandedArray(expandedArray)
-        console.log({ checked, expanded, categories, checkedArray, expandedArray })
     }
 
     const handleCategoryImage = (e) => {
@@ -118,11 +122,11 @@ const Category = () => {
         })
 
         dispatch(updateCategories(form))
-        .then(result => {
-            if (result) {
-                dispatch(getAllCategories())
-            }
-        })
+            .then(result => {
+                if (result) {
+                    dispatch(getAllCategories())
+                }
+            })
 
         setUpdateCategoryModal(false)
     }
@@ -229,6 +233,57 @@ const Category = () => {
         </Modal>
     )
 
+    const deleteCategory = () => {
+        updateCheckedAndExpandedCategories()
+        setdDeleteCategoryModal(true)
+    }
+
+    const deleteCategories = () => {
+        const checkedIdsArray = checkedArray.map((item, index) => ({ _id: item.value }))
+        const expandedIdsArray = expandedArray.map((item, index) => ({ _id: item.value }))
+        const idsArray = expandedIdsArray.concat(checkedIdsArray)
+        dispatch(deleteCategoriesAction(idsArray)).then(result => {
+            if (result) {
+                dispatch(getAllCategories())
+                setdDeleteCategoryModal(false)
+            }
+        })
+    }
+
+    const renderDeleteCategoryModal = () => {
+        return (
+            <Modal
+                modalTitle="Confirm"
+                show={deleteCategoryModal}
+                handleClose={() => setdDeleteCategoryModal(false)}
+                buttons={[
+                    {
+                        label: 'No',
+                        color: 'primary',
+                        onClick: () => {
+                            alert('no')
+                        }
+                    },
+                    {
+                        label: 'Yes',
+                        color: 'danger',
+                        onClick: deleteCategories
+                    }
+                ]}
+            >
+                <h6>Expanded</h6>
+                {
+                    expandedArray.map((item, index) => <span key={index}>{item.name}</span>)
+                }
+                <h6>Checked</h6>
+                {
+                    checkedArray.map((item, index) => <span key={index}>{item.name}</span>)
+                }
+
+            </Modal>
+        )
+    }
+
     const renderAddCategoryModal = () => (
         <Modal
             show={show}
@@ -290,16 +345,15 @@ const Category = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col>
-                        <button>Delete</button>
-                        <button onClick={updateCategory}>Edit</button>
+                    <Col style={{ display: 'flex', justifyContent: 'space-around' }}>
+                        <Button variant="danger" onClick={deleteCategory}>Delete</Button>
+                        <Button onClick={updateCategory}>Edit</Button>
                     </Col>
                 </Row>
             </Container>
-
             {renderUpdateCategoriesModal()}
             {renderAddCategoryModal()}
-
+            {renderDeleteCategoryModal()}
         </Layout>
     )
 }
