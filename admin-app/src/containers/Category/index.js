@@ -129,11 +129,6 @@ const Category = () => {
         })
 
         dispatch(updateCategories(form))
-            .then(result => {
-                if (result) {
-                    dispatch(getAllCategories())
-                }
-            })
 
         setUpdateCategoryModal(false)
     }

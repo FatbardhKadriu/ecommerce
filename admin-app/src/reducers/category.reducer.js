@@ -71,7 +71,6 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
         case categoryConstants.ADD_NEW_CATEGORY_SUCCESS: {
             const category = action.payload.category
             const updatedCategories = buildNewCategories(category.parentId, state.categories, category)
-            console.log(updatedCategories)
             return {
                 ...state,
                 categories: updatedCategories,
@@ -81,7 +80,22 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
         case categoryConstants.ADD_NEW_CATEGORY_FAILURE: 
             return {
                 ...INITIAL_STATE
-            }                                          
+            }                   
+        case categoryConstants.UPDATE_CATEGORIES_REQUEST: 
+            return {
+                ...state,
+                loading: true
+            }
+        case categoryConstants.UPDATE_CATEGORIES_SUCCESS:
+            return {
+                ...state,
+                loading: false
+            }
+        case categoryConstants.UPDATE_CATEGORIES_FAILURE:
+            return {
+                ...state,
+                error: action.payload.error
+            }
         default:
             return state
     }
