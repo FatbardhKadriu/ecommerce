@@ -2,8 +2,8 @@ import { categoryConstants } from "../actions/constants";
 
 const INITIAL_STATE = {
     categories: [],
-    loading:    false,
-    error:      null
+    loading: false,
+    error: null
 };
 
 const buildNewCategories = (parentId, categories, category) => {
@@ -16,6 +16,7 @@ const buildNewCategories = (parentId, categories, category) => {
                 _id: category._id,
                 name: category.name,
                 slug: category.slug,
+                type: category.type,
                 children: []
             }
         ]
@@ -29,45 +30,46 @@ const buildNewCategories = (parentId, categories, category) => {
                 name: category.name,
                 slug: category.slug,
                 parentId: category.parentId,
+                type: category.type,
                 children: []
             }
             myCategories.push({
                 ...cat,
-                children: cat.children.length > 0 ? [ ...cat.children, newCategory ] : [newCategory]
-            })    
-        } 
+                children: cat.children.length > 0 ? [...cat.children, newCategory] : [newCategory]
+            })
+        }
         else {
             myCategories.push({
                 ...cat,
                 children: cat.children ? buildNewCategories(parentId, cat.children, category) : []
-            })    
+            })
         }
 
     }
 
     return myCategories
 }
- 
+
 const categoryReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case categoryConstants.GET_ALL_CATEGORIES_SUCCESS:
-            return { 
+            return {
                 ...state,
                 categories: action.payload.categories
             }
         case categoryConstants.GET_ALL_CATEGORIES_REQUEST:
-            return { 
+            return {
                 ...state
             }
         case categoryConstants.GET_ALL_CATEGORIES_FAILURE:
             return {
                 ...state
-            }     
-        case categoryConstants.ADD_NEW_CATEGORY_REQUEST: 
+            }
+        case categoryConstants.ADD_NEW_CATEGORY_REQUEST:
             return {
                 ...state,
                 loading: true
-            }                
+            }
         case categoryConstants.ADD_NEW_CATEGORY_SUCCESS: {
             const category = action.payload.category
             const updatedCategories = buildNewCategories(category.parentId, state.categories, category)
@@ -75,13 +77,13 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 categories: updatedCategories,
                 loading: false,
-            }    
+            }
         }
-        case categoryConstants.ADD_NEW_CATEGORY_FAILURE: 
+        case categoryConstants.ADD_NEW_CATEGORY_FAILURE:
             return {
                 ...INITIAL_STATE
-            }                   
-        case categoryConstants.UPDATE_CATEGORIES_REQUEST: 
+            }
+        case categoryConstants.UPDATE_CATEGORIES_REQUEST:
             return {
                 ...state,
                 loading: true
@@ -94,7 +96,24 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
         case categoryConstants.UPDATE_CATEGORIES_FAILURE:
             return {
                 ...state,
-                error: action.payload.error
+                error: action.payload.error,
+                loading: false
+            }
+        case categoryConstants.DELETE_CATEGORIES_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case categoryConstants.DELETE_CATEGORIES_SUCCESS:
+            return {
+                ...state,
+                loading: false
+            }
+        case categoryConstants.DELETE_CATEGORIES_FAILURE:
+            return {
+                ...state,
+                error: action.payload.error,
+                loading: false
             }
         default:
             return state

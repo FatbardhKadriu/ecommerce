@@ -25,7 +25,7 @@ const Category = () => {
     const [checkedArray, setCheckedArray] = useState([])
     const [expandedArray, setExpandedArray] = useState([])
     const [updateCategoryModal, setUpdateCategoryModal] = useState(false)
-    const [deleteCategoryModal, setdDeleteCategoryModal] = useState(false)
+    const [deleteCategoryModal, setDeleteCategoryModal] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -66,7 +66,12 @@ const Category = () => {
 
     const createCategoryList = (categories, options = []) => {
         for (const category of categories) {
-            options.push({ value: category._id, name: category.name, parentId: category.parentId })
+            options.push({
+                value: category._id,
+                name: category.name, 
+                parentId: category.parentId,
+                type: category.type
+            })
             if (category.children.length > 0) {
                 createCategoryList(category.children, options)
             }
@@ -135,18 +140,14 @@ const Category = () => {
 
     const deleteCategory = () => {
         updateCheckedAndExpandedCategories()
-        setdDeleteCategoryModal(true)
+        setDeleteCategoryModal(true)
     }
 
     const deleteCategories = () => {
         const checkedIdsArray = checkedArray.map((item, index) => ({ _id: item.value }))
         if (checkedArray.length > 0) {
-            dispatch(deleteCategoriesAction(checkedIdsArray)).then(result => {
-                if (result) {
-                    dispatch(getAllCategories())
-                    setdDeleteCategoryModal(false)
-                }
-            })
+            dispatch(deleteCategoriesAction(checkedIdsArray))
+            setDeleteCategoryModal(false)
         }
     }
 
@@ -155,7 +156,7 @@ const Category = () => {
     return (
         <Layout sidebar>
             <Container>
-                <Row style={{padding: '6px'}}>
+                <Row style={{ padding: '6px' }}>
                     <Col md={12}>
                         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                             <h3>Category</h3>
@@ -214,7 +215,7 @@ const Category = () => {
             <DeleteCategoryModal
                 modalTitle="Confirm"
                 show={deleteCategoryModal}
-                handleClose={() => setdDeleteCategoryModal(false)}
+                handleClose={() => setDeleteCategoryModal(false)}
                 expandedArray={expandedArray}
                 checkedArray={checkedArray}
                 buttons={[
@@ -222,7 +223,7 @@ const Category = () => {
                         label: 'No',
                         color: 'primary',
                         onClick: () => {
-                            setdDeleteCategoryModal(false)
+                            setDeleteCategoryModal(false)
                         }
                     },
                     {
