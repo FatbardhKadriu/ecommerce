@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Col, FormLabel, Row } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input'
 import Modal from '../../components/UI/Modal'
 import linearCategories from '../../helpers/linearCategories'
+import { createPage } from '../../actions'
 
 const NewPage = () => {
 
@@ -14,20 +15,47 @@ const NewPage = () => {
     const [categories, setCategories] = useState([])
     const [categoryId, setCategoryId] = useState('')
     const [desc, setDesc] = useState('')
+    const [type, setType] = useState('')
     const [banners, setBanners] = useState([])
     const [products, setProducts] = useState([])
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setCategories(linearCategories(category.categories))
 
     }, [category])
 
+    const onCategoryChange = (e) => {
+        const category = categories.find(category => category._id == e.target.value)
+        setCategoryId(e.target.value)
+        setType(category.type)
+    }
+
     const handleBannerImages = (e) => {
         console.log(e)
+        setBanners([...banners, e.target.files[0]])
     }
 
     const handleProductImages = (e) => {
         console.log(e)
+        setProducts([...products, e.target.files[0]])
+    }
+
+    const submitPageForm = (e) => {
+
+        if (title === "") {
+            alert("Title is required")
+            setCreateModal(false)
+            return
+        }
+        const form = new FormData()
+        form.append('title', title)
+        form.append('description', desc)
+        form.append('category', categoryId)
+        form.append('type', type)
+        banners.forEach(b => form.append('banners', b))
+        products.forEach(p => form.append('products', p))
+        dispatch(createPage(form))
     }
 
     const renderCreatePageModal = () => {
@@ -36,13 +64,15 @@ const NewPage = () => {
                 show={createModal}
                 modalTitle={'Create New Page'}
                 handleClose={() => setCreateModal(false)}
+                handleIt={submitPageForm}
             >
                 <Row>
+                    <FormLabel>Category</FormLabel>
                     <Col>
                         <select
                             className="form-control form-control-sm"
                             value={categoryId}
-                            onChange={(e) => setCategoryId(e.target.value)}
+                            onChange={onCategoryChange}
                         >
                             <option value="">Select category</option>
                             {
@@ -52,6 +82,7 @@ const NewPage = () => {
                                     </option>)
                             }
                         </select>
+                        <br />
                     </Col>
                 </Row>
                 <Row>
@@ -77,9 +108,18 @@ const NewPage = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <FormLabel>Banners Image</FormLabel>
+                    <Row>
+                        {
+                            banners.length > 0 &&
+                            banners.map((banner, index) =>
+                                <Row key={index}>
+                                    <Col>{banner.name}</Col>
+                                </Row>)
+                        }
+                    </Row>
                     <Col>
-                        <input
+                        <Input
+                            label={'Banners image'}
                             className="form-control form-control-sm"
                             type="file"
                             name="banners"
@@ -87,10 +127,18 @@ const NewPage = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <FormLabel>Product Image</FormLabel>
-
+                    <Row>
+                        {
+                            products.length > 0 &&
+                            products.map((banner, index) =>
+                                <Row key={index}>
+                                    <Col>{banner.name}</Col>
+                                </Row>)
+                        }
+                    </Row>
                     <Col>
-                        <input
+                        <Input
+                            label={'Products image'}
                             className="form-control form-control-sm"
                             type="file"
                             name="products"
