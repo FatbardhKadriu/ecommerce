@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCategory, getAllCategories, updateCategories, deleteCategories as deleteCategoriesAction } from '../../actions'
+import { addCategory, updateCategories, deleteCategories as deleteCategoriesAction } from '../../actions'
 import Layout from '../../components/Layout'
 import CheckboxTree from 'react-checkbox-tree'
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
@@ -29,6 +29,13 @@ const Category = () => {
 
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        if (!category.loading) {
+            setShow(false)
+        }
+
+    }, [category.loading])
+
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
@@ -36,7 +43,8 @@ const Category = () => {
         const form = new FormData()
 
         if (categoryName === "") {
-            alert("Name is required")
+            alert("Category name is required")
+            setShow(false)
             return
         }
         form.append('name', categoryName)
@@ -68,7 +76,7 @@ const Category = () => {
         for (const category of categories) {
             options.push({
                 value: category._id,
-                name: category.name, 
+                name: category.name,
                 parentId: category.parentId,
                 type: category.type
             })
@@ -107,10 +115,12 @@ const Category = () => {
 
     const handleCategoryInput = (key, value, index, type) => {
         if (type === 'checked') {
-            const updatedCheckedArray = checkedArray.map((item, _index) => index == _index ? { ...item, [key]: value } : item)
+            const updatedCheckedArray = checkedArray.map((item, _index) =>
+                index == _index ? { ...item, [key]: value } : item)
             setCheckedArray(updatedCheckedArray)
         } else if (type === 'expanded') {
-            const updatedExpandedArray = expanded.map((item, _index) => index == _index ? { ...item, [key]: value } : item)
+            const updatedExpandedArray = expanded.map((item, _index) =>
+                index == _index ? { ...item, [key]: value } : item)
             setExpandedArray(updatedExpandedArray)
         }
     }
@@ -194,7 +204,7 @@ const Category = () => {
             <AddCategoryModal
                 show={show}
                 handleClose={handleClose}
-                handleIt={handleAddCategory}
+                onSubmit={handleAddCategory}
                 modalTitle={'Add new category'}
                 categoryName={categoryName}
                 setCategoryName={setCategoryName}
@@ -205,7 +215,7 @@ const Category = () => {
             <UpdateCategoriesModal
                 show={updateCategoryModal}
                 handleClose={() => setUpdateCategoryModal(false)}
-                handleIt={updateCategoriesForm}
+                onSubmit={updateCategoriesForm}
                 modalTitle={"Update categories"}
                 expandedArray={expandedArray}
                 checkedArray={checkedArray}

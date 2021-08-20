@@ -8,7 +8,7 @@ const AddCategoryModal = (props) => {
     const {
         show,
         handleClose,
-        handleIt,
+        onSubmit,
         modalTitle,
         categoryName,
         setCategoryName,
@@ -22,7 +22,7 @@ const AddCategoryModal = (props) => {
         <Modal
             show={show}
             handleClose={handleClose}
-            handleIt={handleIt}
+            onSubmit={onSubmit}
             modalTitle={modalTitle}
         >
             <Row>
@@ -50,7 +50,7 @@ const AddCategoryModal = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <input type="file" name="categoryImage" onChange={handleCategoryImage} />
+                    <input type="file" className="form-control form-control-sm" name="categoryImage" onChange={handleCategoryImage} />
                 </Col>
             </Row>
 

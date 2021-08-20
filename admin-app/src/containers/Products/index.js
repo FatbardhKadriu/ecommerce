@@ -106,7 +106,7 @@ const Products = () => {
             <Modal
                 show={show}
                 handleClose={handleClose}
-                handleIt={handleAddProduct}
+                onSubmit={handleAddProduct}
                 modalTitle={'Add new product'}
             >
                 <Input
@@ -135,7 +135,7 @@ const Products = () => {
                     onChange={(e) => setDescription(e.target.value)}
                 />
                 <FormLabel>Category</FormLabel>
-                <select value={categoryId} className="form-control" onChange={(e) => setCategoryId(e.target.value)}>
+                <select value={categoryId} className="form-control form-control-sm" onChange={(e) => setCategoryId(e.target.value)}>
                     <option>Select category</option>
                     {
                         createCategoryList(category.categories).map(option =>
@@ -150,7 +150,7 @@ const Products = () => {
                 }
 
                 <br />
-                <input type="file" name="productPicture" onChange={handleProductPictures} />
+                <input className="form-control form-control-sm" type="file" name="productPicture" onChange={handleProductPictures} />
             </Modal>
         )
     }
@@ -170,7 +170,7 @@ const Products = () => {
                 show={productDetailsModal}
                 handleClose={handleCloseProductDetails}
                 modalTitle={'Product Details'}
-                handleIt={handleProductDetailsModal}
+                onSubmit={handleProductDetailsModal}
             >
                 <Row>
                     <Col md="6">
