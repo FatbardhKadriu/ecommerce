@@ -27,7 +27,8 @@ const pageSchema = new Schema({
     category: {
         type: Schema.Types.ObjectId,
         ref: 'Category',
-        required: true
+        required: true,
+        unique: true
     },
     createdBy: {
         type: Schema.Types.ObjectId,
