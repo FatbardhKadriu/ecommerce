@@ -10,7 +10,7 @@ import {
   DropdownMenu
 } from '../MaterialUI';
 import './style.css'
-import { login } from '../../actions'
+import { login, signout } from '../../actions'
 
 const Header = (props) => {
 
@@ -24,11 +24,15 @@ const Header = (props) => {
     dispatch(login({ email, password }))
   }
 
+  const logout = () => {
+    dispatch(signout())
+  }
+
   useEffect(() => {
     if (auth.authenticate) {
       setLoginModal(false)
     }
-  })
+  }, [auth.authenticate])
 
   const renderLoggedInMenu = () => {
     return (
@@ -49,7 +53,7 @@ const Header = (props) => {
           { label: 'Rewards', href: '', icon: null },
           { label: 'Notifications', href: '', icon: null },
           { label: 'Gift Cards', href: '', icon: null },
-          { label: 'Logout', href: '', icon: null },
+          { label: 'Logout', href: '', icon: null, onClick: logout },
         ]}
       />
     )
@@ -131,7 +135,7 @@ const Header = (props) => {
       </Modal>
       <div className="subHeader">
         <div className="logo">
-          <a href="">
+          <a href="/">
             <img src={flipkartLogo} className="logoimage" alt="" />
           </a>
           <a style={{ marginTop: '-10px' }}>

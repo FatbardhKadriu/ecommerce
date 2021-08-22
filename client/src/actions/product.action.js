@@ -50,9 +50,8 @@ export const getProductDetailsById = (payload) => async (dispatch) => {
     try {
         const { productId } = payload.params
         res = await axios.get(`/product/${productId}`)
-        console.log(res)
         dispatch({
-            type: productConstants.GET_PRODUCT_PAGE_SUCCESS,
+            type: productConstants.GET_PRODUCT_DETAILS_BY_ID_SUCCESS,
             payload: { productDetails: res.data.product }
         })
     } catch (error) {

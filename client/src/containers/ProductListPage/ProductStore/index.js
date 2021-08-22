@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { generatePublicUrl } from '../../../urlConfig'
 import { getProductsBySlug } from '../../../actions'
+import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import './style.css'
 
@@ -32,7 +33,7 @@ const ProductStore = (props) => {
                         <div className="card">
                             <div className="cardHeader">
                                 <div>{props.match.params.slug} mobile under {priceRange[key]}</div>
-                                <button>View all</button>
+                                <Button variant="primary">View all</Button>
                             </div>
                             <div style={{ display: 'flex' }}>
                                 {
