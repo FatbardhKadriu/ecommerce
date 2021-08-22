@@ -11,7 +11,9 @@ const INITIAL_STATE = {
     },
     pageRequest: false,
     page: {},
-    error: null
+    error: null,
+    productDetails: {},
+    loading: false,
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -40,6 +42,23 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 error: action.payload.error,
                 pageRequest: false
+            }
+        case productConstants.GET_PRODUCT_DETAILS_BY_ID_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case productConstants.GET_PRODUCT_DETAILS_BY_ID_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                productDetails: action.payload.productDetails
+            }
+        case productConstants.GET_PRODUCT_DETAILS_BY_ID_FAILURE:
+            return {
+                ...state,
+                error: action.payload.error,
+                loading: false
             }
         default:
             return state

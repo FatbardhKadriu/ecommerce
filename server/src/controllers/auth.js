@@ -23,11 +23,11 @@ const signup = async (req, res) => {
 
 const signin = async (req, res) => {
 
-    const user = await User.findOne({ email: req.body.email })
+    const user = await User.findOne({ email: req.body.email, role: 'user' })
 
     if (!user) return res.status(400).json({ message: "User doesn't exists " })
 
-    if (!(user.authenticate(req.body.password))) return res.status(400).json({ message: 'Username or password incorrect' })
+    if (!(await user.authenticate(req.body.password))) return res.status(400).json({ message: 'Username or password incorrect' })
 
     const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' })
 

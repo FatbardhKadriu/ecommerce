@@ -82,7 +82,7 @@
     cursor: pointer;
     text-decoration: none;
   }
-.more {
+.more, .fullName {
     font-weight: bold;
     color: #fff;
     display: flex;
