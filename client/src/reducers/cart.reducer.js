@@ -9,15 +9,33 @@ const INITIAL_STATE = {
         //     price: 200,
         //     qty: 1,
         // }
-    }
+    },
+    updatingCart: false,
+    error: null
 };
- 
+
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case cartConstants.ADD_TO_CART:
+        case cartConstants.ADD_TO_CART_REQUEST:
             return {
                 ...state,
-                cartItems: action.payload.cartItems
+                updatingCart: true
+            }
+        case cartConstants.ADD_TO_CART_SUCCESS:
+            return {
+                ...state,
+                cartItems: action.payload.cartItems,
+                updatingCart: false
+            }
+        case cartConstants.ADD_TO_CART_FAILURE:
+            return {
+                ...state,
+                error: action.payload.error,
+                updatingCart: false
+            }
+        case cartConstants.RESET_CART:
+            return {
+                ...INITIAL_STATE,
             }
         default:
             return state

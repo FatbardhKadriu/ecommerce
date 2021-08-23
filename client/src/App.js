@@ -13,16 +13,17 @@ function App() {
   const auth = useSelector(state => state.auth)
   const dispatch = useDispatch()
 
-  useEffect(() => {        
+  useEffect(() => {
     if (!auth.authenticate) {
-        dispatch(isUserLoggedIn())
+      dispatch(isUserLoggedIn())
     }
 
-}, [auth.authenticate])
+  }, [auth.authenticate])
 
-useEffect(() => {
-  dispatch(updateCart())
-}, [])
+  useEffect(() => {
+    console.log('App.js - updateCart')
+    dispatch(updateCart())
+  }, [auth.authenticate])
 
   return (
     <div className="App">
