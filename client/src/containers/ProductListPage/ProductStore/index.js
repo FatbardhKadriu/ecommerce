@@ -4,6 +4,7 @@ import { generatePublicUrl } from '../../../urlConfig'
 import { getProductsBySlug } from '../../../actions'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import Card from '../../../components/UI/Card'
 import './style.css'
 
 const ProductStore = (props) => {
@@ -30,11 +31,14 @@ const ProductStore = (props) => {
             {
                 Object.keys(product.productsByPrice).map((key, index) => {
                     return (
-                        <div className="card">
-                            <div className="cardHeader">
-                                <div>{props.match.params.slug} mobile under {priceRange[key]}</div>
-                                <Button variant="primary">View all</Button>
-                            </div>
+                        <Card
+                            headerLeft={`${props.match.params.slug} mobile under ${priceRange[key]}`}
+                            headerRight={<Button variant="primary">View all</Button>}
+                            style={{
+                                width: 'calc(100% - 40px)',
+                                margin: '20px'
+                            }}
+                        >
                             <div style={{ display: 'flex' }}>
                                 {
                                     product.productsByPrice[key].map(product =>
@@ -56,9 +60,8 @@ const ProductStore = (props) => {
                                         </Link>
                                     )
                                 }
-
                             </div>
-                        </div>
+                        </Card>
                     )
                 })
             }
