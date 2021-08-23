@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { isUserLoggedIn, updateCart } from './actions'
 import ProductDetailsPage from './containers/ProductDetailsPage';
 import CartPage from './containers/CartPage';
+import CheckoutPage from './containers/CheckoutPage';
+
 
 function App() {
 
@@ -18,12 +20,12 @@ function App() {
       dispatch(isUserLoggedIn())
     }
 
-  }, [auth.authenticate])
+  }, [auth.authenticate, dispatch])
 
   useEffect(() => {
     console.log('App.js - updateCart')
     dispatch(updateCart())
-  }, [auth.authenticate])
+  }, [auth.authenticate, dispatch])
 
   return (
     <div className="App">
@@ -31,6 +33,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={HomePage}></Route>
           <Route path="/cart" component={CartPage}></Route>
+          <Route path="/checkout" component={CheckoutPage}></Route>
           <Route path="/:productSlug/:productId/p" component={ProductDetailsPage}></Route>
           <Route path="/:slug" component={ProductListPage}></Route>
         </Switch>

@@ -38,9 +38,9 @@ const Header = (props) => {
     return (
       <DropdownMenu
         menu={
-          <a className="fullName">
+          <span className="fullName">
             {auth.user.fullName}
-          </a>
+          </span>
         }
         menus={[
           { label: 'My Profile', href: '', icon: null },
@@ -63,9 +63,9 @@ const Header = (props) => {
     return (
       <DropdownMenu
         menu={
-          <a className="loginButton" onClick={() => setLoginModal(true)}>
+          <span className="loginButton" onClick={() => setLoginModal(true)}>
             Login
-          </a>
+          </span>
         }
         menus={[
           { label: 'My Profile', href: '', icon: null },
@@ -78,7 +78,7 @@ const Header = (props) => {
         firstMenu={
           <div className="firstmenu">
             <span>New Customer?</span>
-            <a style={{ color: '#2874f0' }}>Sign Up</a>
+            <a href="/signup" style={{ color: '#2874f0' }}>Sign Up</a>
           </div>
         }
       />
@@ -98,37 +98,37 @@ const Header = (props) => {
               <p>Get access to your Orders, Wishlist and Recommendations</p>
             </div>
             <div className="rightspace">
-              <MaterialInput
-                type="text"
-                label="Enter Email/Enter Mobile Number"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <MaterialInput
-                type="password"
-                label="Enter Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              //   rightElement={<a href="#">Forgot?</a>}
-              />
-              <div style={{ margin: '20px 0' }}>
+              <div className="loginInputContainer">
+                <MaterialInput
+                  type="text"
+                  label="Enter Email/Enter Mobile Number"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <MaterialInput
+                  type="password"
+                  label="Enter Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                //   rightElement={<a href="#">Forgot?</a>}
+                />
 
+                <MaterialButton
+                  title="Login"
+                  bgColor="#fb641b"
+                  textColor="#ffffff"
+                  style={{
+                    margin: '40px 0 20px 0'
+                  }}
+                  onClick={userLogin}
+                />
+                <p style={{ textAlign: 'center' }}>OR</p>
+                <MaterialButton
+                  title="Request OTP"
+                  bgColor="#ffffff"
+                  textColor="#2874f0"
+                />
               </div>
-              <MaterialButton
-                title="Login"
-                bgColor="#fb641b"
-                textColor="#ffffff"
-                style={{
-                  margin: '40px 0 20px 0'
-                }}
-                onClick={userLogin}
-              />
-              <p>OR</p>
-              <MaterialButton
-                title="Request OTP"
-                bgColor="#ffffff"
-                textColor="#2874f0"
-              />
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@ const Header = (props) => {
           <a href="/">
             <img src={flipkartLogo} className="logoimage" alt="" />
           </a>
-          <a style={{ marginTop: '-10px' }}>
+          <a style={{ marginTop: '-10px', color: 'white', textDecoration: 'none' }} href="/">
             <span className="exploreText">Explore</span>
             <span className="plusText">Plus</span>
             <img src={goldenStar} className="goldenStar" alt="" />
@@ -167,7 +167,7 @@ const Header = (props) => {
           }
           <DropdownMenu
             menu={
-              <a className="more">
+              <a href="/more" className="more">
                 <span>More</span>
                 <IoIosArrowDown />
               </a>

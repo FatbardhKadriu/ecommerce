@@ -19,7 +19,7 @@ const ProductPage = (props) => {
         const payload = { params }
 
         dispatch(getProductPage(payload))
-    }, [])
+    })
 
     return (
         <div style={{ margin: '0 10px' }}>

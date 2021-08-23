@@ -4,6 +4,8 @@ import Layout from "../../components/Layout"
 import Card from "../../components/UI/Card"
 import { addToCart, getCartItems } from "../../actions"
 import CartItem from "./CartItem"
+import { MaterialButton } from "../../components/MaterialUI"
+
 import "./style.css"
 
 /*
@@ -30,7 +32,7 @@ const CartPage = (props) => {
         if (auth.authenticate) {
             dispatch(getCartItems())
         }
-    }, [auth.authenticate])
+    }, [auth.authenticate, dispatch])
 
     const onQuantityIncrement = (_id, qty) => {
         const { name, price, img } = cartItems[_id]
@@ -59,11 +61,28 @@ const CartPage = (props) => {
                             />
                         )
                     }
+
+                    <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        background: '#ffffff',
+                        justifyContent: 'flex-end',
+                        boxShadow: '0 0 10px 10px #eee',
+                        padding: '10px 0',
+                        boxSizing: 'border-box'
+                    }}>
+                        <div style={{ width: '250px' }}>
+                            <MaterialButton
+                                title="PLACE ORDER"
+                                onClick={() => props.history.push('/checkout')} />
+                        </div>
+                    </div>
+
                 </Card>
                 <Card
                     headerLeft='Price'
                     style={{
-                        width: '500px',
+                        width: '380',
                     }}></Card>
             </div>
         </Layout>

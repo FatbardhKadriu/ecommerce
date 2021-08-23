@@ -14,7 +14,8 @@ const categoryRoutes    = require('./routes/category')
 const productRoutes     = require('./routes/product')
 const cartRoutes        = require('./routes/cart')
 const initialDataRoutes = require('./routes/admin/initialData')
-const pageRoutes = require('./routes/admin/page')
+const pageRoutes        = require('./routes/admin/page')
+const addressRoutes     = require('./routes/address')
 
 env.config()
 
@@ -36,6 +37,7 @@ app.use('/api', productRoutes)
 app.use('/api', cartRoutes)
 app.use('/api', initialDataRoutes)
 app.use('/api', pageRoutes)
+app.use('/api', addressRoutes)
 
 app.get('/', (req, res, next) => {
     res.status(200).json({

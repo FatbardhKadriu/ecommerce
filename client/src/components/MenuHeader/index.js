@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import './style.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAllCategories } from '../../actions'
@@ -11,7 +11,7 @@ const MenuHeader = () => {
 
     useEffect(() => {
         dispatch(getAllCategories())
-    }, [])
+    }, [dispatch])
 
     const renderCategories = (categories) => {
         let categoriesList = []

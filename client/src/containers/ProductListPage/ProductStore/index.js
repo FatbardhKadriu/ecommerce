@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { generatePublicUrl } from '../../../urlConfig'
 import { getProductsBySlug } from '../../../actions'
@@ -10,13 +10,13 @@ import './style.css'
 const ProductStore = (props) => {
 
     const product = useSelector(state => state.product)
-    const [priceRange, setPriceRange] = useState({
+    const priceRange = {
         under500: 500,
         under700: 700,
         under1000: 1000,
         under1500: 1500,
         under2000: 2000
-    })
+    }
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -24,7 +24,7 @@ const ProductStore = (props) => {
         const { match } = props;
 
         dispatch(getProductsBySlug(match.params.slug))
-    }, [])
+    })
 
     return (
         <>

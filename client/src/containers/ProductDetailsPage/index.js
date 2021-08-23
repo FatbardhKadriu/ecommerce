@@ -28,7 +28,7 @@ const ProductDetailsPage = (props) => {
       }
     }
     dispatch(getProductDetailsById(payload));
-  }, []);
+  });
 
   if (Object.keys(product.productDetails).length === 0) {
     return null;
@@ -89,10 +89,10 @@ const ProductDetailsPage = (props) => {
           {/* home > category > subCategory > productName */}
           <div className="breed">
             <ul>
-              <li><a href="#">Home</a><IoIosArrowForward /></li>
-              <li><a href="#">Mobiles</a><IoIosArrowForward /></li>
-              <li><a href="#">Samsung</a><IoIosArrowForward /></li>
-              <li><a href="#">{product.productDetails.name}</a></li>
+              <li><a href="/home">Home</a><IoIosArrowForward /></li>
+              <li><a href="/mobiles">Mobiles</a><IoIosArrowForward /></li>
+              <li><a href="/samsung">Samsung</a><IoIosArrowForward /></li>
+              <li><a href={product.productDetails.name}>{product.productDetails.name}</a></li>
             </ul>
           </div>
           {/* product description */}

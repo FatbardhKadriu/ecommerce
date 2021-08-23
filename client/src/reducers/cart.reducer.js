@@ -14,7 +14,7 @@ const INITIAL_STATE = {
     error: null
 };
 
-export default (state = INITIAL_STATE, action) => {
+const cartReducer =  (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case cartConstants.ADD_TO_CART_REQUEST:
             return {
@@ -41,3 +41,5 @@ export default (state = INITIAL_STATE, action) => {
             return state
     }
 }
+
+export default cartReducer

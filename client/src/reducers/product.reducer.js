@@ -16,7 +16,7 @@ const INITIAL_STATE = {
     loading: false,
 }
 
-export default (state = INITIAL_STATE, action) => {
+const productReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case productConstants.GET_PRODUCTS_BY_SLUG:
             return {
@@ -64,3 +64,5 @@ export default (state = INITIAL_STATE, action) => {
             return state
     }
 }
+
+export default productReducer

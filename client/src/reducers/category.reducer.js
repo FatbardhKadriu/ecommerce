@@ -6,46 +6,46 @@ const INITIAL_STATE = {
     error:      null
 };
 
-const buildNewCategories = (parentId, categories, category) => {
-    let myCategories = []
+// const buildNewCategories = (parentId, categories, category) => {
+//     let myCategories = []
 
-    if (parentId == undefined) {
-        return [
-            ...categories,
-            {
-                _id: category._id,
-                name: category.name,
-                slug: category.slug,
-                children: []
-            }
-        ]
-    }
+//     if (parentId == undefined) {
+//         return [
+//             ...categories,
+//             {
+//                 _id: category._id,
+//                 name: category.name,
+//                 slug: category.slug,
+//                 children: []
+//             }
+//         ]
+//     }
 
-    for (const cat of categories) {
+//     for (const cat of categories) {
 
-        if (cat._id == parentId) {
-            myCategories.push({
-                ...cat,
-                children: cat.children ? buildNewCategories(parentId, [...cat.children, {
-                    _id: category._id,
-                    name: category.name,
-                    slug: category.slug,
-                    parentId: category.parentId,
-                    children: category.children
-                }], category) : []
-            })    
-        } 
-        else {
-            myCategories.push({
-                ...cat,
-                children: cat.children ? buildNewCategories(parentId, cat.children, category) : []
-            })    
-        }
+//         if (cat._id == parentId) {
+//             myCategories.push({
+//                 ...cat,
+//                 children: cat.children ? buildNewCategories(parentId, [...cat.children, {
+//                     _id: category._id,
+//                     name: category.name,
+//                     slug: category.slug,
+//                     parentId: category.parentId,
+//                     children: category.children
+//                 }], category) : []
+//             })    
+//         } 
+//         else {
+//             myCategories.push({
+//                 ...cat,
+//                 children: cat.children ? buildNewCategories(parentId, cat.children, category) : []
+//             })    
+//         }
 
-    }
+//     }
 
-    return myCategories
-}
+//     return myCategories
+// }
  
 const categoryReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
