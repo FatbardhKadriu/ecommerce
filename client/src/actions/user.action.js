@@ -51,3 +51,25 @@ export const addAddress = (payload) => async (dispatch) => {
         console.log(error)
     }
 }
+
+export const addOrder = (payload) => async (dispatch) => {
+    try {
+        const res = await axios.post('/addOrder', payload)
+        dispatch({ type: userConstants.ADD_USER_ORDER_REQUEST })
+        if (res.status === 201) {
+            console.log(res)
+            // dispatch({
+            //     type: userConstants.ADD_USER_ORDER_SUCCESS,
+            //     payload: { address }
+            // })
+        } else {
+            const { error } = res.data
+            dispatch({
+                type: userConstants.ADD_USER_ORDER_FAILURE,
+                payload: { error }
+            })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}

@@ -53,7 +53,7 @@
     box-sizing: border-box;
     width: 100%;
 }
-.addressDetails{
+.addressDetail{
     display: flex;
     justify-content: space-between;
     width: 100%;
