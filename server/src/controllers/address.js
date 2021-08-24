@@ -7,15 +7,29 @@ exports.addAddress = async (req, res) => {
         return res.status(400).json({ error: "Params address required " })
     }
 
-    try {
-        const address = await UserAddress.findOneAndUpdate(
-            { user: req.user._id },
-            { $push: { "address": payload.address } },
-            { new: true, upsert: true }
-        )
-        return res.status(201).json({ address })
-    } catch (error) {
-        return res.status(400).json({ error })
+    if (payload.address._id) {
+        try {
+            const updatedAddress = await UserAddress.findOneAndUpdate(
+                { user: req.user._id, 'address._id': payload.address._id },
+                { $set: { 'address.$': payload.address } },
+                { new: true }
+            )
+            return res.status(201).json({ address: updatedAddress })
+        } catch (error) {
+            return res.status(400).json({ error })
+        }
+    }
+    else {
+        try {
+            const address = await UserAddress.findOneAndUpdate(
+                { user: req.user._id },
+                { $push: { "address": payload.address } },
+                { new: true, upsert: true }
+            )
+            return res.status(201).json({ address })
+        } catch (error) {
+            return res.status(400).json({ error })
+        }
     }
 }
 
