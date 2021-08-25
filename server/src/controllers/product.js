@@ -4,7 +4,7 @@ const slugify = require('slugify')
 
 exports.createProduct = async (req, res) => {
 
-    const { name, price, description, category, createdBy, quantity } = req.body;
+    const { name, price, description, category, quantity } = req.body;
     let productPictures = []
 
     if (req.files.length > 0) {
@@ -32,7 +32,7 @@ exports.getProductsBySlug = async (req, res) => {
 
     const { slug } = req.params;
 
-    const category = await Category.findOne({ slug }).select("_id")
+    const category = await Category.findOne({ slug }).select("_id type")
 
     if (!category) {
         res.status(400).json({ message: "This category doesn't exists!" })
@@ -44,16 +44,20 @@ exports.getProductsBySlug = async (req, res) => {
         res.status(400).json({ message: "No products were found!" })
     }
 
-    res.status(200).json({
-        products,
-        productsByPrice: {
-            under500: products.filter(product => product.price <= 500),
-            under700: products.filter(product => product.price > 500 && product.price <= 700),
-            under1000: products.filter(product => product.price > 700 && product.price <= 1000),
-            under1500: products.filter(product => product.price > 1000 && product.price <= 1500),
-            under2000: products.filter(product => product.price > 1500 && product.price <= 2000),
-        }
-    });
+    if (category.type) {
+        res.status(200).json({
+            products,
+            productsByPrice: {
+                under500: products.filter(product => product.price <= 500),
+                under700: products.filter(product => product.price > 500 && product.price <= 700),
+                under1000: products.filter(product => product.price > 700 && product.price <= 1000),
+                under1500: products.filter(product => product.price > 1000 && product.price <= 1500),
+                under2000: products.filter(product => product.price > 1500 && product.price <= 2000),
+            }
+        });
+    } else {
+        res.status(200).json({ products })
+    }
 }
 
 exports.getProductDetailsById = async (req, res) => {
@@ -62,15 +66,44 @@ exports.getProductDetailsById = async (req, res) => {
     if (!productId) {
         return res.status(400).json({ error: "Params required " })
     }
-    
+
     try {
         const product = await Product.findOne({ _id: productId })
+            .populate("reviews.userId")
+        
         if (!product) {
             return res.status(404).json({ error: "Product not found " })
         }
         return res.status(200).json({ product })
     }
     catch (error) {
+        return res.status(400).json({ error })
+    }
+}
+
+exports.addProductReview = async (req, res) => {
+
+    const { productId, review } = req.body.payload
+    req.body.userId = req.user._id
+
+    if (!productId) {
+        return res.status(400).json({ error: "Product is required" })
+    }
+    if (!review) {
+        return res.status(400).json({ error: "No review was given" })
+    }
+    const newReview = [{ 
+        userId: req.user._id,
+        review
+    }]
+    try {
+        const product = await Product.findOneAndUpdate(
+            { _id: productId },
+            { $push: { "reviews": req.body.payload } },
+            { new: true }
+        )
+        return res.status(200).json({ product })
+    } catch (error) {
         return res.status(400).json({ error })
     }
 }

@@ -208,7 +208,8 @@ const Category = () => {
                 modalTitle={'Add new category'}
                 categoryName={categoryName}
                 setCategoryName={setCategoryName}
-                parentCategoryId={setParentCategoryId}
+                parentCategoryId={parentCategoryId}
+                setParentCategoryId={setParentCategoryId}
                 categoryList={categoriesList}
                 handleCategoryImage={handleCategoryImage}
             />

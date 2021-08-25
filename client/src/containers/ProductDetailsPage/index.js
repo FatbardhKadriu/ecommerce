@@ -7,7 +7,7 @@ import {
   IoIosStar,
   IoMdCart
 } from 'react-icons/io';
-import { BiRupee } from 'react-icons/bi';
+import { BiEuro } from 'react-icons/bi';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { MaterialButton } from '../../components/MaterialUI';
 import './style.css';
@@ -28,7 +28,7 @@ const ProductDetailsPage = (props) => {
       }
     }
     dispatch(getProductDetailsById(payload));
-  });
+  }, []);
 
   if (Object.keys(product.productDetails).length === 0) {
     return null;
@@ -102,9 +102,9 @@ const ProductDetailsPage = (props) => {
               <span className="ratingCount">4.3 <IoIosStar /></span>
               <span className="ratingNumbersReviews">72,234 Ratings & 8,140 Reviews</span>
             </div>
-            <div className="extraOffer">Extra <BiRupee />150 off </div>
+            <div className="extraOffer">Extra <BiEuro />150 off </div>
             <div className="flexRow priceContainer">
-              <span className="price"><BiRupee />{product.productDetails.price}</span>
+              <span className="price"><BiEuro />{product.productDetails.price}</span>
               <span className="discount" style={{ margin: '0 10px' }}>22% off</span>
               {/* <span>i</span> */}
             </div>
@@ -127,6 +127,12 @@ const ProductDetailsPage = (props) => {
                   color: '#212121',
                 }}>{product.productDetails.description}</span>
               </p>
+              Reviews: <br/>
+              {
+                product.productDetails.reviews.map((review, index) => (
+                  <p>{review}</p>
+                ))
+              }
             </div>
           </div>
 

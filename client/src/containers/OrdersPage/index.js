@@ -2,9 +2,13 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getOrders } from '../../actions'
 import Layout from '../../components/Layout'
+import { Breed } from '../../components/MaterialUI'
 import Card from '../../components/UI/Card'
 import { generatePublicUrl } from '../../urlConfig'
+import { IoIosArrowForward } from 'react-icons/io'
+import { BiEuro } from 'react-icons/bi'
 import './style.css'
+
 
 const OrdersPage = () => {
 
@@ -18,23 +22,35 @@ const OrdersPage = () => {
 
     return (
         <Layout>
-            {
-                user.orders.map(order => {
-                    return order.items.map(item => (
-                        <Card style={{ maxWidth: '1200px', margin: '10px auto' }}>
-                            <div className="orderItemContainer">
-                                <div className="orderImgContainer">
-                                    <img className="orderImg"
-                                        src={generatePublicUrl(item.productId.productPictures[0].img)} />
+            <div style={{ maxWidth: '1160px', margin: '5px auto' }}>
+                <Breed
+                    breed={[
+                        { name: 'Home', href: "/" },
+                        { name: 'My Account', href: "/account" },
+                        { name: 'My Orders', href: "/account/orders" },
+                    ]}
+                    breedIcon={<IoIosArrowForward />}
+                />
+                {
+                    user.orders.map(order => {
+                        return order.items.map(item => (
+                            <Card style={{ margin: '5px auto' }}>
+                                <div className="orderItemContainer">
+                                    <div className="orderImgContainer">
+                                        <img className="orderImg"
+                                            src={generatePublicUrl(item.productId.productPictures[0].img)} />
+                                    </div>
+                                    <div className="orderRow">
+                                        <div className="orderName">{item.productId.name}</div>
+                                        <div className="orderPrice">{item.payablePrice} <BiEuro /></div>
+                                        <div>{order.paymentStatus}</div>
+                                    </div>
                                 </div>
-                                <div>{item.productId.name}</div>
-                                <div>{item.payablePrice} &euro;</div>
-                                <div>{order.paymentStatus}</div>
-                            </div>
-                        </Card>
-                    ))
-                })
-            }
+                            </Card>
+                        ))
+                    })
+                }
+            </div>
 
         </Layout>
     )

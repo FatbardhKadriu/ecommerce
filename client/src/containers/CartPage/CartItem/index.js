@@ -30,7 +30,7 @@ const CartItem = (props) => {
                 <div className="cartItemDetails">
                     <div>
                         <p>{name}</p>
-                        <p>Rs. {price}</p>
+                        <p>&euro; {price}</p>
                     </div>
                     <div>Delivery in 3 - 5 days</div>
                 </div>
