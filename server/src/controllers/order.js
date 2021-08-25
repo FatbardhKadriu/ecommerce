@@ -1,9 +1,11 @@
 const Order = require('../models/Order')
+const Cart = require('../models/Cart')
 
 exports.addOrder = async (req, res) => {
     req.body.user = req.user._id
     const newOrder = new Order(req.body)
     try {
+        await Cart.deleteOne({ user: req.user._id })
         const order = await newOrder.save()
         return res.status(201).json({ order })
     } catch (error) {

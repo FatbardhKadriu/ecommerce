@@ -8,6 +8,7 @@ import { isUserLoggedIn, updateCart } from './actions'
 import ProductDetailsPage from './containers/ProductDetailsPage';
 import CartPage from './containers/CartPage';
 import CheckoutPage from './containers/CheckoutPage';
+import OrdersPage from './containers/OrdersPage';
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
   useEffect(() => {
     console.log('App.js - updateCart')
     dispatch(updateCart())
-  }, [auth.authenticate, dispatch])
+  }, [auth.authenticate])
 
   return (
     <div className="App">
@@ -34,6 +35,7 @@ function App() {
           <Route path="/" exact component={HomePage}></Route>
           <Route path="/cart" component={CartPage}></Route>
           <Route path="/checkout" component={CheckoutPage}></Route>
+          <Route path="/account/orders" component={OrdersPage}></Route>
           <Route path="/:productSlug/:productId/p" component={ProductDetailsPage}></Route>
           <Route path="/:slug" component={ProductListPage}></Route>
         </Switch>

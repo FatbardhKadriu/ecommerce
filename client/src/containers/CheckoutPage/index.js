@@ -60,6 +60,7 @@ const Address = ({
                                             style={{
                                                 fontWeight: '500',
                                                 color: '#2874f0',
+                                                fontSize: '12px'
                                             }}
                                         />
                                     )
@@ -233,7 +234,7 @@ const CheckoutPage = (props) => {
                                             {`${selectedAddress.name} ${selectedAddress.address} - ${selectedAddress.pinCode}`}
                                         </div>
                                     )
-                                        : auth.authenticate && 
+                                        : auth.authenticate &&
                                         (
                                             address.map((adr) => (
                                                 <Address
