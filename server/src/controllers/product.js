@@ -69,7 +69,6 @@ exports.getProductDetailsById = async (req, res) => {
 
     try {
         const product = await Product.findOne({ _id: productId })
-            .populate("reviews.userId")
         
         if (!product) {
             return res.status(404).json({ error: "Product not found " })
@@ -77,33 +76,6 @@ exports.getProductDetailsById = async (req, res) => {
         return res.status(200).json({ product })
     }
     catch (error) {
-        return res.status(400).json({ error })
-    }
-}
-
-exports.addProductReview = async (req, res) => {
-
-    const { productId, review } = req.body.payload
-    req.body.userId = req.user._id
-
-    if (!productId) {
-        return res.status(400).json({ error: "Product is required" })
-    }
-    if (!review) {
-        return res.status(400).json({ error: "No review was given" })
-    }
-    const newReview = [{ 
-        userId: req.user._id,
-        review
-    }]
-    try {
-        const product = await Product.findOneAndUpdate(
-            { _id: productId },
-            { $push: { "reviews": req.body.payload } },
-            { new: true }
-        )
-        return res.status(200).json({ product })
-    } catch (error) {
         return res.status(400).json({ error })
     }
 }

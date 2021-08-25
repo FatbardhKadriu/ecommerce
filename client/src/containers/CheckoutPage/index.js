@@ -156,10 +156,6 @@ const CheckoutPage = (props) => {
             return totalPrice + price * qty;
         }, 0)
 
-        const totalItems = Object.keys(cart.cartItems).reduce(function (qty, key) {
-            return qty + cart.cartItems[key].qty;
-        }, 0)
-
         const items = Object.keys(cart.cartItems).map(key =>
         ({
             productId: key,
@@ -171,7 +167,8 @@ const CheckoutPage = (props) => {
             addressId: selectedAddress._id,
             totalAmount,
             items,
-            paymentStatus: "pending"
+            paymentStatus: "pending",
+            paymentType: "cod"
         }
 
         console.log(payload)

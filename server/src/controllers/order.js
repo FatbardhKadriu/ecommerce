@@ -2,11 +2,29 @@ const Order = require('../models/Order')
 const Cart = require('../models/Cart')
 
 exports.addOrder = async (req, res) => {
-    req.body.user = req.user._id
-    const newOrder = new Order(req.body)
     try {
         await Cart.deleteOne({ user: req.user._id })
-        const order = await newOrder.save()
+        req.body.user = req.user._id
+        req.body.orderStatus = [
+            {
+                type: 'ordered',
+                date: new Date(),
+                isCompleted: true,
+            },
+            {
+                type: 'packed',
+                isCompleted: false,
+            },
+            {
+                type: 'shipped',
+                isCompleted: false,
+            },
+            {
+                type: 'delivered',
+                isCompleted: false,
+            }
+        ]
+        const order = await new Order(req.body).save()
         return res.status(201).json({ order })
     } catch (error) {
         return res.status(400).json({ error })

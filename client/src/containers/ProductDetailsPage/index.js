@@ -127,12 +127,6 @@ const ProductDetailsPage = (props) => {
                   color: '#212121',
                 }}>{product.productDetails.description}</span>
               </p>
-              Reviews: <br/>
-              {
-                product.productDetails.reviews.map((review, index) => (
-                  <p>{review}</p>
-                ))
-              }
             </div>
           </div>
 

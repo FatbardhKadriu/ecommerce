@@ -35,7 +35,28 @@ const orderSchema = new Schema({
         type: String,
         enum: ["pending", "completed", "cancelled", "refund"],
         required: true
-    }
+    },
+    paymentType: {
+        type: String,
+        enum: ["cod", "card"],
+        required: true,
+    },
+    orderStatus: [
+        {
+            type: {
+                type: String,
+                enum: ["ordered", "packed", "shipped", "delivered"],
+                default: "ordered",
+            },
+            date: {
+                type: Date
+            },
+            isCompleted: {
+                type: Boolean,
+                default: false
+            }
+        }
+    ]
 
 }, { timestamps: true })
 
