@@ -49,6 +49,7 @@ const CartItem = (props) => {
                 </div>
                 <button className="cartActionBtn">save for later</button>
                 <button
+                    onClick={() => props.onRemoveCartItem(_id)}
                     className="cartActionBtn"
                 >
                     Remove

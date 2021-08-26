@@ -59,8 +59,8 @@ exports.addItemToCart = async (req, res) => {
 exports.getCartItems = async (req, res) => {
 
     const cart = await Cart.findOne({ user: req.user._id })
-         .populate("cartItems.product", "_id name price productPictures")
-    
+        .populate("cartItems.product", "_id name price productPictures")
+
     if (!cart) {
         return res.status(404).json({ error: "Cart not found" })
     }
@@ -77,4 +77,24 @@ exports.getCartItems = async (req, res) => {
     })
     res.status(200).json({ cartItems })
 
+}
+
+exports.removeCartItems = async (req, res) => {
+    const { productId } = req.body.payload
+
+    console.log(productId)
+    if (productId) {
+        try {
+            const cart = await Cart.updateOne(
+                { user: req.user._id },
+                { $pull: { cartItems: { product: productId } } },
+                { new: true }
+            )
+            return res.status(202).json({ cart })
+        } catch (error) {
+            return res.status(400).json({ error })
+        }
+    } else {
+        return res.status(400).json({ error: "Product is required" })
+    }
 }

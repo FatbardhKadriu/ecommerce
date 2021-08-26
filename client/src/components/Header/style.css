@@ -156,3 +156,8 @@
   padding: 0 30px;
   margin: 40px 0;
 }
+
+.createAccBtn {
+  position: absolute;
+  bottom: 10px;
+}

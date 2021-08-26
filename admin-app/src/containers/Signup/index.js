@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Input from '../../components/UI/Input'
@@ -15,11 +15,25 @@ const Signup = () => {
     const auth = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
-    const userSignup = (e) => {
-        const user = {
-            firstName, lastName, email, password
+
+    useEffect(() => {
+        if (!user.loading) {
+            setFirstName("")
+            setLastName("")
+            setEmail("")
+            setPassword("")
         }
+    }, [user.loading])
+
+
+    const userSignup = (e) => {
         e.preventDefault()
+        const user = {
+            firstName, 
+            lastName, 
+            email, 
+            password
+        }
         dispatch(signup(user))
     }
 

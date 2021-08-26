@@ -18,7 +18,6 @@ export const addToCart = (product, newQty = 1) => async (dispatch) => {
 
     if (auth.authenticate) {
         dispatch({ type: cartConstants.ADD_TO_CART_REQUEST })
-        console.log("Quantityyyyyyyyyyyyyyyyyyyyyyy", qty)
         const payload = {
             cartItems: [
                 {
@@ -36,8 +35,6 @@ export const addToCart = (product, newQty = 1) => async (dispatch) => {
     } else {
         localStorage.setItem('cart', JSON.stringify(cartItems))
     }
-
-    console.log('addToCart::', cartItems)
 
     dispatch({
         type: cartConstants.ADD_TO_CART_SUCCESS,
@@ -75,7 +72,6 @@ export const updateCart = () => async (dispatch) => {
     const cartItems = cart ?
         JSON.parse(cart) : null
 
-    console.log('uppppppppppppp')
     if (auth.authenticate) {
         localStorage.removeItem('cart')
 
@@ -102,6 +98,27 @@ export const updateCart = () => async (dispatch) => {
                 payload: { cartItems }
             })
         }
+    }
+
+}
+
+export const removeCartItem = (payload) => async (dispatch) => {
+    dispatch({ type: cartConstants.REMOVE_CART_ITEM_REQUEST })
+    try {
+
+        const res = await axios.post('/user/cart/removeItem', { payload })
+        if (res.status === 202) {
+            dispatch({ type: cartConstants.REMOVE_CART_ITEM_SUCCESS })
+            dispatch(getCartItems())
+        } else {
+            const { error } = res.data
+            dispatch({
+                type: cartConstants.REMOVE_CART_ITEM_FAILURE,
+                payload: { error }
+            })
+        }
+    } catch (error) {
+        console.log(error)
     }
 
 }

@@ -2,13 +2,8 @@ import { productConstants } from '../actions/constants'
 
 const INITIAL_STATE = {
     products: [],
-    productsByPrice: {
-        under500: [],
-        under700: [],
-        under1000: [],
-        under1500: [],
-        under2000: [],
-    },
+    priceRange: {},
+    productsByPrice: {},
     pageRequest: false,
     page: {},
     error: null,
@@ -22,6 +17,7 @@ const productReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 products: action.payload.products,
+                priceRange: action.payload.priceRange,
                 productsByPrice: {
                     ...action.payload.productsByPrice
                 }

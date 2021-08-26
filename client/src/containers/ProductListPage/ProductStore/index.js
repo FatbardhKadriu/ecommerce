@@ -5,18 +5,15 @@ import { getProductsBySlug } from '../../../actions'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Card from '../../../components/UI/Card'
+import Rating from '../../../components/UI/Rating'
+import Price from '../../../components/UI/Price'
+
 import './style.css'
 
 const ProductStore = (props) => {
 
     const product = useSelector(state => state.product)
-    const priceRange = {
-        under500: 500,
-        under700: 700,
-        under1000: 1000,
-        under1500: 1500,
-        under2000: 2000
-    }
+    const priceRange = product.priceRange
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -52,10 +49,18 @@ const ProductStore = (props) => {
                                             <div className="productInfo">
                                                 <div style={{ margin: '5px 0' }}>{product.name}</div>
                                                 <div>
-                                                    <span>4.3&nbsp;</span>
-                                                    <span>3353</span>
+                                                    <Rating value="4.3" />
+                                                    &nbsp;&nbsp;
+                                                    <span style={{
+                                                        color: "#777",
+                                                        fontWeight: "500",
+                                                        fontSize: "12px"
+                                                    }}
+                                                    >
+                                                        (3353)
+                                                    </span>
                                                 </div>
-                                                <div className="productPrice">{product.price}</div>
+                                                <Price value={product.price} />
                                             </div>
                                         </Link>
                                     )

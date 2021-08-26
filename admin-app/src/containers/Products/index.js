@@ -3,7 +3,8 @@ import Layout from '../../components/Layout'
 import { Row, Col, FormLabel, Button, Table } from 'react-bootstrap'
 import Input from '../../components/UI/Input'
 import { useDispatch, useSelector } from 'react-redux'
-import { addProduct } from '../../actions/product.action'
+import { addProduct, deleteProductById } from '../../actions/product.action'
+import { IoIosAdd, IoIosTrash, IoMdInformationCircleOutline } from 'react-icons/io'
 import Modal from '../../components/UI/Modal'
 import './style.css'
 import { generatePublicUrl } from '../../urlConfig'
@@ -81,18 +82,36 @@ const Products = () => {
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Category</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         product.products.length > 0 &&
                         product.products.map((product, index) => (
-                            <tr onClick={() => showProductDetailsModal(product)} key={product._id}>
+                            <tr key={product._id}>
                                 <td>{index + 1} </td>
                                 <td>{product.name}</td>
                                 <td>{product.price}</td>
                                 <td>{product.quantity}</td>
                                 <td>{product.category.name}</td>
+                                <td>
+                                    <Button
+                                        style={{ marginRight: '8px', textAlign: 'center' }}
+                                        variant="info" onClick={() => showProductDetailsModal(product)}>
+                                        <IoMdInformationCircleOutline />Info
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
+                                            const payload = {
+                                                productId: product._id
+                                            }
+                                            dispatch(deleteProductById(payload))
+                                        }}
+                                        variant="danger">
+                                        <IoIosTrash />Delete
+                                    </Button>
+                                </td>
                             </tr>
                         ))
                     }
@@ -218,7 +237,7 @@ const Products = () => {
                 <Col md={12}>
                     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                         <h3>Products</h3>
-                        <Button variant="success" onClick={handleShow}>Add new</Button>
+                        <Button variant="success" onClick={handleShow}><IoIosAdd/>Add product</Button>
                     </div>
                 </Col>
             </Row>

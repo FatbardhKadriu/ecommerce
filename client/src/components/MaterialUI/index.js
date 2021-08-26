@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './style.css';
+import { IoIosClose } from 'react-icons/io'
 
 const Modal = (props) => {
     if (!props.visible) {
@@ -9,7 +10,7 @@ const Modal = (props) => {
         <>
             <div className="modalFixedBg">
                 <div style={{ position: 'relative' }}>
-                    <div className="modalClose" onClick={props.onClose}>X</div>
+                    <div className="modalClose" onClick={props.onClose}><IoIosClose size={40}/></div>
                     <div className="modalContainer">
                         {props.children}
                     </div>
@@ -20,16 +21,18 @@ const Modal = (props) => {
 }
 
 const MaterialInput = (props) => {
-    const [focus, setFocus] = useState(false);
+    const [focus, setFocus] = useState(false)
+    const [touch, setTouch] = useState(false)
 
     return (
         <div className="materialInput">
-            <label className={`label ${focus ? 'focus' : ''}`} style={{
+            <label className={`label ${(focus || props.value !=="") ? 'focus' : ''}`} style={{
                 top: 0,
                 lineHeight: 'none'
             }}>{props.label}</label>
             <div style={{
-                display: 'flex'
+                display: 'flex',
+                flexDirection: 'column'
             }}>
                 <input className="input"
                     type={props.type}
@@ -37,14 +40,30 @@ const MaterialInput = (props) => {
                     onChange={props.onChange}
                     onFocus={(e) => {
                         setFocus(true)
+                        setTouch(true)
                     }}
                     onBlur={(e) => {
                         if (e.target.value === "") {
                             setFocus(false)
+                        } else {
+                            setTouch(false)
                         }
                     }} />
                 {
                     props.rightElement ? props.rightElement : null
+                }
+                {
+                    touch && (
+                        <div
+                            style={{
+                                fontSize: '10px',
+                                color: 'red',
+                                fontWeight: 500,
+                            }}
+                        >
+                            {`${props.label} is Required`}
+                        </div>
+                    )
                 }
             </div>
         </div>
@@ -82,11 +101,13 @@ const DropdownMenu = (props) => {
                     {
                         props.menus && props.menus.map((item, index) =>
                             <li key={index}>
+                                
                                 <a onClick={(e) => {
                                     if (item.onClick)
                                         e.preventDefault()
                                     item.onClick && item.onClick()
                                 }} href={item.href}>
+                                { item.icon && item.icon }&nbsp;&nbsp;
                                     {item.label}
                                 </a>
                             </li>

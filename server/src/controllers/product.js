@@ -24,7 +24,7 @@ exports.createProduct = async (req, res) => {
     })
 
     await product.save()
-    res.status(200).json({ product })
+    res.status(201).json({ product })
 
 }
 
@@ -47,6 +47,13 @@ exports.getProductsBySlug = async (req, res) => {
     if (category.type) {
         res.status(200).json({
             products,
+            priceRange: {
+                under500: 500,
+                under700: 700,
+                under1000: 1000,
+                under1500: 1500,
+                under2000: 2000,
+            },
             productsByPrice: {
                 under500: products.filter(product => product.price <= 500),
                 under700: products.filter(product => product.price > 500 && product.price <= 700),
@@ -69,13 +76,46 @@ exports.getProductDetailsById = async (req, res) => {
 
     try {
         const product = await Product.findOne({ _id: productId })
-        
+
         if (!product) {
             return res.status(404).json({ error: "Product not found " })
         }
         return res.status(200).json({ product })
     }
     catch (error) {
+        return res.status(400).json({ error })
+    }
+}
+
+
+exports.deleteProductById = async (req, res) => {
+    const { productId } = req.body.payload
+
+    if (productId) {
+
+        try {
+            const result = await Product.deleteOne({ _id: productId })
+            if (!result) {
+                return res.status(400).json({ error: "Product doesn't exists" })
+            }
+            return res.status(202).json({ result })
+        } catch (error) {
+            return res.status(400).json({ error })
+        }
+    } else {
+        return res.status(400).json({ error: "Params required" })
+    }
+
+}
+
+exports.getProducts = async (req, res) => {
+    try {
+        const products = await Product.find({})
+            .select("_id name price quantity slug description productPictures category")
+            .populate({ path: "category", select: "_id name" })
+
+        return res.status(200).json({ products })
+    } catch (error) {
         return res.status(400).json({ error })
     }
 }
