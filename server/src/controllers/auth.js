@@ -21,7 +21,7 @@ const signup = async (req, res) => {
         const userExist = await User.findOne({ email })
 
         if (userExist)
-            return res.status(400).json({ message: 'User already registered' })
+            return res.status(400).json({ error: 'User already registered' })
 
         const _user = new User({ firstName, lastName, email, hash_password, username: shortid.generate() })
 

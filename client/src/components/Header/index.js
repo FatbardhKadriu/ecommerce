@@ -93,7 +93,7 @@ const Header = (props) => {
         menus={[
           { label: 'My Profile', href: '', icon: <CgProfile color="#2A75F0" /> },
           {
-            label: 'Orders', href: 'account/orders', 
+            label: 'Orders', href: 'account/orders',
             icon: <GoArchive style={{ fill: "#2A75F0" }} />,
             onClick: () => {
               !auth.authenticate && setLoginModal(true)
@@ -144,6 +144,11 @@ const Header = (props) => {
             </div>
             <div className="rightspace">
               <div className="loginInputContainer">
+                {
+                  signup && (
+                    <p style={{ fontSize: '12px', color: 'red' }}>{auth.error}</p>
+                  )
+                }
                 {
                   signup && (
                     <MaterialInput

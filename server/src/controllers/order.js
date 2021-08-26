@@ -37,6 +37,7 @@ exports.getOrders = async (req, res) => {
         const orders = await Order.find({ user: req.user._id })
             .select("_id paymentStatus items")
             .populate("items.productId", "_id name productPictures")
+            .sort({ _id: -1 })
         return res.status(200).json({ orders })
     } catch (error) {
         return res.status(400).json({ error })
@@ -46,7 +47,7 @@ exports.getOrders = async (req, res) => {
 exports.getOrder = async (req, res) => {
     try {
         const order = await Order.findOne({ _id: req.body.orderId })
-            .populate("items.productId", "_id name productPictures")
+            .populate("items.productId", "_id name productPictures slug")
             .lean()
 
         if (!order) {

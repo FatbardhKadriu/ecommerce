@@ -10,7 +10,7 @@ const Price = (props) => {
         margin: "5px 0",
       }}
     >
-      <BiEuro />
+      <BiEuro size={props.size} />
       {props.value}
     </div>
   );

@@ -6,7 +6,8 @@ const INITIAL_STATE = {
     orderDetails: {},
     error: null,
     loading: false,
-    orderFetching: false
+    orderFetching: false,
+    placedOrderId: null,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -75,6 +76,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 error: action.payload.error
+            }
+        case userConstants.ADD_USER_ORDER_SUCCESS: 
+            return {
+                ...state, 
+                placedOrderId: action.payload._id
             }
         default:
             return state

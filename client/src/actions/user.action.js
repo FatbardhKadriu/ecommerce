@@ -61,10 +61,10 @@ export const addOrder = (payload) => async (dispatch) => {
             dispatch({
                 type: cartConstants.RESET_CART
             })
-            // dispatch({
-            //     type: userConstants.ADD_USER_ORDER_SUCCESS,
-            //     payload: { address }
-            // })
+            dispatch({
+                type: userConstants.ADD_USER_ORDER_SUCCESS,
+                payload: res.data.order
+            })
         } else {
             const { error } = res.data
             dispatch({

@@ -25,7 +25,6 @@ function App() {
   }, [auth.authenticate, dispatch])
 
   useEffect(() => {
-    console.log('App.js - updateCart')
     dispatch(updateCart())
   }, [auth.authenticate])
 

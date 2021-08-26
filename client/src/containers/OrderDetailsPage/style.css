@@ -85,6 +85,7 @@
     color: #26A541;
     text-transform: capitalize;
     font-weight: bold;
+    padding: 1px;
 }
 
 .orderInfo .date{
