@@ -9,6 +9,7 @@ import ProductDetailsPage from './containers/ProductDetailsPage';
 import CartPage from './containers/CartPage';
 import CheckoutPage from './containers/CheckoutPage';
 import OrdersPage from './containers/OrdersPage';
+import OrderDetailsPage from './containers/OrderDetailsPage';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path="/cart" component={CartPage}></Route>
           <Route path="/checkout" component={CheckoutPage}></Route>
           <Route path="/account/orders" component={OrdersPage}></Route>
+          <Route path="/order_details/:orderId" component={OrderDetailsPage}></Route>
           <Route path="/:productSlug/:productId/p" component={ProductDetailsPage}></Route>
           <Route path="/:slug" component={ProductListPage}></Route>
         </Switch>

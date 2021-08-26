@@ -1,5 +1,6 @@
 const Order = require('../models/Order')
 const Cart = require('../models/Cart')
+const Address = require('../models/Address')
 
 exports.addOrder = async (req, res) => {
     try {
@@ -37,6 +38,30 @@ exports.getOrders = async (req, res) => {
             .select("_id paymentStatus items")
             .populate("items.productId", "_id name productPictures")
         return res.status(200).json({ orders })
+    } catch (error) {
+        return res.status(400).json({ error })
+    }
+}
+
+exports.getOrder = async (req, res) => {
+    try {
+        const order = await Order.findOne({ _id: req.body.orderId })
+            .populate("items.productId", "_id name productPictures")
+            .lean()
+
+        if (!order) {
+            return res.status(400).json({ error: "Order not found" })
+        }
+        const address = await Address.findOne({ user: req.user._id })
+
+        if (!address) {
+            return res.status(400).json({ error: "Address not found" })
+        }
+
+        order.address = address.address.find(adr =>
+            adr._id.toString() == order.addressId.toString())
+
+        res.status(200).json({ order })
     } catch (error) {
         return res.status(400).json({ error })
     }

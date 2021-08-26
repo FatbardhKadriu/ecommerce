@@ -44,3 +44,7 @@
     font-size: 12px;
     text-transform: capitalize;
 }
+
+.status {
+    padding: 3px;
+}

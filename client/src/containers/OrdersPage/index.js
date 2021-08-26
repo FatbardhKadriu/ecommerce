@@ -7,6 +7,7 @@ import Card from '../../components/UI/Card'
 import { generatePublicUrl } from '../../urlConfig'
 import { IoIosArrowForward } from 'react-icons/io'
 import { BiEuro } from 'react-icons/bi'
+import { Link } from 'react-router-dom'
 import './style.css'
 
 
@@ -35,7 +36,10 @@ const OrdersPage = () => {
                     user.orders.map(order => {
                         return order.items.map(item => (
                             <Card style={{ margin: '5px auto' }}>
-                                <div className="orderItemContainer">
+                                <Link
+                                    to={`/order_details/${order._id}`}
+                                    className="orderItemContainer"
+                                >
                                     <div className="orderImgContainer">
                                         <img className="orderImg"
                                             src={generatePublicUrl(item.productId.productPictures[0].img)} />
@@ -45,7 +49,7 @@ const OrdersPage = () => {
                                         <div className="orderPrice">{item.payablePrice} <BiEuro /></div>
                                         <div>{order.paymentStatus}</div>
                                     </div>
-                                </div>
+                                </Link>
                             </Card>
                         ))
                     })

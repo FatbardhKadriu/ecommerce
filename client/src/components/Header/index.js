@@ -15,6 +15,9 @@ import { login, signout } from '../../actions'
 const Header = (props) => {
 
   const [loginModal, setLoginModal] = useState(false);
+  const [signup, setSignup] = useState(false)
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const auth = useSelector(state => state.auth)
@@ -22,6 +25,10 @@ const Header = (props) => {
 
   const userLogin = () => {
     dispatch(login({ email, password }))
+  }
+
+  const userSignUp = () => {
+    console.log('Sign up')
   }
 
   const logout = () => {
@@ -67,9 +74,15 @@ const Header = (props) => {
     return (
       <DropdownMenu
         menu={
-          <span className="loginButton" onClick={() => setLoginModal(true)}>
+          <a
+            className='loginButton'
+            onClick={() => {
+              setSignup(false)
+              setLoginModal(true)
+            }}
+          >
             Login
-          </span>
+          </a>
         }
         menus={[
           { label: 'My Profile', href: '', icon: null },
@@ -77,7 +90,7 @@ const Header = (props) => {
           {
             label: 'Orders', href: 'account/orders', icon: null,
             onClick: () => {
-              !auth.authenticate && setLoginModal(true) 
+              !auth.authenticate && setLoginModal(true)
             }
           },
           { label: 'Wishlist', href: '', icon: null },
@@ -87,7 +100,15 @@ const Header = (props) => {
         firstMenu={
           <div className="firstmenu">
             <span>New Customer?</span>
-            <a href="/signup" style={{ color: '#2874f0' }}>Sign Up</a>
+            <a
+              style={{ color: '#2874f0', cursor: 'pointer' }}
+              onClick={() => {
+                setLoginModal(true)
+                setSignup(true)
+              }}
+            >
+              Sign Up
+            </a>
           </div>
         }
       />
@@ -108,6 +129,26 @@ const Header = (props) => {
             </div>
             <div className="rightspace">
               <div className="loginInputContainer">
+                {
+                  signup && (
+                    <MaterialInput
+                      type="text"
+                      label="Enter First Name"
+                      value={firstName}
+                      onChange={e => setFirstName(e.target.value)}
+                    />
+                  )
+                }
+                {
+                  signup && (
+                    <MaterialInput
+                      type="text"
+                      label="Enter Last Name"
+                      value={firstName}
+                      onChange={e => setLastName(e.target.value)}
+                    />
+                  )
+                }
                 <MaterialInput
                   type="text"
                   label="Enter Email/Enter Mobile Number"
@@ -123,13 +164,13 @@ const Header = (props) => {
                 />
 
                 <MaterialButton
-                  title="Login"
+                  title={signup ? 'Signup' : 'Login'}
                   bgColor="#fb641b"
                   textColor="#ffffff"
                   style={{
                     margin: '40px 0 20px 0'
                   }}
-                  onClick={userLogin}
+                  onClick={signup ? userSignUp : userLogin}
                 />
                 <p style={{ textAlign: 'center' }}>OR</p>
                 <MaterialButton

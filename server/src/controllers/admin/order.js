@@ -13,3 +13,14 @@ exports.updateOrder = async (req, res) => {
         return res.status(400).json(error)
     }
 }
+
+exports.getCustomerOrders = async (req, res) => {
+    try {
+        const orders = await Order.find({})
+            .populate("items.productId", "name")
+
+        res.status(200).json({ orders })
+    } catch (error) {
+        res.status(400).json({ error })
+    }
+}
