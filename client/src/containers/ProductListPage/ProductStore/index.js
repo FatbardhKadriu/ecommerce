@@ -24,7 +24,7 @@ const ProductStore = (props) => {
         const { match } = props;
 
         dispatch(getProductsBySlug(match.params.slug))
-    })
+    }, [])
 
     return (
         <>
