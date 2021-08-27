@@ -1,24 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Layout from '../../components/Layout'
 import Card from '../../components/UI/Card'
-import { Button } from 'react-bootstrap'
+import { Button, Form, FormControl } from 'react-bootstrap'
 
 import './style.css'
-import { updateOrder } from '../../actions'
+import { getCustomerOrders ,updateOrder, searchOrder as searchOrderAction } from '../../actions'
 
 const Orders = () => {
 
     const order = useSelector(state => state.order)
     const [type, setType] = useState('')
+    const [orderId, setOrderId] = useState('')
     const dispatch = useDispatch()
+
+    const searchOrder = (orderId) => {
+        if (orderId === "") return
+        dispatch(searchOrderAction(orderId))
+        console.log(orderId)
+    }
 
     const onOrderUpdate = (orderId) => {
         const payload = {
             orderId,
             type
         }
-
         dispatch(updateOrder(payload))
     }
 
@@ -30,15 +36,37 @@ const Orders = () => {
         return ""
     }
 
+    useEffect(() => {
+        if (orderId === "") {
+            dispatch(getCustomerOrders())
+        }
+    }, [orderId])
+
     return (
         <Layout sidebar>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form className="d-flex">
+                    <FormControl
+                        style={{ width: '300px' }}
+                        type="search"
+                        placeholder="Search by id"
+                        value={orderId}
+                        onChange={e => setOrderId(e.target.value)}
+                        className="mr-2"
+                        aria-label="Search"
+                    />
+                    <Button
+                        onClick={() => searchOrder(orderId)}
+                        variant="outline-success">Search</Button>
+                </Form>
+            </div>
             {order.orders.map((orderItem, index) => (
                 <Card
                     style={{
                         margin: "10px 0",
                     }}
                     key={index}
-                    headerLeft={orderItem._id}
+                    headerLeft={<h6>OrderID: {orderItem._id}</h6>}
                 >
                     <div
                         style={{
@@ -52,14 +80,14 @@ const Orders = () => {
                             <div className="title">Items</div>
                             {orderItem.items.map((item, index) => (
                                 <div className="value" key={index}>
-                                    {item.productId.name}
+                                    {item.productId?.name}
                                 </div>
                             ))}
                         </div>
                         <div>
                             <span className="title">Total Price</span>
                             <br />
-                            <span className="value">{orderItem.totalAmount}</span>
+                            <span className="value">{orderItem.totalAmount} &euro;</span>
                         </div>
                         <div>
                             <span className="title">Payment Type</span> <br />
