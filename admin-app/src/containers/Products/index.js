@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from '../../components/Layout'
 import { Row, Col, FormLabel, Button, Table } from 'react-bootstrap'
 import Input from '../../components/UI/Input'
@@ -8,6 +8,8 @@ import { IoIosAdd, IoIosTrash, IoMdInformationCircleOutline } from 'react-icons/
 import Modal from '../../components/UI/Modal'
 import './style.css'
 import { generatePublicUrl } from '../../urlConfig'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const Products = () => {
 
@@ -72,6 +74,31 @@ const Products = () => {
         ])
     }
 
+    useEffect(() => {
+        if (product.deletedSuccessfully) {
+            toast.success('Deleted successfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+        if (product.addedSuccessfully) {
+            toast.success('Added successfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    }, [product.deletedSuccessfully, product.addedSuccessfully])
+
     const renderProducts = () => {
         return (
             <Table style={{ fontSize: 12 }} responsive="sm">
@@ -87,7 +114,7 @@ const Products = () => {
                 </thead>
                 <tbody>
                     {
-                        product.products.length > 0 &&
+                        product.products.length > 0 && 
                         product.products.map((product, index) => (
                             <tr key={product._id}>
                                 <td>{index + 1} </td>
@@ -111,6 +138,7 @@ const Products = () => {
                                         variant="danger">
                                         <IoIosTrash />Delete
                                     </Button>
+                                    <ToastContainer />
                                 </td>
                             </tr>
                         ))

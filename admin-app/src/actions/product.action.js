@@ -9,10 +9,16 @@ export const addProduct = form => async (dispatch) => {
             dispatch({ type: productConstants.ADD_NEW_PRODUCT_SUCCESS })
             dispatch(getProducts())
         } else {
-            dispatch({ type: productConstants.ADD_NEW_PRODUCT_FAILURE })
-        }
+            const { error } = res.data
+            dispatch({ 
+                type: productConstants.ADD_NEW_PRODUCT_FAILURE,
+                payload: { error }
+            })        }
     } catch (error) {
-        console.log(error)
+        dispatch({ 
+            type: productConstants.ADD_NEW_PRODUCT_FAILURE,
+            payload: { error: error.response.data.error }
+        })
     }
 }
 
@@ -55,7 +61,10 @@ export const deleteProductById = (payload) => async (dispatch) => {
             })
         }
     } catch (error) {
-        console.log(error)
+        dispatch({
+            type: productConstants.DELETE_PRODUCT_BY_ID_FAILURE,
+            payload: { error: error.response.data.error }
+        })
     }
 }
 

@@ -24,7 +24,7 @@ exports.createProduct = async (req, res) => {
     })
 
     await product.save()
-    res.status(201).json({ product })
+    res.status(201).json({ product, files: req.files })
 
 }
 
@@ -110,7 +110,7 @@ exports.deleteProductById = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const products = await Product.find({})
+        const products = await Product.find({ createdBy: req.user._id })
             .select("_id name price quantity slug description productPictures category")
             .populate({ path: "category", select: "_id name" })
 

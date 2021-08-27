@@ -11,6 +11,8 @@ import { AiFillEdit } from 'react-icons/ai'
 import UpdateCategoriesModal from './components/UpdateCategoriesModal'
 import AddCategoryModal from './components/AddCategoryModal'
 import DeleteCategoryModal from './components/DeleteCategoryModal'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import './style.css'
 
 const Category = () => {
@@ -32,6 +34,17 @@ const Category = () => {
     useEffect(() => {
         if (!category.loading) {
             setShow(false)
+        }
+        if (category.error) {
+            toast.error(category.error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
 
     }, [category.loading])
@@ -175,6 +188,7 @@ const Category = () => {
                                 <Button variant="success" onClick={handleShow}><IoIosAdd /> Add </Button>
                                 <Button variant="danger" onClick={deleteCategory}><IoIosTrash /> Delete </Button>
                                 <Button onClick={updateCategory}><AiFillEdit /> Edit </Button>
+                                <ToastContainer />
                             </div>
                         </div>
                     </Col>

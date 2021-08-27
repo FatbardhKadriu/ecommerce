@@ -45,7 +45,10 @@ export const addCategory = (form) => async (dispatch) => {
         }
 
     } catch (error) {
-        console.log(error.response)
+        dispatch({
+            type: categoryConstants.ADD_NEW_CATEGORY_FAILURE,
+            payload: { error: error.response.data.error }
+        })
     }
 }
 
@@ -72,21 +75,30 @@ export const deleteCategories = (ids) => async (dispatch) => {
 
     dispatch({ type: categoryConstants.DELETE_CATEGORIES_REQUEST })
 
-    const res = await axios.post('/category/delete', {
-        payload: { ids }
-    })
+    try {
 
-    if (res.status === 200) {
-        dispatch(getAllCategories())
-        dispatch({ type: categoryConstants.DELETE_CATEGORIES_SUCCESS })
-    }
-    else {
-        const { error } = res.data.error
+        const res = await axios.post('/category/delete', {
+            payload: { ids }
+        })
+        if (res.status === 200) {
+            dispatch(getAllCategories())
+            dispatch({ type: categoryConstants.DELETE_CATEGORIES_SUCCESS })
+        }
+        else {
+            const { error } = res.data.error
+            dispatch({
+                type: categoryConstants.DELETE_CATEGORIES_FAILURE,
+                payload: { error }
+            })
+        }
+    } catch (error) {
+        const { data } = error.response
         dispatch({
             type: categoryConstants.DELETE_CATEGORIES_FAILURE,
-            payload: { error }
+            payload: { error: data.error }
         })
     }
+
 }
 
 export {

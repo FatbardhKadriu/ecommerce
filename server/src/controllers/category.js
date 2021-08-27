@@ -30,11 +30,12 @@ exports.addCategory = async (req, res) => {
 
     const categoryObj = {
         name: req.body.name,
-        slug: `${slugify(req.body.name)}-${shortid.generate()}`
+        slug: `${slugify(req.body.name)}-${shortid.generate()}`,
+        createdBy: req.user._id
     }
 
     if (req.file) {
-        categoryObj.categoryImage = process.env.API + '/public/' + req.file.filename
+        categoryObj.categoryImage = '/public/' + req.file.filename
     }
 
     if (req.body.parentId) {
@@ -59,8 +60,6 @@ exports.getCategories = async (req, res) => {
 }
 
 exports.updateCategories = async (req, res) => {
-
-    console.log( req.body._id )
     const { _id, name, parentId, type } = req.body
     const updatedCategories = []
     if (name instanceof Array) {
@@ -76,7 +75,7 @@ exports.updateCategories = async (req, res) => {
             const updatedCategory = await Category.findOneAndUpdate({ _id: _id[i] }, category, { new: true })
             updatedCategories.push(updatedCategory)
         }
-        return res.status(201).json({ body: req.body })
+        return res.status(201).json({ updateCategories: updatedCategories })
     } else {
         const category = {
             name,
@@ -96,7 +95,7 @@ exports.deleteCategories = async (req, res) => {
     const { ids } = req.body.payload
     const deletedCategories = []
     for (let i = 0; i < ids.length; i++) {
-        const deleteCategory = await Category.findOneAndDelete({ _id: ids[i] })
+        const deleteCategory = await Category.findOneAndDelete({ _id: ids[i], createdBy: req.user._id })
         deletedCategories.push(deleteCategory)
     }
     if (deletedCategories.length === ids.length) {

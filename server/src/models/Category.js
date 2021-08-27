@@ -17,6 +17,11 @@ const categorySchema = new Schema({
     categoryImage: { 
         type: String
     },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     parentId: {
         type: String 
     }
