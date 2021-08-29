@@ -41,7 +41,16 @@ const userSchema = new Schema({
         enum:    ['user', 'admin', 'super-admin'],
         default: 'user'
     },
-    contactNumber: {
+    phoneNumber: {
+        type: String
+    },
+    birthdate: {
+        type: Date
+    },
+    gender: {
+        type: String
+    },
+    address: {
         type: String
     },
     profilePicture: {

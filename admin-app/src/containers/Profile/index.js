@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from '../../components/Layout'
 import { useSelector } from 'react-redux'
-import { Row, Col, FormLabel } from 'react-bootstrap'
+import { Row, Col, FormLabel, Button } from 'react-bootstrap'
 import Card from '../../components/UI/Card'
 import profilePicture from '../../images/profile.jpeg'
 
@@ -11,7 +11,7 @@ const Profile = () => {
 
     return (
         <Layout sidebar>
-            <p style={{ fontWeight: '700', fontSize: '15px' }}>Admin profile</p>
+            <p style={{ fontWeight: '700', fontSize: '15px' }}>Profile</p>
             <div className="flexRow sb" style={{
                 padding: '20px',
                 display: 'flex',
@@ -29,6 +29,7 @@ const Profile = () => {
                                     borderRadius: '9%',
                                     width: '150px',
                                     maxWidth: '200px !important',
+                                    marginTop: '10px',  
                                     height: '150px'
                                 }}
                                 src={profilePicture}>
@@ -81,7 +82,7 @@ const Profile = () => {
                 <Card
                     headerLeft={<h6>Admin profile</h6>}
                 >
-                    <Row>
+                    <Row style={{margin: '20px'}}>
                         <Col sm={4}>
                             <FormLabel>
                                 Email
@@ -96,8 +97,45 @@ const Profile = () => {
                                 />
                         </Col>
                     </Row>
-                    
-
+                    <Row style={{margin: '20px'}}>
+                        <Col sm={4}>
+                            <FormLabel>
+                                Phone Number
+                            </FormLabel>
+                        </Col>
+                        <Col sm={8}>
+                            <input
+                                style={{ width: '90%' }}
+                                className="form-control form-control-sm" type="email" 
+                                readOnly
+                                value={auth.user}
+                                />
+                        </Col>
+                    </Row>  
+                    <Row style={{margin: '20px'}}>
+                        <Col sm={4}>
+                            <FormLabel>
+                                Address
+                            </FormLabel>
+                        </Col>
+                        <Col sm={8}>
+                            <input
+                                style={{ width: '90%' }}
+                                className="form-control form-control-sm" type="email" 
+                                readOnly    
+                                value={auth.user}
+                                />
+                        </Col>
+                    </Row>  
+                    <Row style={{margin: '20px'}}>
+                        <Col sm={9}>
+                        </Col>
+                        <Col sm={3}>
+                            <Button onClick={() => alert("TODO")} variant="success">
+                                Update profile
+                            </Button>
+                        </Col>
+                    </Row>  
                 </Card>
             </div>
 
