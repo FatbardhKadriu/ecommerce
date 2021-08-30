@@ -26,45 +26,11 @@ const OrderDetailsPage = (props) => {
         dispatch(getOrder(payload))
     }, [])
 
-    const formatDate = (fullDate) => {
-        if (fullDate) {
-            const d = new Date(fullDate);
-            let date = d.getDate()
-            if (date >= 0 && date <= 9) date = "0" + date
-            let month = d.getMonth() + 1
-            if (month >= 0 && month <= 9) month = "0" + month
-            return `${date}-${month}-${d.getFullYear()}`
-        }
-        return ""
-    }
-
-    const formatDate2 = (date) => {
-        const month = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "June",
-            "July",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ];
-        if (date) {
-            const d = new Date(date);
-            return `${month[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
-        }
-    }
-
 
     if (!(orderDetails && orderDetails.address)) {
         return null
     }
 
-    const totPrice = <><span>Total price: {totalPrice}&euro;</span></>
     return (
         <Layout>
             <div

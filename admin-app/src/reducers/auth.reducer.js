@@ -31,6 +31,12 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 authenticate:   true,
                 authenticating: false
             }
+        case authConstants.LOGIN_FAILURE: 
+            return {
+                ...state,
+                authenticating: false,
+                error: action.payload.error
+            }
         case authConstants.LOGOUT_REQUEST: 
             return {
                 ...state,

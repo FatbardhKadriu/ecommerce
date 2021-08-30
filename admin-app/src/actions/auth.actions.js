@@ -3,29 +3,34 @@ import { authConstants } from "./constants"
 
 export const login = (user) => async (dispatch) => {
 
-    dispatch({ type: authConstants.LOGIN_REQUEST})
+    dispatch({ type: authConstants.LOGIN_REQUEST })
 
-    const res = await axios.post('/admin/signin', {
-        ...user
-    })
-
-    if (res.status === 200) {
-        const { token, user } = res.data 
-        localStorage.setItem("token", token)
-        localStorage.setItem("user", JSON.stringify(user))
-        dispatch({
-            type:    authConstants.LOGIN_SUCCESS,
-            payload: { token, user }
+    try {
+        const res = await axios.post('/admin/signin', {
+            ...user
         })
-    } 
-    else {
-        if (res.status === 400) {
+        if (res.status === 200) {
+            const { token, user } = res.data
+            localStorage.setItem("token", token)
+            localStorage.setItem("user", JSON.stringify(user))
             dispatch({
-                type:    authConstants.LOGIN_FAILURE,
-                payload: { error: res.data.error } 
+                type: authConstants.LOGIN_SUCCESS,
+                payload: { token, user }
             })
         }
+        else {
+            dispatch({
+                type: authConstants.LOGIN_FAILURE,
+                payload: { error: res.data.error }
+            })
+        }
+    } catch (error) {
+        dispatch({
+            type: authConstants.LOGIN_FAILURE,
+            payload: { error: error.response.data.error }
+        })
     }
+
 }
 
 export const isUserLoggedIn = () => async (dispatch) => {
@@ -36,18 +41,18 @@ export const isUserLoggedIn = () => async (dispatch) => {
             type: authConstants.LOGIN_SUCCESS,
             payload: { token, user }
         })
-    } 
-    else {
-        dispatch({
-            type: authConstants.LOGIN_FAILURE,
-            payload: { 
-                error: 'Failed to login'
-             }
-        })
     }
+    // else {
+    //     dispatch({
+    //         type: authConstants.LOGIN_FAILURE,
+    //         payload: {
+    //             error: 'Failed to login'
+    //         }
+    //     })
+    // }
 }
 
-export const signout = () => async(dispatch) => {
+export const signout = () => async (dispatch) => {
 
     dispatch({ type: authConstants.LOGOUT_REQUEST })
     const res = await axios.post('/admin/signout')
@@ -57,7 +62,7 @@ export const signout = () => async(dispatch) => {
         dispatch({ type: authConstants.LOGOUT_SUCCESS })
     }
     else {
-        dispatch({ 
+        dispatch({
             type: authConstants.LOGOUT_FAILURE,
             payload: { error: res.data.error }
         })

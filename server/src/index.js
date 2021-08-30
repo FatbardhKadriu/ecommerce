@@ -8,16 +8,17 @@ const cors     = require('cors')
 const app = express()
 
 // routes
-const authRoutes        = require('./routes/auth')
-const adminRoutes       = require('./routes/admin/auth')
-const categoryRoutes    = require('./routes/category')
-const productRoutes     = require('./routes/product')
-const cartRoutes        = require('./routes/cart')
-const initialDataRoutes = require('./routes/admin/initialData')
-const pageRoutes        = require('./routes/admin/page')
-const addressRoutes     = require('./routes/address')
-const orderRoutes       = require('./routes/order')
-const adminOrderRoutes  = require('./routes/admin/order')
+const authRoutes         = require('./routes/auth')
+const adminRoutes        = require('./routes/admin/auth')
+const categoryRoutes     = require('./routes/category')
+const productRoutes      = require('./routes/product')
+const cartRoutes         = require('./routes/cart')
+const initialDataRoutes  = require('./routes/admin/initialData')
+const pageRoutes         = require('./routes/admin/page')
+const addressRoutes      = require('./routes/address')
+const orderRoutes        = require('./routes/order')
+const adminOrderRoutes   = require('./routes/admin/order')
+const adminProfileRoutes = require('./routes/admin/profile')
 
 env.config()
 
@@ -30,6 +31,7 @@ const MONGODB_URL       = `mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@c
 
 app.use(express.json())
 app.use('/public', express.static(path.join(__dirname, 'uploads')))
+app.use('/public', express.static(path.join(__dirname, 'images/profiles/admin')))
 app.use(cors())
 
 app.use('/api', authRoutes)
@@ -42,6 +44,7 @@ app.use('/api', pageRoutes)
 app.use('/api', addressRoutes)
 app.use('/api', orderRoutes)
 app.use('/api', adminOrderRoutes)
+app.use('/api', adminProfileRoutes)
 
 app.get('/', (req, res, next) => {
     res.status(200).json({

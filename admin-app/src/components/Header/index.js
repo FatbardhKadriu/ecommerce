@@ -4,6 +4,7 @@ import { NavLink, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signout } from '../../actions'
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import { generatePublicUrl } from '../../urlConfig';
 
 const Header = (props) => {
 
@@ -20,7 +21,25 @@ const Header = (props) => {
         {/* <li className="nav-item">
           <span className="nav-link">{auth.user.fullName}</span>
         </li> */}
-        <DropdownButton expand="lg" bg="dark" variant="dark" className="nav-item" title={auth.user.fullName}>
+        <DropdownButton expand="lg" bg="dark" variant="dark" className="nav-item"
+          title={
+            <>
+              <span>
+                {auth.user.fullName}
+              </span>
+              {' '}
+              {
+                auth.user.profilePicture && (
+                  <img
+                    width={30}
+                    height={30}
+                    style={{ borderRadius: '50%' }}
+                    src={generatePublicUrl(auth.user.profilePicture)}
+                  />
+                )
+              }
+            </>
+          }>
           <Dropdown.Item>
             <Link style={{
               textDecoration: 'none',

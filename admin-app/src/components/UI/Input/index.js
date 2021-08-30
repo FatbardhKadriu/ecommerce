@@ -7,7 +7,9 @@ const Input = (props) => {
     switch (props.type) {
         case 'select':
             input = <Form.Group className="mb-3">
-                <Form.Label> {props.label} </Form.Label>
+                <Form.Label style={{ fontWeight: '600' }}>
+                    {props.label}
+                </Form.Label>
                 <select
                     className="form-control form-control-sm"
                     value={props.value}
@@ -26,13 +28,18 @@ const Input = (props) => {
         case 'text':
         default:
             input = <Form.Group className="mb-3">
-                <Form.Label> {props.label} </Form.Label>
+                <Form.Label style={{ fontWeight: '600' }}>
+                    { props.required && (
+                        <span style={{color: 'red'}}>*</span> 
+                    ) }
+                   {props.label}
+                </Form.Label>
                 <Form.Control
                     type={props.type}
                     placeholder={props.placeholder}
                     value={props.value}
                     onChange={props.onChange}
-                    {...props}
+                    // {...props}
                 />
                 <Form.Text className="text-muted">
                     {props.errorMessage}

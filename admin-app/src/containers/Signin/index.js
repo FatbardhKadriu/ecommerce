@@ -17,6 +17,7 @@ const Signin = () => {
 
     const userLogin = (e) => {
         e.preventDefault()
+        if (email === "" || password === "") return
         const user = { email, password }
         dispatch(login(user))
     }
@@ -27,15 +28,16 @@ const Signin = () => {
 
     return (
         <Layout>
-            <Container>
-                <Row style={{ marginTop: '50px' }}>
-                    <Col md={{ span: 6, offset: 3 }}>
+            <Container style={{ padding: '120px' }}>
+                <Row>
+                    <Col md={{ span: 4, offset: 4 }} style={{ padding: '40px', border: '1px solid #cecece', borderRadius: '9%' }}>
                         <Form onSubmit={userLogin}>
                             <Input
                                 type="email"
                                 label="Email"
                                 placeholder="Email"
                                 value={email}
+                                required
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                             <Input
@@ -43,8 +45,14 @@ const Signin = () => {
                                 label="Password"
                                 placeholder="Enter password"
                                 value={password}
+                                required
                                 onChange={(e) => setPassword(e.target.value)}
                             />
+                            <Form.Group className="mb-3">
+                                <Form.Text className="text-danger">
+                                    {auth.error}
+                                </Form.Text>
+                            </Form.Group>
                             <Button variant="primary" type="submit">
                                 Signin
                             </Button>
