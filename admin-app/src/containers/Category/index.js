@@ -47,7 +47,7 @@ const Category = () => {
             });
         }
 
-    }, [category.loading])
+    }, [category.loading, category.error])
 
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)

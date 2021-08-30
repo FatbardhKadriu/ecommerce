@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
-import { Form, Button, Container, Row, Col, FormLabel } from 'react-bootstrap'
+import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Input from '../../components/UI/Input'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { signup } from '../../actions'
 
-const Signup = () => {
+const Signup = (props) => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -22,15 +22,23 @@ const Signup = () => {
         setProfilePicture(e.target.files[0])
     }
 
-    // useEffect(() => {
-    //     if (!user.loading) {
-    //         setFirstName("")
-    //         setLastName("")
-    //         setEmail("")
-    //         setPassword("")
-    //     }
-    // }, [user.loading])
-
+    useEffect(() => {
+        if (!user.loading) {
+            setFirstName("")
+            setLastName("")
+            setEmail("")
+            setPassword("")
+            setGender("")
+            setBirthDate("")
+            setProfilePicture("")
+        }
+    }, [user.loading])
+    
+    useEffect(() => {
+        if (user.success !== "") {
+            props.history.push('/signin')
+        }
+    }, [user.success])
 
     const userSignup = (e) => {
         e.preventDefault()
@@ -55,6 +63,8 @@ const Signup = () => {
         return <p>Loading ...!</p>
     }
 
+
+
     return (
         <Layout>
             <Container style={{ padding: '90px' }}>
@@ -65,9 +75,15 @@ const Signup = () => {
                                 <Row>
                                     <Col md={12} style={{ textAlign: 'center' }}>
                                         <Form.Group className="mb-3">
-                                            <Form.Text className="text-danger">
-                                                {user.error ? user.error : user.message}
-                                            </Form.Text>
+                                            {
+                                                user.error ? (
+                                                    <p style={{ color: 'red' }}>{user.error}</p>
+                                                ) : (
+                                                    <p style={{ color: 'green' }}>{user.success}</p>
+                                                )
+
+                                            }
+
                                         </Form.Group>
                                     </Col>
                                 </Row>
@@ -149,7 +165,7 @@ const Signup = () => {
                             <Row>
                                 <Col md={2}>
                                     <Form.Label style={{ fontWeight: '600' }}>
-                                        Birthdate
+                                        <span style={{ color: 'red' }}>*</span>Birthdate
                                     </Form.Label>
                                 </Col>
                                 <Col md={5}>

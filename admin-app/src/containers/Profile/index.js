@@ -45,6 +45,7 @@ const Profile = () => {
                         <Col sm={4}></Col>
                         <Col sm={4}>
                             <img
+                                alt=""
                                 style={{
                                     borderRadius: '50%',
                                     width: '150px',

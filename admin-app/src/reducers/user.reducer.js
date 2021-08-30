@@ -2,7 +2,7 @@ import { userConstants } from "../actions/constants";
 
 const INITIAL_STATE = {
     error: null,
-    message: '',
+    success: '',
     loading: false,
     profile: {}
 };
@@ -19,7 +19,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
-                message: action.payload.message,
+                success: action.payload.success,
                 error: null
             }
         case userConstants.USER_REGISTER_FAILURE:

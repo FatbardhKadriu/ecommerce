@@ -6,10 +6,10 @@ export const signup = (form) => async (dispatch) => {
     try {
         const res = await axios.post('/admin/signup', form)
         if (res.status === 201) {
-            const { message } = res.data
+            const { success } = res.data
             dispatch({
                 type: userConstants.USER_REGISTER_SUCCESS,
-                payload: { message }
+                payload: { success }
             })
         }
         else {

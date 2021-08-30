@@ -3,7 +3,6 @@ import { Navbar, Nav, Container, DropdownButton, Dropdown } from 'react-bootstra
 import { NavLink, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signout } from '../../actions'
-import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { generatePublicUrl } from '../../urlConfig';
 
 const Header = (props) => {
@@ -34,6 +33,7 @@ const Header = (props) => {
                     width={30}
                     height={30}
                     style={{ borderRadius: '50%' }}
+                    alt=""
                     src={generatePublicUrl(auth.user.profilePicture)}
                   />
                 )
