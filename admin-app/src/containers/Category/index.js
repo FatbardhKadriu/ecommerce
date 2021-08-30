@@ -12,6 +12,7 @@ import UpdateCategoriesModal from './components/UpdateCategoriesModal'
 import AddCategoryModal from './components/AddCategoryModal'
 import DeleteCategoryModal from './components/DeleteCategoryModal'
 import { ToastContainer, toast } from 'react-toastify'
+import { categoryConstants } from '../../actions/constants'
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css'
 
@@ -35,8 +36,8 @@ const Category = () => {
         if (!category.loading) {
             setShow(false)
         }
-        if (category.error) {
-            toast.error(category.error, {
+        if (category.success) {
+            toast.success(category.success, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -46,8 +47,22 @@ const Category = () => {
                 progress: undefined,
             });
         }
+        if (category.error) {
+            toast.error(category.error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored'
+            });
+        }
 
-    }, [category.loading, category.error])
+        dispatch({ type: categoryConstants.RESET_MESSAGES })
+
+    }, [category.loading, category.error, category.success])
 
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
@@ -179,6 +194,7 @@ const Category = () => {
     return (
         <Layout sidebar>
             <Container>
+                <ToastContainer />
                 <Row style={{ padding: '6px' }}>
                     <Col md={12}>
                         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
@@ -188,7 +204,6 @@ const Category = () => {
                                 <Button variant="success" onClick={handleShow}><IoIosAdd /> Add </Button>
                                 <Button variant="danger" onClick={deleteCategory}><IoIosTrash /> Delete </Button>
                                 <Button onClick={updateCategory}><AiFillEdit /> Edit </Button>
-                                <ToastContainer />
                             </div>
                         </div>
                     </Col>
@@ -219,7 +234,7 @@ const Category = () => {
                 show={show}
                 handleClose={handleClose}
                 onSubmit={handleAddCategory}
-                modalTitle={'Add new category'}
+                modaltitle={'Add new category'}
                 categoryName={categoryName}
                 setCategoryName={setCategoryName}
                 parentCategoryId={parentCategoryId}
@@ -231,14 +246,14 @@ const Category = () => {
                 show={updateCategoryModal}
                 handleClose={() => setUpdateCategoryModal(false)}
                 onSubmit={updateCategoriesForm}
-                modalTitle={"Update categories"}
+                modaltitle={"Update categories"}
                 expandedArray={expandedArray}
                 checkedArray={checkedArray}
                 handleCategoryInput={handleCategoryInput}
                 categoryList={categoriesList}
             />
             <DeleteCategoryModal
-                modalTitle="Confirm"
+                modaltitle="Confirm"
                 show={deleteCategoryModal}
                 handleClose={() => setDeleteCategoryModal(false)}
                 expandedArray={expandedArray}

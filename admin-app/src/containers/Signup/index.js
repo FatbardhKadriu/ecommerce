@@ -22,20 +22,20 @@ const Signup = (props) => {
         setProfilePicture(e.target.files[0])
     }
 
-    useEffect(() => {
-        if (!user.loading) {
-            setFirstName("")
-            setLastName("")
-            setEmail("")
-            setPassword("")
-            setGender("")
-            setBirthDate("")
-            setProfilePicture("")
-        }
-    }, [user.loading])
+    // useEffect(() => {
+    //     if (!user.loading) {
+    //         setFirstName("")
+    //         setLastName("")
+    //         setEmail("")
+    //         setPassword("")
+    //         setGender("")
+    //         setBirthDate("")
+    //         setProfilePicture("")
+    //     }
+    // }, [user.loading])
     
     useEffect(() => {
-        if (user.success !== "") {
+        if (user.success !== null) {
             props.history.push('/signin')
         }
     }, [user.success])

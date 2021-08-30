@@ -27,9 +27,8 @@ export const signup = (form) => async (dispatch) => {
 }
 
 export const getProfile = () => async (dispatch) => {
-    dispatch({ type: userConstants.GET_USER_PROFILE_REQUEST})
-
     try {
+        dispatch({ type: userConstants.GET_USER_PROFILE_REQUEST})
         const res = await axios.get('/admin/profile')
         if (res.status === 200) {
             const { user } = res.data
@@ -53,9 +52,8 @@ export const getProfile = () => async (dispatch) => {
 }
 
 export const updateProfile = (user) => async (dispatch) => {
-    dispatch({ type: userConstants.UPDATE_USER_PROFILE_REQUEST})
-
     try {
+        dispatch({ type: userConstants.UPDATE_USER_PROFILE_REQUEST})
         const res = await axios.put('/admin/updateProfile', user)
         if (res.status === 200) {
             const { user, success } = res.data

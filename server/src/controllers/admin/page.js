@@ -15,44 +15,40 @@ exports.createPage = async (req, res) => {
             navigateTo: `/productClicked?categoryId=${req.body.category}&type=${req.body.type}`
         }))
     }
-
     req.body.createdBy = req.user._id
-
     let page
-
     try {
-
         page = await Page.findOne({ category: req.body.category })
 
         if (!page) {
             const _page = new Page(req.body)
             await _page.save()
             
-            return res.status(201).json({ _page })
+            return res.status(201).json({ 
+                page: _page, 
+                success: 'Page is created successfully'
+             })
         } else {
             const updatedPage = await Page.findOneAndUpdate(
                 { category: req.body.category },
                 req.body,
                 { new: true }
             )
-            return res.status(201).json({ page: updatedPage })
+            return res.status(201).json({ 
+                page: updatedPage,
+                success: 'Page is updated'
+             })
         }
     } catch (error) {
         return res.status(400).json({ error })
     }
-
-
-
-
 }
 
 exports.getPage = async (req, res) => {
     const { category, type } = req.params
-
     if (type !== 'page') {
         return res.status(400).json({ error: 'Bad type' })
     }
-
     try {
         const page = await Page.findOne({ category })
         return res.status(200).json({ page })

@@ -2,11 +2,9 @@ import { userConstants } from "../actions/constants";
 
 const INITIAL_STATE = {
     error: null,
-    success: '',
+    success: null,
     loading: false,
     profile: {},
-    updateSuccess: null,
-    updateError: null
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -40,7 +38,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: false,
                 profile: action.payload.user,
-                error: null
             }
         case userConstants.GET_USER_PROFILE_FAILURE:
             return {
@@ -52,29 +49,25 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: true,
-                updateError: null,
-                successError: null
             }
         case userConstants.UPDATE_USER_PROFILE_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 profile: action.payload.user,
-                updateSuccess: action.payload.success,
-                updateError: null
+                success: action.payload.success,
             }
         case userConstants.UPDATE_USER_PROFILE_FAILURE:
             return {
                 ...state,
                 loading: false,
-                updateError: action.payload.error,
-                updateSuccess: null,
+                error: action.payload.error,
             }
         case userConstants.RESET_MESSAGES: {
             return {
                 ...state,
-                updateError: null,
-                updateSuccess: null
+                error: null,
+                success: null
             }
         }
         default:

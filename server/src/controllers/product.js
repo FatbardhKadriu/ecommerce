@@ -4,67 +4,73 @@ const slugify = require('slugify')
 
 exports.createProduct = async (req, res) => {
 
-    const { name, price, description, category, quantity } = req.body;
-    let productPictures = []
+    try {
+        const { name, price, description, category, quantity } = req.body;
+        let productPictures = []
 
-    if (req.files.length > 0) {
-        productPictures = req.files.map(file => {
-            return { img: file.filename }
+        if (req.files.length > 0) {
+            productPictures = req.files.map(file => {
+                return { img: file.filename }
+            })
+        }
+        const product = new Product({
+            name,
+            slug: slugify(name),
+            price,
+            quantity,
+            description,
+            productPictures,
+            category,
+            createdBy: req.user._id
         })
-    }
-    const product = new Product({
-        name,
-        slug: slugify(name),
-        price,
-        quantity,
-        description,
-        productPictures,
-        category,
-        createdBy: req.user._id
-    })
 
-    await product.save()
-    res.status(201).json({ product, files: req.files })
+        await product.save()
+        res.status(201).json({ success: 'Product is added successfully' })
+    } catch (error) {
+        return res.status(400).json(error)
+    }
 
 }
 
 exports.getProductsBySlug = async (req, res) => {
 
-    const { slug } = req.params;
+    try {
+        const { slug } = req.params;
+        const category = await Category.findOne({ slug }).select("_id type")
+        if (!category) {
+            res.status(400).json({ message: "This category doesn't exists!" })
+        }
 
-    const category = await Category.findOne({ slug }).select("_id type")
+        const products = await Product.find({ category: category._id })
+        if (!products) {
+            res.status(400).json({ message: "No products were found!" })
+        }
 
-    if (!category) {
-        res.status(400).json({ message: "This category doesn't exists!" })
+        if (category.type) {
+            res.status(200).json({
+                products,
+                priceRange: {
+                    under500: 500,
+                    under700: 700,
+                    under1000: 1000,
+                    under1500: 1500,
+                    under2000: 2000,
+                },
+                productsByPrice: {
+                    under500: products.filter(product => product.price <= 500),
+                    under700: products.filter(product => product.price > 500 && product.price <= 700),
+                    under1000: products.filter(product => product.price > 700 && product.price <= 1000),
+                    under1500: products.filter(product => product.price > 1000 && product.price <= 1500),
+                    under2000: products.filter(product => product.price > 1500 && product.price <= 2000),
+                }
+            });
+        } else {
+            res.status(200).json({ products })
+        }
+    } catch (error) {
+        return res.status(400).json(error)
     }
 
-    const products = await Product.find({ category: category._id })
-
-    if (!products) {
-        res.status(400).json({ message: "No products were found!" })
-    }
-
-    if (category.type) {
-        res.status(200).json({
-            products,
-            priceRange: {
-                under500: 500,
-                under700: 700,
-                under1000: 1000,
-                under1500: 1500,
-                under2000: 2000,
-            },
-            productsByPrice: {
-                under500: products.filter(product => product.price <= 500),
-                under700: products.filter(product => product.price > 500 && product.price <= 700),
-                under1000: products.filter(product => product.price > 700 && product.price <= 1000),
-                under1500: products.filter(product => product.price > 1000 && product.price <= 1500),
-                under2000: products.filter(product => product.price > 1500 && product.price <= 2000),
-            }
-        });
-    } else {
-        res.status(200).json({ products })
-    }
 }
 
 exports.getProductDetailsById = async (req, res) => {
@@ -83,27 +89,24 @@ exports.getProductDetailsById = async (req, res) => {
         return res.status(200).json({ product })
     }
     catch (error) {
-        return res.status(400).json({ error })
+        return res.status(400).json(error)
     }
 }
 
-
 exports.deleteProductById = async (req, res) => {
-    const { productId } = req.body.payload
-
-    if (productId) {
-
-        try {
+    try {
+        const { productId } = req.body.payload
+        if (productId) {
             const result = await Product.deleteOne({ _id: productId })
             if (!result) {
                 return res.status(400).json({ error: "Product doesn't exists" })
             }
-            return res.status(202).json({ result })
-        } catch (error) {
-            return res.status(400).json({ error })
+            return res.status(202).json({ success: "Product deleted successfully" })
+        } else {
+            return res.status(400).json({ error: "Params required" })
         }
-    } else {
-        return res.status(400).json({ error: "Params required" })
+    } catch (error) {
+        return res.status(400).json({ error })
     }
 
 }

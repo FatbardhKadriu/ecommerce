@@ -5,7 +5,6 @@ const shortid = require('shortid')
 const User = require('../../models/User')
 
 const signup = async (req, res) => {
-
     let role = "admin"
     try {
         const userExist = await User.findOne({ email: req.body.email })
@@ -42,11 +41,8 @@ const signup = async (req, res) => {
 }
 
 const signin = async (req, res) => {
-
     try {
-
         const user = await User.findOne({ email: req.body.email, $or: [{ role: 'admin' }, { role: 'super-admin' }] })
-
         if (!user) {
             return res.status(404).json({ error: "Admin doesn't exists " })
         }
@@ -77,7 +73,6 @@ const signin = async (req, res) => {
 }
 
 const signout = async (req, res) => {
-
     res.clearCookie('token')
     res.status(200).json({
         message: 'Signout successfully...!'

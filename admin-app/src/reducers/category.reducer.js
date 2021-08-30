@@ -3,7 +3,8 @@ import { categoryConstants } from "../actions/constants";
 const INITIAL_STATE = {
     categories: [],
     loading: false,
-    error: null
+    error: null,
+    success: null,
 };
 
 const buildNewCategories = (parentId, categories, category) => {
@@ -63,12 +64,13 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
             }
         case categoryConstants.GET_ALL_CATEGORIES_FAILURE:
             return {
-                ...state
+                ...state,
+                error: action.payload.error
             }
         case categoryConstants.ADD_NEW_CATEGORY_REQUEST:
             return {
                 ...state,
-                loading: true
+                loading: true,
             }
         case categoryConstants.ADD_NEW_CATEGORY_SUCCESS: {
             const category = action.payload.category
@@ -77,12 +79,12 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 categories: updatedCategories,
                 loading: false,
+                success: action.payload.success
             }
         }
         case categoryConstants.ADD_NEW_CATEGORY_FAILURE:
             return {
                 ...INITIAL_STATE,
-                loading: false,
                 error: action.payload.error
             }
         case categoryConstants.UPDATE_CATEGORIES_REQUEST:
@@ -93,7 +95,8 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
         case categoryConstants.UPDATE_CATEGORIES_SUCCESS:
             return {
                 ...state,
-                loading: false
+                loading: false,
+                success: action.payload.success
             }
         case categoryConstants.UPDATE_CATEGORIES_FAILURE:
             return {
@@ -109,13 +112,21 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
         case categoryConstants.DELETE_CATEGORIES_SUCCESS:
             return {
                 ...state,
-                loading: false
+                loading: false,
+                success: action.payload.success
             }
         case categoryConstants.DELETE_CATEGORIES_FAILURE:
             return {
                 ...state,
                 error: action.payload.error,
                 loading: false
+            }
+        case categoryConstants.RESET_MESSAGES: 
+            return {
+                ...state,
+                error: null,
+                success: null,
+                loading: false,
             }
         default:
             return state

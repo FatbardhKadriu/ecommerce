@@ -5,8 +5,6 @@ import { authConstants } from "../actions/constants"
 
 const token = localStorage.getItem('token')
 
-console.log(token)
-
 const axiosInstance = axios.create({
     baseURL: api,
     headers: {

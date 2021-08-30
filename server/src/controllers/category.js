@@ -35,61 +35,76 @@ exports.addCategory = async (req, res) => {
     }
 
     if (req.file) {
-        categoryObj.categoryImage = '/public/' + req.file.filename
+        categoryObj.categoryImage = req.file.filename
     }
 
     if (req.body.parentId) {
         categoryObj.parentId = req.body.parentId
     }
 
-    const category = new Category(categoryObj)
-    await category.save()
+    try {
+        const category = new Category(categoryObj)
+        await category.save()
+        res.status(201).json({ category, success: 'Category added successfully' })
+    } catch (error) {
+        return res.status(400).json(error)
+    }
 
-    res.status(201).json({ category })
 
 }
 
 exports.getCategories = async (req, res) => {
-    const categories = await Category.find({})
+    try {
+        const categories = await Category.find({})
 
-    if (!categories) return res.status(404).json({ message: 'No category was found' })
+        if (!categories) return res.status(404).json({ message: 'No category was found' })
 
-    const categoryList = createCategories(categories)
+        const categoryList = createCategories(categories)
 
-    res.status(200).json({ categoryList })
+        res.status(200).json({ categoryList })
+
+    } catch (error) {
+        return res.status(400).json(error)
+    }
 }
 
 exports.updateCategories = async (req, res) => {
-    const { _id, name, parentId, type } = req.body
-    const updatedCategories = []
-    if (name instanceof Array) {
-        for (let i = 0; i < name.length; i++) {
-            const category = {
-                name: name[i],
-                type: type[i],
-            }
-            if (parentId[i] !== "") {
-                category.parentId = parentId[i]
-            }
+    try {
+        const { _id, name, parentId, type } = req.body
+        const updatedCategories = []
+        if (name instanceof Array) {
+            for (let i = 0; i < name.length; i++) {
+                const category = {
+                    name: name[i],
+                    type: type[i],
+                }
+                if (parentId[i] !== "") {
+                    category.parentId = parentId[i]
+                }
 
-            const updatedCategory = await Category.findOneAndUpdate({ _id: _id[i] }, category, { new: true })
-            updatedCategories.push(updatedCategory)
+                const updatedCategory = await Category.findOneAndUpdate({ _id: _id[i] }, category, { new: true })
+                updatedCategories.push(updatedCategory)
+            }
+            return res.status(200).json({ 
+                success: "Categories updated successfully"
+             })
+        } else {
+            const category = {
+                name,
+                type
+            }
+            if (parentId !== "") {
+                category.parentId = parentId
+            }
+            await Category.findOneAndUpdate({ _id }, category, { new: true })
+            return res.status(200).json({ success: "Categories updated successfully" })
         }
-        return res.status(201).json({ updateCategories: updatedCategories })
-    } else {
-        const category = {
-            name,
-            type
-        }
-        if (parentId !== "") {
-            category.parentId = parentId
-        }
-        const updatedCategory = await Category.findOneAndUpdate({ _id }, category, { new: true })
-        return res.status(201).json({ updatedCategory })
+    } catch (error) {
+        return res.status(400).json(error)
     }
 
-}
 
+}
 
 exports.deleteCategories = async (req, res) => {
     const { ids } = req.body.payload
@@ -99,8 +114,8 @@ exports.deleteCategories = async (req, res) => {
         deletedCategories.push(deleteCategory)
     }
     if (deletedCategories.length === ids.length) {
-        res.status(200).json({ message: 'Categories removed' })
+        res.status(200).json({ success: 'Categories removed successfully' })
     } else {
-        res.status(400).json({ message: 'Something went wrong' })
+        res.status(400).json({ error: 'Something went wrong' })
     }
 }

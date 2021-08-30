@@ -6,7 +6,7 @@ const DeleteCategoryModal = (props) => {
     const {
         show,
         handleClose,
-        modalTitle,
+        modaltitle,
         buttons,
         checkedArray,
         expandedArray
@@ -14,7 +14,7 @@ const DeleteCategoryModal = (props) => {
 
     return (
         <Modal
-            modalTitle={modalTitle}
+            modaltitle={modaltitle}
             show={show}
             handleClose={handleClose}
             buttons={buttons}

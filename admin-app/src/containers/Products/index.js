@@ -10,6 +10,7 @@ import './style.css'
 import { generatePublicUrl } from '../../urlConfig'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { productConstants } from '../../actions/constants'
 
 const Products = () => {
 
@@ -26,6 +27,36 @@ const Products = () => {
     const [show, setShow] = useState(false)
     const [productDetailsModal, setProductDetailModal] = useState(false)
     const [productDetails, setProductDetails] = useState(null)
+
+    useEffect(() => {
+        if (product.success) {
+            toast.success(product.success, {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            console.log('Qitu hini: product.success: ', product.success)
+        }
+        if (product.error) {
+            toast.error(product.error, {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored'
+            });
+        }
+        dispatch({ type: productConstants.RESET_MESSAGES })
+
+    }, [product.success, product.error])
+
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
@@ -33,7 +64,6 @@ const Products = () => {
     const handleShowProductDetails = () => setProductDetailModal(true)
 
     const handleAddProduct = (e) => {
-
         const form = new FormData()
         form.append('name', name)
         form.append('quantity', quantity)
@@ -44,17 +74,13 @@ const Products = () => {
         for (let pic of productPictures) {
             form.append('productPicture', pic)
         }
-
         dispatch(addProduct(form))
-
         handleClose()
     }
-
 
     const showProductDetailsModal = product => {
         handleShowProductDetails()
         setProductDetails(product)
-        console.log("Produktet: ", product)
     }
 
     const createCategoryList = (categories, options = []) => {
@@ -74,31 +100,6 @@ const Products = () => {
         ])
     }
 
-    useEffect(() => {
-        if (product.deletedSuccessfully) {
-            toast.success('Deleted successfully', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-        if (product.addedSuccessfully) {
-            toast.success('Added successfully', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-    }, [product.deletedSuccessfully, product.addedSuccessfully])
-
     const renderProducts = () => {
         return (
             <Table style={{ fontSize: 12 }} responsive="sm">
@@ -114,14 +115,14 @@ const Products = () => {
                 </thead>
                 <tbody>
                     {
-                        product.products.length > 0 && 
+                        product.products.length > 0 &&
                         product.products.map((product, index) => (
                             <tr key={product._id}>
                                 <td>{index + 1} </td>
                                 <td>{product.name}</td>
                                 <td>{product.price}</td>
                                 <td>{product.quantity}</td>
-                                <td>{product.category.name}</td>
+                                <td>{product?.category?.name}</td>
                                 <td>
                                     <Button
                                         style={{ marginRight: '8px', textAlign: 'center' }}
@@ -138,7 +139,6 @@ const Products = () => {
                                         variant="danger">
                                         <IoIosTrash />Delete
                                     </Button>
-                                    <ToastContainer />
                                 </td>
                             </tr>
                         ))
@@ -154,7 +154,7 @@ const Products = () => {
                 show={show}
                 handleClose={handleClose}
                 onSubmit={handleAddProduct}
-                modalTitle={'Add new product'}
+                modaltitle={'Add new product'}
             >
                 <Input
                     value={name}
@@ -216,7 +216,7 @@ const Products = () => {
                 size="lg"
                 show={productDetailsModal}
                 handleClose={handleCloseProductDetails}
-                modalTitle={'Product Details'}
+                modaltitle={'Product Details'}
                 onSubmit={handleProductDetailsModal}
             >
                 <Row>
@@ -261,11 +261,12 @@ const Products = () => {
 
     return (
         <Layout sidebar>
+            <ToastContainer/>
             <Row>
                 <Col md={12}>
                     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                         <h3>Products</h3>
-                        <Button variant="success" onClick={handleShow}><IoIosAdd/>Add product</Button>
+                        <Button variant="success" onClick={handleShow}><IoIosAdd />Add product</Button>
                     </div>
                 </Col>
             </Row>

@@ -2,10 +2,8 @@ import axios from "../helpers/axios"
 import { authConstants } from "./constants"
 
 export const login = (user) => async (dispatch) => {
-
-    dispatch({ type: authConstants.LOGIN_REQUEST })
-
     try {
+        dispatch({ type: authConstants.LOGIN_REQUEST })
         const res = await axios.post('/admin/signin', {
             ...user
         })
@@ -42,30 +40,29 @@ export const isUserLoggedIn = () => async (dispatch) => {
             payload: { token, user }
         })
     }
-    // else {
-    //     dispatch({
-    //         type: authConstants.LOGIN_FAILURE,
-    //         payload: {
-    //             error: 'Failed to login'
-    //         }
-    //     })
-    // }
 }
 
 export const signout = () => async (dispatch) => {
-
-    dispatch({ type: authConstants.LOGOUT_REQUEST })
-    const res = await axios.post('/admin/signout')
-
-    if (res.status === 200) {
-        localStorage.clear()
-        dispatch({ type: authConstants.LOGOUT_SUCCESS })
-    }
-    else {
+    try {
+        dispatch({ type: authConstants.LOGOUT_REQUEST })
+        const res = await axios.post('/admin/signout')
+        if (res.status === 200) {
+            localStorage.clear()
+            dispatch({ type: authConstants.LOGOUT_SUCCESS })
+        }
+        else {
+            dispatch({
+                type: authConstants.LOGOUT_FAILURE,
+                payload: { error: res.data.error }
+            })
+        }
+    } catch (error) {
         dispatch({
             type: authConstants.LOGOUT_FAILURE,
-            payload: { error: res.data.error }
+            payload: { error: error.response.data.error }
         })
     }
+
+
 
 }

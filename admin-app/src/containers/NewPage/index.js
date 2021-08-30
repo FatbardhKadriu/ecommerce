@@ -6,6 +6,8 @@ import Input from '../../components/UI/Input'
 import Modal from '../../components/UI/Modal'
 import linearCategories from '../../helpers/linearCategories'
 import { createPage } from '../../actions'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const NewPage = () => {
 
@@ -27,7 +29,6 @@ const NewPage = () => {
     }, [category])
 
     useEffect(() => {
-        console.log(page)
         if (!page.loading) {
             setCreateModal(false)
             setTitle('')
@@ -38,6 +39,32 @@ const NewPage = () => {
             setCategoryId('')
         }
     }, [page])
+
+    useEffect(() => {
+        if (page.success) {
+            toast.success(page.success, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+        if (page.error) {
+            toast.error(page.error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored'
+            });
+        }
+    }, [page.success, page.error])
 
     const onCategoryChange = (e) => {
         const category = categories.find(category => category.value == e.target.value)
@@ -76,7 +103,7 @@ const NewPage = () => {
         return (
             <Modal
                 show={createModal}
-                modalTitle={'Create New Page'}
+                modaltitle={'Create New Page'}
                 handleClose={() => setCreateModal(false)}
                 onSubmit={submitPageForm}
             >
@@ -90,19 +117,6 @@ const NewPage = () => {
                             options={categories}
                             placeholder={"Select category"}
                         />
-                        {/* <select
-                            className="form-control form-control-sm"
-                            value={categoryId}
-                            onChange={onCategoryChange}
-                        >
-                            <option value="">Select category</option>
-                            {
-                                categories.map(cat =>
-                                    <option key={cat._id} value={cat._id}>
-                                        {cat.name}
-                                    </option>)
-                            }
-                        </select> */}
                         <br />
                     </Col>
                 </Row>
@@ -172,6 +186,7 @@ const NewPage = () => {
 
     return (
         <Layout sidebar>
+            <ToastContainer />
             {
                 page.loading ?
                     <>

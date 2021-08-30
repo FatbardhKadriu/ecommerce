@@ -47,8 +47,8 @@ const Profile = () => {
     }, [user.profile])
 
     useEffect(() => {
-        if (user.updateSuccess) {
-            toast.success(user.updateSuccess, {
+        if (user.success) {
+            toast.success(user.success, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -58,9 +58,9 @@ const Profile = () => {
                 progress: undefined,
             });
         }
-        if (user.updateError) {
+        if (user.error) {
             setEditForm(true)
-            toast.error(user.updateError, {
+            toast.error(user.error, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -68,11 +68,12 @@ const Profile = () => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
+                theme: 'colored' 
             });
         }
         dispatch({ type: userConstants.RESET_MESSAGES })
         
-    }, [user.updateSuccess, user.updateError])
+    }, [user.success, user.error])
 
     const onProfileUpdate = () => {
         const user = {
@@ -84,7 +85,6 @@ const Profile = () => {
         }
         dispatch(updateProfile(user))
         setEditForm(false)
-        toast.success(user.updateSuccess)
     }
 
     return (
