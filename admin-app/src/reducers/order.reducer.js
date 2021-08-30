@@ -18,7 +18,7 @@ const orderReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 orders: action.payload.orders
             }
-        case orderConstants.GET_CUSTOMER_ORDER_SUCCESS:
+        case orderConstants.GET_CUSTOMER_ORDER_FAILURE:
             return {
                 ...state,
                 error: action.payload.error

@@ -1,8 +1,9 @@
 const express = require('express');
-const { getProfile } = require('../../controllers/admin/profile');
+const { getProfile, updateProfile } = require('../../controllers/admin/profile');
 const router = express.Router()
 const {  adminMiddleware, requireSignIn } = require('../../middleware')
 
 router.get('/admin/profile', requireSignIn, adminMiddleware, getProfile)
+router.put('/admin/updateProfile', requireSignIn, adminMiddleware, updateProfile)
 
 module.exports = router;

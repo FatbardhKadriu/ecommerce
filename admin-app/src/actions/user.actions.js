@@ -51,3 +51,29 @@ export const getProfile = () => async (dispatch) => {
         })
     }
 }
+
+export const updateProfile = (user) => async (dispatch) => {
+    dispatch({ type: userConstants.UPDATE_USER_PROFILE_REQUEST})
+
+    try {
+        const res = await axios.put('/admin/updateProfile', user)
+        if (res.status === 200) {
+            const { user, success } = res.data
+            dispatch({
+                type: userConstants.UPDATE_USER_PROFILE_SUCCESS,
+                payload: { user, success }
+            })
+        }
+        else {
+            dispatch({
+                type: userConstants.UPDATE_USER_PROFILE_FAILURE,
+                payload: { error: res.data.error }
+            })
+        }
+    } catch (error) {
+        dispatch({
+            type: userConstants.UPDATE_USER_PROFILE_FAILURE,
+            payload: { error: error.response.data.error }
+        })
+    }
+}
