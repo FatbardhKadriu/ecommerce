@@ -21,6 +21,7 @@ const Products = () => {
     const [categoryId, setCategoryId] = useState('')
     const [productPictures, setProductPictures] = useState([])
     const [errors, setErrors] = useState({})
+    const [confirmDelete, setConfirmDelete] = useState(false)
     const product = useSelector(state => state.product)
     const category = useSelector(state => state.category)
     const dispatch = useDispatch()
@@ -130,6 +131,14 @@ const Products = () => {
         ])
     }
 
+    const deleteProduct = (productId) => {
+        const payload = {
+            productId
+        }
+        dispatch(deleteProductById(payload))
+        setConfirmDelete(false)
+    }
+
     const renderProducts = () => {
         return (
             <Table style={{ fontSize: 12 }} responsive="sm">
@@ -160,15 +169,29 @@ const Products = () => {
                                         <IoMdInformationCircleOutline />Info
                                     </Button>
                                     <Button
-                                        onClick={() => {
-                                            const payload = {
-                                                productId: product._id
-                                            }
-                                            dispatch(deleteProductById(payload))
-                                        }}
+                                        onClick={() => setConfirmDelete(true)}
                                         variant="danger">
                                         <IoIosTrash />Delete
                                     </Button>
+                                    <Modal 
+                                        modaltitle="Confirm"
+                                        show={confirmDelete}
+                                        handleClose={() => setConfirmDelete(false)}
+                                        buttons={[
+                                            {
+                                                label: 'No',
+                                                color: 'primary',
+                                                onClick: () => {
+                                                    setConfirmDelete(false)
+                                                }
+                                            },
+                                            {
+                                                label: 'Yes',
+                                                color: 'danger',
+                                                onClick: () => deleteProduct(product._id)
+                                            }
+                                        ]}                                 
+                                        > Are you sure? </Modal>
                                 </td>
                             </tr>
                         ))

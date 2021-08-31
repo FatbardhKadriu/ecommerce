@@ -1,10 +1,12 @@
 import React from 'react'
 import Layout from '../../components/Layout'
 import Card from '../../components/UI/Card'
-import { Link } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
-import './style.css'
 import { useSelector } from 'react-redux'
+import { Row, Col } from 'react-bootstrap'
+import { AiOutlineShop } from 'react-icons/ai'
+import { TiThList } from 'react-icons/ti'
+import { CgShoppingCart } from 'react-icons/cg'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
 
@@ -20,26 +22,129 @@ const Home = () => {
                     padding: '50px',
                     display: 'flex',
                     flexDirection: 'row',
+                    justifyContent: 'space-around'
                 }}
             >
-                <Card
-                    headerLeft={<h2>Category</h2>}
-                    headerRight={<p>Total {category.totalCategories}</p>}
+                <Row
+                    style={{
+                        border: '1px solid #cecece',
+                        borderRadius: '3%',
+                        width: '336px',
+                        height: '120px',
+                        padding: '5px'
+                    }}
                 >
-                    <Link to="/category">Add/delete/update categories</Link>
-                </Card>
-                <Card
-                    headerLeft={<h2>Products</h2>}
-                    headerRight={<p>Total {product.totalProducts}</p>}
+                    <Col
+                        className="iconContainer"
+                        md={3}
+                        style={{
+                            background: '#FC9208',
+                            margin: '-20px 0px 0px 20px',
+                            borderRadius: '5px',
+                            textAlign: 'center',
+                            verticalAlign: 'middle',
+                            height: '50%',
+                        }}
+                    >
+                        <TiThList style={{ marginTop: '10px' }} color="white" size={35} />
+                    </Col>
+                    <Col md={{ span: 3, offset: 5 }}>
+                        <h6>Categories</h6>
+                    </Col>
+                    <Col md={{ span: 3, offset: 9 }}>
+                        <h4>{category.totalCategories ? category.totalCategories : 0}</h4>
+                    </Col>
+                    <hr style={{ color: "#cecece" }} />
+                    <Row >
+                        <Col>
+                            <Link
+                                style={{ color: "black", textDecoration: 'none' }}
+                                to="/category">
+                                <p>Add/delete/update categories</p>
+                            </Link>
+                        </Col>
+                    </Row>
+                </Row>
+                <Row
+                    style={{
+                        border: '1px solid #cecece',
+                        borderRadius: '3%',
+                        width: '336px',
+                        height: '120px',
+                        padding: '5px'
+                    }}
                 >
-                    <Link to="/products">Add/delete/update products</Link>
-                </Card>
-                <Card
-                    headerLeft={<h2>Orders</h2>}
-                    headerRight={<p>Total {order.totalOrders}</p>}
+                    <Col
+                        md={3}
+                        style={{
+                            background: '#4CA750',
+                            margin: '-20px 0px 0px 20px',
+                            borderRadius: '5px',
+                            textAlign: 'center',
+                            verticalAlign: 'middle',
+                            height: '50%',
+                        }}
+                    >
+                        <AiOutlineShop style={{ marginTop: '7px' }} color="white" size={40} />
+                    </Col>
+                    <Col md={{ span: 3, offset: 5 }}>
+                        <h6>Products</h6>
+                    </Col>
+                    <Col md={{ span: 3, offset: 9 }}>
+                        <h4>{product.totalProducts ? product.totalProducts : 0}</h4>
+                    </Col>
+                    <hr style={{ color: "#cecece" }} />
+                    <Row >
+                        <Col>
+                            <Link
+                                style={{ color: "black", textDecoration: 'none' }}
+                                to="/products">
+                                <p>Add/delete/edit products</p>
+                            </Link>
+                        </Col>
+                    </Row>
+                </Row>
+
+                <Row
+                    style={{
+                        border: '1px solid #cecece',
+                        borderRadius: '3%',
+                        width: '336px',
+                        height: '120px',
+                        padding: '5px'
+                    }}
                 >
-                    <Link to="/orders">Check out orders</Link>
-                </Card>
+                    <Col
+                        md={3}
+                        style={{
+                            background: '#E73F3B',
+                            margin: '-20px 0px 0px 20px',
+                            borderRadius: '5px',
+                            textAlign: 'center',
+                            verticalAlign: 'middle',
+                            height: '50%',
+                        }}
+                    >
+                        <CgShoppingCart style={{ marginTop: '8px' }} color="white" size={35} />
+                    </Col>
+                    <Col md={{ span: 3, offset: 5 }}>
+                        <h6>Orders</h6>
+                    </Col>
+                    <Col md={{ span: 3, offset: 9 }}>
+                        <h4>{order.totalOrders ? order.totalOrders : 0}</h4>
+                    </Col>
+                    <hr style={{ color: "#cecece" }} />
+                    <Row >
+                        <Col>
+                            <Link
+                                style={{ color: "black", textDecoration: 'none' }}
+                                to="/orders">
+                                <p>Check out orders</p>
+                            </Link>
+                        </Col>
+                    </Row>
+                </Row>
+
             </Card>
         </Layout>
     )

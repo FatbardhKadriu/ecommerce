@@ -210,9 +210,6 @@ const Category = () => {
                 </Row>
                 <Row>
                     <Col md={12}>
-                        {/* <ul>
-                            {renderCategories(category.categories)}
-                        </ul> */}
                         <CheckboxTree
                             nodes={renderCategories(category.categories)}
                             checked={checked}
