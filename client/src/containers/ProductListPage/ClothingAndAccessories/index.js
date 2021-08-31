@@ -7,11 +7,6 @@ import { Link } from "react-router-dom";
 import "./style.css";
 import { generatePublicUrl } from "../../../urlConfig";
 
-/**
- * @author
- * @function ClothingAndAccessories
- **/
-
 const ClothingAndAccessories = (props) => {
   const product = useSelector((state) => state.product);
   const dispatch = useDispatch();
@@ -37,7 +32,9 @@ const ClothingAndAccessories = (props) => {
               className="caImgContainer"
               to={`/${product.slug}/${product._id}/p`}
             >
-              <img src={generatePublicUrl(product.productPictures[0].img)} />
+              <img
+                alt={`${product.slug}-img`}
+                src={generatePublicUrl(product.productPictures[0].img)} />
             </Link>
             <div>
               <div className="caProductName">{product.name}</div>

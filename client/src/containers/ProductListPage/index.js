@@ -10,14 +10,13 @@ const ProductListPage = (props) => {
 
     const renderProduct = () => {
         const params = getParams(props.location.search)
+
         let content = null
         switch (params.type) {
             case 'store':
-                console.log('store case')
                 content = <ProductStore {...props} />
                 break;
             case 'page':
-                console.log('page case')
                 content = <ProductPage {...props} />
                 break
             default:

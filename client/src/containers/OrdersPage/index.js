@@ -41,7 +41,7 @@ const OrdersPage = () => {
                                     className="orderItemContainer"
                                 >
                                     <div className="orderImgContainer">
-                                        <img className="orderImg"
+                                        <img className="orderImg" alt={`${item.productId?.name}-img`}
                                             src={generatePublicUrl(item.productId?.productPictures[0].img)} />
                                     </div>
                                     <div className="orderRow">

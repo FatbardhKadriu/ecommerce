@@ -20,7 +20,7 @@ const AddressForm = (props) => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
     const [submitFlag, setSubmitFlag] = useState(false)
-    const [id, setId] = useState(initialData ? initialData._id : "")
+    const id = useState(initialData ? initialData._id : "")[0]
 
     const inputContainer = {
         width: '100%',
@@ -43,7 +43,6 @@ const AddressForm = (props) => {
             }
         }
 
-        console.log(payload)
         if (id) payload.address._id = id
         dispatch(addAddress(payload))
         setSubmitFlag(true)
