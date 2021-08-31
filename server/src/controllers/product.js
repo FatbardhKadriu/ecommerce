@@ -3,8 +3,13 @@ const Category = require('../models/Category')
 const slugify = require('slugify')
 
 exports.createProduct = async (req, res) => {
-
     try {
+        const productExist = await Product.findOne({
+            slug: slugify(req.body.name)
+        })
+
+        if (productExist) 
+            return res.status(400).json({ error: 'Product with this name already exist'})
         const { name, price, description, category, quantity } = req.body;
         let productPictures = []
 

@@ -26,6 +26,34 @@ const OrderDetailsPage = (props) => {
         dispatch(getOrder(payload))
     }, [])
 
+    const formatDate = (date) => {
+        if (date) {
+          const d = new Date(date);
+          return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        }
+        return "";
+      };
+    
+      const formatDate2 = (date) => {
+        const month = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "June",
+          "July",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        if (date) {
+          const d = new Date(date);
+          return `${month[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+        }
+      };
 
     if (!(orderDetails && orderDetails.address)) {
         return null
@@ -113,10 +141,10 @@ const OrderDetailsPage = (props) => {
                                 <div className="delItemImgContainer"
                                     style={{ margin: '0 20px' }}
                                 >
-                                    <img src={generatePublicUrl(item.productId.productPictures[0].img)} alt="" />
+                                    <img src={generatePublicUrl(item.productId?.productPictures[0].img)} alt="" />
                                 </div>
                                 <div style={{ width: "250px", alignItems: 'center' }}>
-                                    <div className="delItemName">{item.productId.name}</div>
+                                    <div className="delItemName">{item.productId?.name}</div>
                                     <Price size={15} value={item.payablePrice} />
                                     <div style={{ fontSize: '12px' }}>Quantity: {item.purchasedQty}</div>
                                 </div>

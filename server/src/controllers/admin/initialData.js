@@ -29,19 +29,27 @@ function createCategories(categories, parentId = null) {
 exports.initialData = async (req, res) => {
     try {
         const categories = await Category.find({})
+        const totalCategories = await Category.estimatedDocumentCount()
+
         const products = await Product.find({ createdBy: req.user._id })
             .select('_id name price quantity slug description productPictures category')
             .populate({ path: 'category', select: '_id name' })
+        const totalProducts = await Product.estimatedDocumentCount()
 
         const orders = await Order.find({})
             .populate("items.productId", "name")
+        const totalOrders = await Order.estimatedDocumentCount()
 
         res.status(200).json({
             categories: createCategories(categories),
             products,
-            orders
+            orders,
+            totalCategories,
+            totalProducts,
+            totalOrders
         })
     } catch (error) {
-        res.status(400).json({ error })
+        console.log(error)
+        res.status(400).json(error)
     }
 }

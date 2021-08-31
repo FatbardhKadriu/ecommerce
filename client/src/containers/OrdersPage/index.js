@@ -42,10 +42,10 @@ const OrdersPage = () => {
                                 >
                                     <div className="orderImgContainer">
                                         <img className="orderImg"
-                                            src={generatePublicUrl(item.productId.productPictures[0].img)} />
+                                            src={generatePublicUrl(item.productId?.productPictures[0].img)} />
                                     </div>
                                     <div className="orderRow">
-                                        <div className="orderName">{item.productId.name}</div>
+                                        <div className="orderName">{item.productId?.name}</div>
                                         <div className="orderPrice">{item.payablePrice} <BiEuro /></div>
                                         <div>{order.paymentStatus}</div>
                                     </div>

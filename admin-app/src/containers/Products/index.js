@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../components/Layout'
-import { Row, Col, FormLabel, Button, Table } from 'react-bootstrap'
+import { Row, Col, Form, Button, Table } from 'react-bootstrap'
 import Input from '../../components/UI/Input'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProduct, deleteProductById } from '../../actions/product.action'
@@ -20,6 +20,7 @@ const Products = () => {
     const [description, setDescription] = useState('')
     const [categoryId, setCategoryId] = useState('')
     const [productPictures, setProductPictures] = useState([])
+    const [errors, setErrors] = useState({})
     const product = useSelector(state => state.product)
     const category = useSelector(state => state.category)
     const dispatch = useDispatch()
@@ -39,7 +40,6 @@ const Products = () => {
                 draggable: true,
                 progress: undefined,
             });
-            console.log('Qitu hini: product.success: ', product.success)
         }
         if (product.error) {
             toast.error(product.error, {
@@ -57,6 +57,12 @@ const Products = () => {
 
     }, [product.success, product.error])
 
+    useEffect(() => {
+        if (!show) {
+            setErrors({})
+        }
+    }, [show])
+
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
@@ -65,6 +71,30 @@ const Products = () => {
 
     const handleAddProduct = (e) => {
         const form = new FormData()
+        if (name === "") {
+            setErrors({ name: "Name is required" })
+            return
+        }
+        if (quantity === "") {
+            setErrors({ quantity: "Quantity is required" })
+            return
+        }
+        if (price === "") {
+            setErrors({ price: "Price is required" })
+            return
+        }
+        if (description === "") {
+            setErrors({ description: "Description is required" })
+            return
+        }
+        if (categoryId === "") {
+            setErrors({ category: "Category is required" })
+            return
+        }
+        if (productPictures.length === 0) {
+            setErrors({ picture: "Upload at least one picture" })
+            return
+        }
         form.append('name', name)
         form.append('quantity', quantity)
         form.append('price', price)
@@ -161,6 +191,7 @@ const Products = () => {
                     label="Name"
                     placeholder={'Product Name'}
                     onChange={(e) => setName(e.target.value)}
+                    errorMessage={errors.name}
                 />
                 <Input
                     value={quantity}
@@ -168,36 +199,42 @@ const Products = () => {
                     type="Number"
                     placeholder={'Product Quantity'}
                     onChange={(e) => setQuantity(e.target.value)}
+                    errorMessage={errors.quantity}
+
                 />
                 <Input
                     value={price}
                     label="Price"
                     placeholder={'Product Price'}
                     onChange={(e) => setPrice(e.target.value)}
+                    errorMessage={errors.price}
                 />
                 <Input
                     value={description}
                     label="Description"
                     placeholder={'Product Description'}
                     onChange={(e) => setDescription(e.target.value)}
+                    errorMessage={errors.description}
                 />
-                <FormLabel>Category</FormLabel>
-                <select value={categoryId} className="form-control form-control-sm" onChange={(e) => setCategoryId(e.target.value)}>
-                    <option>Select category</option>
-                    {
-                        createCategoryList(category.categories).map(option =>
-                            <option key={option.value} value={option.value}>{option.name}</option>
-                        )
-                    }
-                </select>
+                <Input
+                    value={categoryId}
+                    type="select"
+                    onChange={e => setCategoryId(e.target.value)}
+                    placeholder="Select category"
+                    options={createCategoryList(category.categories)}
+                    label="Category"
+                    errorMessage={errors.category}
+                />
 
-                {
-                    productPictures.length > 0 ?
-                        productPictures.map((pic, index) => <div key={index}> {JSON.stringify(pic.name)} </div>) : null
-                }
-
-                <br />
                 <input className="form-control form-control-sm" type="file" name="productPicture" onChange={handleProductPictures} />
+                {
+                    productPictures.length > 0 && (
+                        productPictures.map((pic, index) => <div key={index}> {JSON.stringify(pic.name)} </div>) 
+                    )
+                }
+                <Form.Text className="text-danger">
+                    {errors.picture}
+                </Form.Text>
             </Modal>
         )
     }
@@ -261,7 +298,7 @@ const Products = () => {
 
     return (
         <Layout sidebar>
-            <ToastContainer/>
+            <ToastContainer />
             <Row>
                 <Col md={12}>
                     <div style={{ display: 'flex', justifyContent: 'space-around' }}>

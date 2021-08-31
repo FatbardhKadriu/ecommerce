@@ -5,18 +5,21 @@ export const getInitialData = () => async (dispatch) => {
     try {
         const res = await axios.post('/initialData')
         if (res.status === 200) {
-            const { categories, products, orders } = res.data
+            const { categories, totalCategories,
+                products, totalProducts,
+                orders, totalOrders
+            } = res.data
             dispatch({
                 type: categoryConstants.GET_ALL_CATEGORIES_SUCCESS,
-                payload: { categories }
+                payload: { categories, totalCategories }
             })
             dispatch({
                 type: productConstants.GET_ALL_PRODUCTS_SUCCESS,
-                payload: { products }
+                payload: { products, totalProducts }
             })
             dispatch({
                 type: orderConstants.GET_CUSTOMER_ORDER_SUCCESS,
-                payload: { orders }
+                payload: { orders, totalOrders }
             })
         }
     } catch (error) {

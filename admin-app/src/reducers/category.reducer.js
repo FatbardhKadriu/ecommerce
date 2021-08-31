@@ -2,6 +2,7 @@ import { categoryConstants } from "../actions/constants";
 
 const INITIAL_STATE = {
     categories: [],
+    totalCategories: 0,
     loading: false,
     error: null,
     success: null,
@@ -56,7 +57,8 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
         case categoryConstants.GET_ALL_CATEGORIES_SUCCESS:
             return {
                 ...state,
-                categories: action.payload.categories
+                categories: action.payload.categories,
+                totalCategories: action.payload.totalCategories
             }
         case categoryConstants.GET_ALL_CATEGORIES_REQUEST:
             return {

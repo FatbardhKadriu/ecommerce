@@ -2,6 +2,7 @@ import { orderConstants } from "../actions/constants";
 
 const INITIAL_STATE = {
     orders: [],
+    totalOrders: 0,
     loading: false,
     error: null
 };
@@ -32,6 +33,7 @@ const orderReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 orders: action.payload.orders,
+                totalOrders: action.payload.totalOrders,
                 loading: false
             }
         case orderConstants.GET_CUSTOMER_ORDER_FAILURE:

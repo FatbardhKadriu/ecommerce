@@ -23,6 +23,9 @@ const Input = (props) => {
                             ) : null
                     }
                 </select>
+                <Form.Text className="text-danger">
+                    {props.errorMessage}
+                </Form.Text>
             </Form.Group>
             break;
         case 'text':
@@ -41,7 +44,7 @@ const Input = (props) => {
                     onChange={props.onChange}
                     // {...props}
                 />
-                <Form.Text className="text-muted">
+                <Form.Text className="text-danger">
                     {props.errorMessage}
                 </Form.Text>
             </Form.Group>

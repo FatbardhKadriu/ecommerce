@@ -31,8 +31,8 @@ exports.validateSigninRequest = [
         .notEmpty()
         .withMessage('Invalid email'),
     check('password')
-        .isLength({ min: 6 })
-        .withMessage('Password must be at least 6 character long')
+        .notEmpty()
+        .withMessage('Password can"t be empty')
 ]
 
 exports.isRequestValidated = (req, res, next) => {

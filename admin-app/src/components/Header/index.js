@@ -17,9 +17,6 @@ const Header = (props) => {
   const renderLoggedInLinks = () => {
     return (
       <Nav>
-        {/* <li className="nav-item">
-          <span className="nav-link">{auth.user.fullName}</span>
-        </li> */}
         <DropdownButton expand="lg" bg="dark" variant="dark" className="nav-item"
           title={
             <>
@@ -49,9 +46,6 @@ const Header = (props) => {
 
           <Dropdown.Item onClick={logout}>Signout</Dropdown.Item>
         </DropdownButton>
-        {/* <li className="nav-item">
-          <span className="nav-link" style={{ cursor: 'pointer' }} onClick={logout}>Signout</span>
-        </li> */}
       </Nav>
     )
   }
@@ -70,7 +64,7 @@ const Header = (props) => {
   }
 
   return (
-    <Navbar fixed="top" style={{ zIndex: 1 }} collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
         <Link to="/" className="navbar-brand">Admin Dashboard</Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

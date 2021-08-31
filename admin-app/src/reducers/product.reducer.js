@@ -2,6 +2,7 @@ import { productConstants, } from "../actions/constants";
 
 const INITIAL_STATE = {
     products: [],
+    totalProducts: 0,
     error: null,
     success: null,
     loading: false
@@ -18,6 +19,7 @@ const productReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 products: action.payload.products,
+                totalProducts: action.payload.totalProducts,
                 loading: false
             }
         case productConstants.GET_ALL_PRODUCTS_FAILURE:

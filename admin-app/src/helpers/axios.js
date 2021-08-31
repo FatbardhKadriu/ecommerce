@@ -23,7 +23,6 @@ axiosInstance.interceptors.request.use((req) => {
 axiosInstance.interceptors.response.use((res) => {
     return res;
 }, (error) => {
-    console.log(error.response)
     const { status } = error.response
     if (status === 500) {
         localStorage.clear()
