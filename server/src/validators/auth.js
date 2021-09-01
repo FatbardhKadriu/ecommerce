@@ -18,12 +18,6 @@ exports.validateSignupRequest = [
             minNumbers: 1
         })
         .withMessage("Password must be greater than 8 and contain at least one uppercase letter, one lowercase letter, and one number"),
-    body('gender')
-        .notEmpty()
-        .withMessage('Gender is required'),
-    body('birthdate')
-        .notEmpty()
-        .withMessage('Birthdate is required')
 ]
 
 exports.validateSigninRequest = [

@@ -15,23 +15,29 @@ const signup = async (req, res) => {
         if (countUsers === 0) {
             role = "super-admin"
         }
-        const { firstName, lastName, email, password, gender, birthdate } = req.body;
+        const { firstName, lastName, email, password } = req.body;
         const userObj = {
             firstName, 
             lastName, 
             email, 
             role,
-            gender,
-            birthdate
         }
         const hash_password = await bcrypt.hash(password, 10)
         userObj.hash_password = hash_password
-        userObj.username = shortid.generate()
+        userObj.username = `${firstName}-${shortid.generate()}`
 
+        if (req.body.gender) {
+            userObj.gender = req.body.gender
+        }
+        if (req.body.birthdate) {
+            userObj.birthdate = req.body.birthdate
+        }
+        if (req.body.phoneNumber) {
+            userObj.phoneNumber = req.body.phoneNumber
+        }
         if (req.file) {
             userObj.profilePicture = req.file.filename
         }
-
         const _user = new User(userObj)
         await _user.save()
         res.status(201).json({ success: 'Admin created successfully..!' })

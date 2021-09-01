@@ -50,9 +50,6 @@ const userSchema = new Schema({
     gender: {
         type: String
     },
-    address: {
-        type: String
-    },
     profilePicture: {
         type: String
     },

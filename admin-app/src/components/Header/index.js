@@ -4,6 +4,7 @@ import { NavLink, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signout } from '../../actions'
 import { generatePublicUrl } from '../../urlConfig';
+import profilePicture from '../../images/profile.jpeg'
 
 const Header = (props) => {
 
@@ -17,7 +18,7 @@ const Header = (props) => {
   const renderLoggedInLinks = () => {
     return (
       <Nav>
-        <DropdownButton expand="lg" bg="dark" variant="dark" className="nav-item"
+        <DropdownButton expand="lg" variant="dark" bg="dark" className="nav-item"
           title={
             <>
               <span>
@@ -25,15 +26,13 @@ const Header = (props) => {
               </span>
               {' '}
               {
-                auth.user.profilePicture && (
-                  <img
-                    width={30}
-                    height={30}
-                    style={{ borderRadius: '50%' }}
-                    alt=""
-                    src={generatePublicUrl(auth.user.profilePicture)}
-                  />
-                )
+                <img
+                  width={30}
+                  height={30}
+                  style={{ borderRadius: '50%' }}
+                  alt=""
+                  src={auth.user.profilePicture ? generatePublicUrl(auth.user.profilePicture) : profilePicture}
+                />
               }
             </>
           }>
@@ -66,7 +65,7 @@ const Header = (props) => {
   return (
     <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
-        <Link to="/" className="navbar-brand">Admin Dashboard</Link>
+        <Link style={{ marginLeft: '2%' }} to="/" className="navbar-brand">Admin Dashboard</Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">

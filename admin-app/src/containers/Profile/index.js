@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, FormLabel, Button } from 'react-bootstrap'
+import { Row, Col, FormLabel, Button, Form } from 'react-bootstrap'
 import Card from '../../components/UI/Card'
 import profilePicture from '../../images/profile.jpeg'
 import { generatePublicUrl } from '../../urlConfig'
@@ -9,6 +9,64 @@ import { getProfile, updateProfile } from '../../actions'
 import { AiFillEdit } from 'react-icons/ai'
 import { ToastContainer, toast } from 'react-toastify'
 import { userConstants } from '../../actions/constants'
+
+const ProfileData = (props) => {
+    return (
+        <Row style={{
+            marginLeft: '10px',
+            marginBottom: '3px'
+        }}>
+            <Row>
+                <Col style={{ fontSize: '11px' }} sm={12}>{props.label}</Col>
+            </Row>
+            <Row>
+                <Col style={{ fontSize: '12px', fontWeight: 'bold' }} sm={12}>{props.value}</Col>
+            </Row>
+        </Row>
+    )
+}
+
+const InputData = (props) => {
+    return (
+        <Row style={{ margin: '20px', padding: '7px' }}>
+            <Col sm={4}>
+                <FormLabel>
+                    {props.label}
+                </FormLabel>
+            </Col>
+            <Col sm={props.type === 'date' ? 3 : props.type === 'tel' ? 3 : 6}>
+                {
+                    props.type !== 'tel' ? (
+                        <input
+                            style={{ width: '90%' }}
+                            className="form-control form-control-sm" type={props.type}
+                            value={props.value}
+                            disabled={props.disabled}
+                            onChange={props.onChange}
+                            required={props.required}
+                        />
+                    ) : (
+                        <>
+                            <input
+                                className="form-control form-control-sm"
+                                type={props.type}
+                                pattern="04[4-6 | 9]{1}-[0-9]{3}-[0-9]{3}"
+                                value={props.value}
+                                disabled={props.disabled}
+                                onChange={props.onChange}
+                            />
+                            <small
+                                style={{ fontSize: '11px' }}
+                                class="form-text text-muted">
+                                Format: 045-123-123
+                            </small>
+                        </>
+                    )
+                }
+            </Col>
+        </Row>
+    )
+}
 
 const Profile = () => {
 
@@ -30,6 +88,7 @@ const Profile = () => {
     const [email, setEmail] = useState(user.profile.email)
     const [birthdate, setBirthdate] = useState(formatDate(user.profile.birthdate))
     const [gender, setGender] = useState(user.profile.gender)
+    const [phoneNumber, setPhoneNumber] = useState(user.profile.phoneNumber)
     const [editForm, setEditForm] = useState(false)
 
     const dispatch = useDispatch()
@@ -44,6 +103,7 @@ const Profile = () => {
         setEmail(user.profile.email)
         setBirthdate(formatDate(user.profile.birthdate))
         setGender(user.profile.gender)
+        setPhoneNumber(user.profile.phoneNumber)
     }, [user.profile])
 
     useEffect(() => {
@@ -68,20 +128,22 @@ const Profile = () => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-                theme: 'colored' 
+                theme: 'colored'
             });
         }
         dispatch({ type: userConstants.RESET_MESSAGES })
-        
+
     }, [user.success, user.error])
 
-    const onProfileUpdate = () => {
+    const onProfileUpdate = (e) => {
+        e.preventDefault()
         const user = {
             firstName,
             lastName,
             email,
             birthdate,
-            gender
+            gender,
+            phoneNumber
         }
         dispatch(updateProfile(user))
         setEditForm(false)
@@ -91,7 +153,7 @@ const Profile = () => {
         <Layout sidebar>
             <p style={{ fontWeight: '700', fontSize: '18px' }}>Profile</p>
             <div className="flexRow sb" style={{
-                padding: '20px',
+                padding: '12px',
                 display: 'flex',
             }}>
                 <Card
@@ -100,8 +162,7 @@ const Profile = () => {
                     }}
                 >
                     <Row>
-                        <Col sm={4}></Col>
-                        <Col sm={4}>
+                        <Col sm={{ span: 8, offset: 4 }}>
                             <img
                                 alt=""
                                 style={{
@@ -111,79 +172,46 @@ const Profile = () => {
                                     marginTop: '10px',
                                     height: '150px'
                                 }}
-
                                 src={user.profile.profilePicture ? generatePublicUrl(user.profile.profilePicture) : profilePicture}>
                             </img>
                         </Col>
-                        <Col sm={4}></Col>
                     </Row>
                     <Row>
-                        <Col sm={4}></Col>
-                        <Col sm={5}>
+                        <Col sm={{ span: 8, offset: 4 }}>
                             <p style={{ fontWeight: '600' }}>{user.profile.firstName}{' '}{user.profile.lastName}</p>
                         </Col>
-                        <Col sm={4}></Col>
                     </Row>
                     <hr />
-                    <Row style={{
-                        marginLeft: '10px',
-                    }}>
-                        <Row>
-                            <Col style={{ fontSize: '11px' }} sm={12}>Role</Col>
-                        </Row>
-                        <Row>
-                            <Col style={{ fontSize: '12px', fontWeight: 'bold' }} sm={12}>{user.profile.role}</Col>
-                        </Row>
-                    </Row>
+                    <ProfileData
+                        label={'Role'}
+                        value={user.profile.role}
+                    />
                     <hr />
-                    <Row style={{
-                        marginLeft: '10px',
-                    }}>
-                        <Row>
-                            <Col style={{ fontSize: '11px' }} sm={12}>Username</Col>
-                        </Row>
-                        <Row>
-                            <Col style={{ fontSize: '12px', fontWeight: 'bold' }} sm={12}>{user.profile.username}</Col>
-                        </Row>
-                    </Row>
+                    <ProfileData
+                        label={'Username'}
+                        value={user.profile.username}
+                    />
                     <hr />
-                    <Row style={{
-                        marginLeft: '10px',
-                    }}>
-                        <Row>
-                            <Col style={{ fontSize: '11px' }} sm={12}>Email</Col>
-                        </Row>
-                        <Row>
-                            <Col style={{ fontSize: '12px', fontWeight: 'bold' }} sm={12}>{user.profile.email}</Col>
-                        </Row>
-                    </Row>
+                    <ProfileData
+                        label={'Email'}
+                        value={user.profile.email}
+                    />
                     <hr />
-                    <Row style={{
-                        marginLeft: '10px',
-                    }}>
-                        <Row>
-                            <Col style={{ fontSize: '11px' }} sm={10}>
-                                Birthdate
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col style={{ fontSize: '12px', fontWeight: 'bold' }} sm={12}>
-                                {formatDate(user.profile.birthdate)}
-                            </Col>
-                        </Row>
-                    </Row>
+                    <ProfileData
+                        label={'Phone Number'}
+                        value={user.profile.phoneNumber ? user.profile.phoneNumber : <span style={{color: 'red'}}>Not specified</span>}
+                    />
                     <hr />
-                    <Row style={{
-                        marginLeft: '10px',
-                        marginBottom: '10px'
-                    }}>
-                        <Row>
-                            <Col style={{ fontSize: '11px' }} sm={10}>Gender</Col>
-                        </Row>
-                        <Row>
-                            <Col style={{ fontSize: '12px', fontWeight: 'bold' }} sm={12}>{user.profile.gender}</Col>
-                        </Row>
-                    </Row>
+                    <ProfileData
+                        label={'Birthdate'}
+                        value={user.profile.birthdate ? formatDate(user.profile.birthdate) :  <span style={{color: 'red'}}>Not specified</span>}
+                    />
+                    <hr />
+                    <ProfileData
+                        label={'Gender'}
+                        value={user.profile.gender ? user.profile.gender :  <span style={{color: 'red'}}>Not specified</span>}
+                    />
+
                 </Card>
                 <Card
                     headerLeft={<h6>Admin profile</h6>}
@@ -196,123 +224,101 @@ const Profile = () => {
                         </>
                     }
                 >
-                    <Row style={{ margin: '20px' }}>
-                        <Col sm={4}>
-                            <FormLabel>
-                                FirstName
-                            </FormLabel>
-                        </Col>
-                        <Col sm={6}>
-                            <input
-                                style={{ width: '90%' }}
-                                className="form-control form-control-sm" type="email"
-                                value={firstName}
-                                disabled={!editForm}
-                                onChange={(e) => setFirstName(e.target.value)}
-                            />
-                        </Col>
-                    </Row>
-                    <Row style={{ margin: '20px' }}>
-                        <Col sm={4}>
-                            <FormLabel>
-                                LastName
-                            </FormLabel>
-                        </Col>
-                        <Col sm={6}>
-                            <input
-                                style={{ width: '90%' }}
-                                className="form-control form-control-sm" type="email"
-                                value={lastName}
-                                disabled={!editForm}
-                                onChange={(e) => setLastName(e.target.value)}
-                            />
-                        </Col>
-                    </Row>
-                    <Row style={{ margin: '20px' }}>
-                        <Col sm={4}>
-                            <FormLabel>
-                                Email
-                            </FormLabel>
-                        </Col>
-                        <Col sm={6}>
-                            <input
-                                style={{ width: '90%' }}
-                                className="form-control form-control-sm" type="email"
-                                value={email}
-                                disabled={!editForm}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </Col>
-                    </Row>
+                    <Form onSubmit={onProfileUpdate}>
+                        <InputData
+                            label={'FirstName'}
+                            type={'text'}
+                            value={firstName}
+                            disabled={!editForm}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            required={true}
+                        />
+                        <InputData
+                            label={'LastName'}
+                            type={'text'}
+                            value={lastName}
+                            disabled={!editForm}
+                            onChange={(e) => setLastName(e.target.value)}
+                            required={true}
+                        />
+                        <InputData
+                            label={'Email'}
+                            type={'email'}
+                            value={email}
+                            disabled={!editForm}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required={true}
+                        />
+                        <InputData
+                            type={'tel'}
+                            label={'Phone Number'}
+                            disabled={!editForm}
+                            placeholder={'044-123-456'}
+                            value={phoneNumber}
+                            onChange={e => setPhoneNumber(e.target.value)}
+                        />
+                        <InputData
+                            label={'Birthdate'}
+                            type={'date'}
+                            disabled={!editForm}
+                            value={birthdate}
+                            onChange={e => setBirthdate(e.target.value)}
+                        />
 
-                    <Row style={{ margin: '20px' }}>
-                        <Col sm={4}>
-                            <FormLabel>
-                                Birthdate
-                            </FormLabel>
-                        </Col>
-                        <Col sm={3}>
-                            <input
-                                style={{ width: '90%' }}
-                                className="form-control form-control-sm" type="date"
-                                readOnly={!editForm}
-                                value={birthdate}
-                                onChange={e => setBirthdate(e.target.value)}
-                            />
-                        </Col>
-                    </Row>
-                    <Row style={{ margin: '20px' }}>
-                        <Col sm={4}>
-                            <FormLabel>
-                                Gender
-                            </FormLabel>
-                        </Col>
-                        <Col md={{ span: 2 }}>
-                            <div className="form-check">
-                                <label className="form-check-label">
-                                    <input
-                                        type="radio"
-                                        className="form-check-input"
-                                        name="gender"
-                                        value={'Male'}
-                                        checked={gender === 'Male'}
-                                        disabled={!editForm}
-                                        onChange={e => setGender(e.target.value)}
-                                    />
-                                    Male
-                                </label>
-                            </div>
-                        </Col>
-                        <Col>
-                            <div className="form-check">
-                                <label className="form-check-label">
-                                    <input
-                                        type="radio"
-                                        className="form-check-input"
-                                        name="gender"
-                                        value={'Female'}
-                                        checked={gender === 'Female'}
-                                        disabled={!editForm}
-                                        onChange={e => setGender(e.target.value)}
-                                    />
-                                    Female
-                                </label>
-                            </div>
-                        </Col>
-                    </Row>
-                    <Row style={{ margin: '5px' }}>
-                        <Col sm={9}>
-                            <span style={{ color: 'red' }}>{user.updateError}</span>
-                        </Col>
-                        <Col sm={3}>
-                            <Button
-                                style={{ display: editForm ? 'block' : 'none' }}
-                                onClick={() => onProfileUpdate()} variant="success">
-                                Update profile
-                            </Button>
-                            <ToastContainer />
-                        </Col>
-                    </Row>
+                        <Row style={{ margin: '20px', padding: '7px' }}>
+                            <Col sm={4}>
+                                <FormLabel>
+                                    Gender
+                                </FormLabel>
+                            </Col>
+                            <Col sm={{ span: 2 }}>
+                                <div className="form-check">
+                                    <label className="form-check-label">
+                                        <input
+                                            type="radio"
+                                            className="form-check-input"
+                                            name="gender"
+                                            value={'Male'}
+                                            checked={gender === 'Male'}
+                                            disabled={!editForm}
+                                            onChange={e => setGender(e.target.value)}
+                                        />
+                                        Male
+                                    </label>
+                                </div>
+                            </Col>
+                            <Col>
+                                <div className="form-check">
+                                    <label className="form-check-label">
+                                        <input
+                                            type="radio"
+                                            className="form-check-input"
+                                            name="gender"
+                                            value={'Female'}
+                                            checked={gender === 'Female'}
+                                            disabled={!editForm}
+                                            onChange={e => setGender(e.target.value)}
+                                        />
+                                        Female
+                                    </label>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row style={{ margin: '5px' }}>
+                            <Col sm={9}>
+                                <span style={{ color: 'red' }}>{user.updateError}</span>
+                            </Col>
+                            <Col sm={3}>
+                                <Button
+                                    type='submit'
+                                    style={{ display: editForm ? 'block' : 'none' }}
+                                    variant="success">
+                                    Update profile
+                                </Button>
+                                <ToastContainer />
+                            </Col>
+                        </Row>
+                    </Form>
                 </Card>
             </div>
         </Layout >
