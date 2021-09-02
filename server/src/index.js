@@ -19,6 +19,7 @@ const addressRoutes      = require('./routes/address')
 const orderRoutes        = require('./routes/order')
 const adminOrderRoutes   = require('./routes/admin/order')
 const adminProfileRoutes = require('./routes/admin/profile')
+const userProfileRoutes  = require('./routes/profile')
 
 env.config()
 
@@ -45,6 +46,7 @@ app.use('/api', addressRoutes)
 app.use('/api', orderRoutes)
 app.use('/api', adminOrderRoutes)
 app.use('/api', adminProfileRoutes)
+app.use('/api', userProfileRoutes)
 
 app.get('/', (req, res, next) => {
     res.status(200).json({

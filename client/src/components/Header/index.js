@@ -61,7 +61,7 @@ const Header = (props) => {
           </span>
         }
         menus={[
-          { label: 'My Profile', href: '', icon: <CgProfile color="#2A75F0" /> },
+          { label: 'My Profile', href: '/profile', icon: <CgProfile color="#2A75F0" /> },
           {
             label: 'Orders',
             href: '/account/orders',
@@ -91,7 +91,7 @@ const Header = (props) => {
           </a>
         }
         menus={[
-          { label: 'My Profile', href: '', icon: <CgProfile color="#2A75F0" /> },
+          { label: 'My Profile', href: '/profile', icon: <CgProfile color="#2A75F0" /> },
           {
             label: 'Orders', href: 'account/orders',
             icon: <GoArchive style={{ fill: "#2A75F0" }} />,

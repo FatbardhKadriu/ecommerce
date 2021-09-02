@@ -10,7 +10,7 @@ import CartPage from './containers/CartPage';
 import CheckoutPage from './containers/CheckoutPage';
 import OrdersPage from './containers/OrdersPage';
 import OrderDetailsPage from './containers/OrderDetailsPage';
-
+import ProfilePage from './containers/ProfilePage'
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
       dispatch(isUserLoggedIn())
     }
 
-  }, [auth.authenticate, dispatch])
+  }, [auth.authenticate])
 
   useEffect(() => {
     dispatch(updateCart())
@@ -33,6 +33,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={HomePage}></Route>
+          <Route path="/profile" component={ProfilePage}></Route>
           <Route path="/cart" component={CartPage}></Route>
           <Route path="/checkout" component={CheckoutPage}></Route>
           <Route path="/account/orders" component={OrdersPage}></Route>

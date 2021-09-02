@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     orders: [],
     orderDetails: {},
     error: null,
+    profile: {},
     loading: false,
     orderFetching: false,
     placedOrderId: null,
@@ -77,10 +78,27 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 error: action.payload.error
             }
-        case userConstants.ADD_USER_ORDER_SUCCESS: 
+        case userConstants.ADD_USER_ORDER_SUCCESS:
             return {
-                ...state, 
+                ...state,
                 placedOrderId: action.payload._id
+            }
+        case userConstants.GET_USER_PROFILE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+        case userConstants.GET_USER_PROFILE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                profile: action.payload.user,
+            }
+        case userConstants.GET_USER_PROFILE_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload.error
             }
         default:
             return state

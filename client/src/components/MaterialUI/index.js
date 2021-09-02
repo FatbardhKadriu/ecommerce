@@ -113,7 +113,7 @@ const DropdownMenu = (props) => {
                                         }}
                                         href={`${item.href}`}
                                     >
-                                        {item.label}
+                                       {item.icon && item.icon} {item.label}
                                     </a>
                                 </li>
                             ))}

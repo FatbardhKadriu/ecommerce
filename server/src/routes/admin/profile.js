@@ -6,6 +6,6 @@ const { validateUpdateRequest } = require('../../validators/profile');
 const { isRequestValidated } = require('../../validators/index')
 
 router.get('/admin/profile',  requireSignIn, adminMiddleware, getProfile)
-router.put('/admin/updateProfile', validateUpdateRequest, isRequestValidated, requireSignIn, adminMiddleware, updateProfile)
+router.put('/admin/updateProfile', requireSignIn, adminMiddleware, validateUpdateRequest, isRequestValidated,  updateProfile)
 
 module.exports = router;
