@@ -10,7 +10,7 @@ const Modal = (props) => {
         <>
             <div className="modalFixedBg">
                 <div style={{ position: 'relative' }}>
-                    <div className="modalClose" onClick={props.onClose}><IoIosClose size={40}/></div>
+                    <div className="modalClose" onClick={props.onClose}><IoIosClose size={40} /></div>
                     <div className="modalContainer">
                         {props.children}
                     </div>
@@ -26,7 +26,7 @@ const MaterialInput = (props) => {
 
     return (
         <div className="materialInput">
-            <label className={`label ${(focus || props.value !=="") ? 'focus' : ''}`} style={{
+            <label className={`label ${(focus || props.value !== "") ? 'focus' : ''}`} style={{
                 top: 0,
                 lineHeight: 'none'
             }}>{props.label}</label>
@@ -95,25 +95,30 @@ const DropdownMenu = (props) => {
         <div className="headerDropdownContainer">
             {props.menu}
             <div className="dropdown">
-                <div className="upArrow"></div>
-                {props.firstMenu}
-                <ul className="headerDropdownMenu">
-                    {
-                        props.menus && props.menus.map((item, index) =>
-                            <li key={index}>
-                                
-                                <a onClick={(e) => {
-                                    if (item.onClick)
-                                        e.preventDefault()
-                                    item.onClick && item.onClick()
-                                }} href={item.href}>
-                                { item.icon && item.icon }&nbsp;&nbsp;
-                                    {item.label}
-                                </a>
-                            </li>
-                        )
-                    }
-                </ul>
+                <div className="upArrowContainer">
+                    <div className="upArrow"></div>
+                </div>
+                <div className="dropdownMenu">
+                    {props.firstMenu}
+                    <ul className="headerDropdownMenu">
+                        {props.menus &&
+                            props.menus.map((item, index) => (
+                                <li key={index}>
+                                    <a
+                                        onClick={(e) => {
+                                            if (item.onClick) {
+                                                e.preventDefault();
+                                                item.onClick && item.onClick();
+                                            }
+                                        }}
+                                        href={`${item.href}`}
+                                    >
+                                        {item.label}
+                                    </a>
+                                </li>
+                            ))}
+                    </ul>
+                </div>
             </div>
         </div>
     );

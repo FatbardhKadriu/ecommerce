@@ -54,7 +54,7 @@
   border: none;
   z-index: 1;
   background: transparent;
-  line-height: 33px;
+  line-height: 30px;
 }
 
 .materialInput .label {
@@ -113,6 +113,7 @@
   cursor: 'pointer';
   text-decoration: none;
 }
+
 .signupBtn:hover {
   text-decoration: underline;
   cursor: pointer;
@@ -141,7 +142,7 @@
 .upArrowContainer {
   position: relative;
   width: 100%;
-  height: 20px;
+  height: 10px;
 }
 
 .upArrow {
@@ -186,6 +187,6 @@
   letter-spacing: 1px;
 }
 
-.input{
+.input {
   font-size: 14px;
 }
