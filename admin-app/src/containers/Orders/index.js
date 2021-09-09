@@ -5,19 +5,19 @@ import Card from '../../components/UI/Card'
 import { Button, Form, FormControl } from 'react-bootstrap'
 
 import './style.css'
-import { getCustomerOrders ,updateOrder, searchOrder as searchOrderAction } from '../../actions'
+import { getCustomerOrders, updateOrder, searchOrderById, filterOrdersByDate as filterOrder } from '../../actions'
 
 const Orders = () => {
 
     const order = useSelector(state => state.order)
     const [type, setType] = useState('')
     const [orderId, setOrderId] = useState('')
+    const [filterDate, setFilterDate] = useState('')
     const dispatch = useDispatch()
 
     const searchOrder = (orderId) => {
         if (orderId === "") return
-        dispatch(searchOrderAction(orderId))
-        console.log(orderId)
+        dispatch(searchOrderById(orderId))
     }
 
     const onOrderUpdate = (orderId) => {
@@ -36,6 +36,32 @@ const Orders = () => {
         return ""
     }
 
+    const formatDate2 = (date) => {
+        const month = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "June",
+            "July",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ];
+        if (date) {
+            const d = new Date(date);
+            return `${month[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+        }
+    };
+
+    const filterOrdersByDate = (date) => {
+        setFilterDate(date)
+        dispatch(filterOrder(date))
+    }
+
     useEffect(() => {
         if (orderId === "") {
             dispatch(getCustomerOrders())
@@ -44,7 +70,7 @@ const Orders = () => {
 
     return (
         <Layout sidebar>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Form className="d-flex">
                     <FormControl
                         style={{ width: '300px' }}
@@ -59,6 +85,14 @@ const Orders = () => {
                         onClick={() => searchOrder(orderId)}
                         variant="outline-success">Search</Button>
                 </Form>
+                <div>
+                    <span>Filter by date: </span>
+                    <input value={filterDate}
+                        onChange={e => filterOrdersByDate(e.target.value)}
+                        type="date"
+                        className="form-control"
+                    />
+                </div>
             </div>
             {order.orders.map((orderItem, index) => (
                 <Card
@@ -123,38 +157,49 @@ const Orders = () => {
                             ))}
                         </div>
 
-                        <div
-                            style={{
-                                padding: "0 50px",
-                                boxSizing: "border-box",
-                            }}
-                        >
-                            <select className="form-control form-control-sm" onChange={(e) => setType(e.target.value)}>
-                                <option value={""}>Select status</option>
-                                {orderItem.orderStatus.map((status) => {
-                                    return (
-                                        <>
-                                            {!status.isCompleted ? (
-                                                <option key={status.type} value={status.type}>
-                                                    {status.type}
-                                                </option>
-                                            ) : null}
-                                        </>
-                                    );
-                                })}
-                            </select>
-                        </div>
+                        {
+                            orderItem.orderStatus.filter(sts => !sts.isCompleted).length > 0 ? (
+                                <>
+                                    <div
+                                        style={{
+                                            padding: "0 50px",
+                                            boxSizing: "border-box",
+                                        }}
+                                    >
 
-                        <div
-                            style={{
-                                padding: "0 50px",
-                                boxSizing: "border-box",
-                            }}
-                        >
-                            <Button onClick={() => onOrderUpdate(orderItem._id)}>
-                                Confirm
-                            </Button>
-                        </div>
+                                        <select className="form-control form-control-sm" onChange={(e) => setType(e.target.value)}>
+                                            <option value={""}>Select status</option>
+                                            {
+                                                orderItem.orderStatus.filter(sts => !sts.isCompleted).length > 0 && (
+                                                    <option
+                                                        key={orderItem.orderStatus.filter(sts => !sts.isCompleted)[0]?.type}
+                                                        value={orderItem.orderStatus.filter(sts => !sts.isCompleted)[0]?.type}>
+                                                        {orderItem.orderStatus.filter(sts => !sts.isCompleted)[0]?.type}
+                                                    </option>
+                                                )
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div
+                                        style={{
+                                            padding: "0 50px",
+                                            boxSizing: "border-box",
+                                        }}
+                                    >
+                                        <Button onClick={() => onOrderUpdate(orderItem._id)}>
+                                            Confirm
+                                        </Button>
+                                    </div>
+                                </>
+                            ) :
+                                <div style={{ fontWeight: "700", fontSize: 14, marginLeft: '80px' }}>
+                                    {orderItem.orderStatus[3].isCompleted &&
+                                        `Delivered on ${formatDate2(orderItem.orderStatus[3].date)}`}
+                                </div>
+                        }
+
+
                     </div>
                 </Card>
             ))}

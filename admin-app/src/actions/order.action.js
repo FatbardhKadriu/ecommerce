@@ -1,7 +1,7 @@
 import axios from "../helpers/axios"
 import { orderConstants } from "./constants"
 
-export const searchOrder = (orderId) => async (dispatch) => {
+export const searchOrderById = (orderId) => async (dispatch) => {
     try {
         dispatch({ type: orderConstants.SEARCH_ORDER_REQUEST })
         const res = await axios.get(`/order/${orderId}`)
@@ -27,10 +27,36 @@ export const searchOrder = (orderId) => async (dispatch) => {
     }
 }
 
+export const filterOrdersByDate = (date) => async (dispatch) => {
+    try {
+        dispatch({ type: orderConstants.SEARCH_ORDER_REQUEST })
+        const res = await axios.get(`/orders/${date}`)
+        if (res.status === 200) {
+            const { orders } = res.data
+            dispatch({ type: orderConstants.SEARCH_ORDER_SUCCESS })
+            dispatch({
+                type: orderConstants.GET_CUSTOMER_ORDER_SUCCESS,
+                payload: { orders }
+            })
+        } else {
+            const { error } = res.data
+            dispatch({
+                type: orderConstants.GET_CUSTOMER_ORDER_FAILURE,
+                payload: { error }
+            })
+        }
+    } catch (error) {
+        dispatch({
+            type: orderConstants.SEARCH_ORDER_FAILURE,
+            payload: { error }
+        })
+    }
+}
+
 export const getCustomerOrders = () => async (dispatch) => {
     try {
         dispatch({ type: orderConstants.GET_CUSTOMER_ORDER_REQUEST })
-        const res = await axios.get('/order/getCustomerOrders')
+        const res = await axios.get('/orders/getCustomerOrders')
         if (res.status === 200) {
             const { orders } = res.data
             dispatch({
