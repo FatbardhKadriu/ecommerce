@@ -38,17 +38,16 @@ exports.createProduct = async (req, res) => {
 }
 
 exports.getProductsBySlug = async (req, res) => {
-
     try {
         const { slug } = req.params;
         const category = await Category.findOne({ slug }).select("_id type")
         if (!category) {
-            res.status(400).json({ message: "This category doesn't exists!" })
+            return res.status(400).json({ message: "This category doesn't exists!" })
         }
 
         const products = await Product.find({ category: category._id })
         if (!products) {
-            res.status(400).json({ message: "No products were found!" })
+            return res.status(400).json({ message: "No products were found!" })
         }
 
         if (category.type) {
@@ -70,7 +69,7 @@ exports.getProductsBySlug = async (req, res) => {
                 }
             });
         } else {
-            res.status(200).json({ products })
+            return res.status(200).json({ products })
         }
     } catch (error) {
         return res.status(400).json(error)

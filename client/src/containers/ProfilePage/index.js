@@ -9,6 +9,7 @@ import { getProfile, updateProfile } from '../../actions'
 import { AiFillEdit } from 'react-icons/ai'
 import { ToastContainer, toast } from 'react-toastify'
 import { userConstants } from '../../actions/constants'
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProfileData = (props) => {
     return (
@@ -107,6 +108,11 @@ const ProfilePage = (props) => {
     }, [auth.authenticate])
 
     useEffect(() => {
+        !localStorage.getItem('token') && 
+        props.history.push('/')
+    }, [])
+
+    useEffect(() => {
         setFirstName(user.profile.firstName)
         setLastName(user.profile.lastName)
         setEmail(user.profile.email)
@@ -114,6 +120,37 @@ const ProfilePage = (props) => {
         setGender(user.profile.gender)
         setPhoneNumber(user.profile.phoneNumber)
     }, [user.profile])
+
+    useEffect(() => {
+        if (user.success) {
+            toast.success(user.success, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            setPwdError('')
+            setEditPassword(false)
+        }
+        if (user.error) {
+            setEditForm(true)
+            toast.error(user.error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored'
+            });
+        }
+        dispatch({ type: userConstants.RESET_MESSAGES })
+
+    }, [user.success, user.error])
 
     const onProfileUpdate = (e) => {
         e.preventDefault()

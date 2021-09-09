@@ -26,7 +26,7 @@ exports.validateSigninRequest = [
         .withMessage('Invalid email'),
     check('password')
         .notEmpty()
-        .withMessage('Password can"t be empty')
+        .withMessage('Password is required')
 ]
 
 exports.isRequestValidated = (req, res, next) => {

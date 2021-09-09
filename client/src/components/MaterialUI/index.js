@@ -22,48 +22,34 @@ const Modal = (props) => {
 
 const MaterialInput = (props) => {
     const [focus, setFocus] = useState(false)
-    const [touch, setTouch] = useState(false)
 
     return (
         <div className="materialInput">
-            <label className={`label ${(focus || props.value !== "") ? 'focus' : ''}`} style={{
-                top: 0,
-                lineHeight: 'none'
-            }}>{props.label}</label>
+            <label
+                className={`label ${(focus || props.value !== "" || props.type === 'date') ? 'focus' : ''}`} style={{
+                    top: 0,
+                    lineHeight: 'none'
+                }}>{props.label}</label>
             <div style={{
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'row'
             }}>
                 <input className="input"
                     type={props.type}
                     value={props.value}
                     onChange={props.onChange}
+                    required={props.required}
+                    {...props}
                     onFocus={(e) => {
                         setFocus(true)
-                        setTouch(true)
                     }}
                     onBlur={(e) => {
                         if (e.target.value === "") {
                             setFocus(false)
-                        } else {
-                            setTouch(false)
                         }
                     }} />
                 {
                     props.rightElement ? props.rightElement : null
-                }
-                {
-                    touch && (
-                        <div
-                            style={{
-                                fontSize: '10px',
-                                color: 'red',
-                                fontWeight: 500,
-                            }}
-                        >
-                            {`${props.label} is Required`}
-                        </div>
-                    )
                 }
             </div>
         </div>
@@ -81,6 +67,7 @@ const MaterialButton = (props) => {
                 className="materialButton"
                 style={{ backgroundColor: props.bgColor, color: props.textColor }}
                 onClick={onClick}
+                type={props.type}
             >
                 {props.icon && props.icon}
                 {props.title && props.title}
@@ -113,7 +100,7 @@ const DropdownMenu = (props) => {
                                         }}
                                         href={`${item.href}`}
                                     >
-                                       {item.icon && item.icon} {item.label}
+                                        {item.icon && item.icon} {item.label}
                                     </a>
                                 </li>
                             ))}

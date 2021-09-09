@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import flipkartLogo from '../../images/logo/flipkart.png'
 import goldenStar from '../../images/logo/golden-star.png'
+import { Form, FormLabel } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { IoIosArrowDown, IoIosSearch } from 'react-icons/io'
 import { CgProfile } from 'react-icons/cg'
@@ -17,6 +18,8 @@ import {
 import { login, signout, signup as signupAction } from '../../actions'
 import Cart from '../../components/UI/Cart'
 import './style.css'
+import { authConstants } from '../../actions/constants'
+import { useHistory } from 'react-router-dom'
 
 const Header = (props) => {
 
@@ -26,24 +29,45 @@ const Header = (props) => {
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [optionalPart, setOptionalPart] = useState(false)
+  const [gender, setGender] = useState('')
+  const [birthdate, setBirthDate] = useState('')
+  const [profilePicture, setProfilePicture] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const auth = useSelector(state => state.auth)
   const cart = useSelector(state => state.cart)
   const dispatch = useDispatch()
+  const history = useHistory()
 
-  const userLogin = () => {
+  const userLogin = (e) => {
+    e.preventDefault()
     dispatch(login({ email, password }))
+    dispatch({ type: authConstants.RESET_MESSAGES })
   }
 
-  const userSignUp = () => {
-    const user = { firstName, lastName, email, password }
+  const handleProfilePicture = (e) => {
+    setProfilePicture(e.target.files[0])
+  }
+
+  const userSignUp = (e) => {
+    e.preventDefault()
     if (firstName === "" || lastName === "" || email === "" || password === "")
       return
 
-    dispatch(signupAction(user))
+    const form = new FormData()
+    form.append('firstName', firstName)
+    form.append('lastName', lastName)
+    form.append('email', email)
+    form.append('password', password)
+    form.append('phoneNumber', phoneNumber)
+    form.append('gender', gender)
+    form.append('birthdate', birthdate)
+    form.append('profilePicture', profilePicture)
+    dispatch(signupAction(form))
   }
 
   const logout = () => {
-    dispatch(signout())
+    dispatch(signout(history))
   }
 
   useEffect(() => {
@@ -91,7 +115,14 @@ const Header = (props) => {
           </a>
         }
         menus={[
-          { label: 'My Profile', href: '/profile', icon: <CgProfile color="#2A75F0" /> },
+          { 
+            label: 'My Profile', 
+            href: '/profile', 
+            icon: <CgProfile color="#2A75F0" />,
+            onClick: () => {
+              !auth.authenticate && setLoginModal(true)
+            }  
+          },
           {
             label: 'Orders', href: 'account/orders',
             icon: <GoArchive style={{ fill: "#2A75F0" }} />,
@@ -127,7 +158,7 @@ const Header = (props) => {
         onClose={() => setLoginModal(false)}
       >
         <div className="authContainer">
-          <div className="row">
+          <div className="row" style={{ height: '528px' }}>
             <div className="leftspace">
               {
                 signup ? (
@@ -144,54 +175,131 @@ const Header = (props) => {
             </div>
             <div className="rightspace">
               <div className="loginInputContainer">
-                {
-                  signup && (
+                <form onSubmit={signup ? userSignUp : userLogin}>
+                  {
                     <p style={{ fontSize: '12px', color: 'red' }}>{auth.error}</p>
-                  )
-                }
-                {
-                  signup && (
-                    <MaterialInput
-                      type="text"
-                      label="Enter First Name"
-                      value={firstName}
-                      onChange={e => setFirstName(e.target.value)}
-                    />
-                  )
-                }
-                {
-                  signup && (
-                    <MaterialInput
-                      type="text"
-                      label="Enter Last Name"
-                      value={lastName}
-                      onChange={e => setLastName(e.target.value)}
-                    />
-                  )
-                }
-                <MaterialInput
-                  type="text"
-                  label="Enter Email/Enter Mobile Number"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <MaterialInput
-                  type="password"
-                  label="Enter Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                //   rightElement={<a href="#">Forgot?</a>}
-                />
+                  }
+                  {
+                    signup && !optionalPart && (
+                      <MaterialInput
+                        type="text"
+                        label="Enter First Name"
+                        value={firstName}
+                        onChange={e => setFirstName(e.target.value)}
+                        required
+                      />
+                    )
+                  }
+                  {
+                    signup && !optionalPart && (
+                      <MaterialInput
+                        type="text"
+                        label="Enter Last Name"
+                        value={lastName}
+                        onChange={e => setLastName(e.target.value)}
+                        required
+                      />
+                    )
+                  }
+                  {
+                    !optionalPart && (
+                      <>
+                        <MaterialInput
+                          type="email"
+                          label="Enter Email/Enter Mobile Number"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                        <MaterialInput
+                          type="password"
+                          label="Enter Password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          rightElement={!signup && <a style={{ textDecoration: 'none', fontSize: '14px' }} href="#">Forgot?</a>}
+                          required
+                        />
+                      </>
+                    )
+                  }
+                  {
+                    signup && optionalPart && (
+                      <>
+                        <MaterialInput
+                          type="date"
+                          label="Birthdate"
+                          value={email}
+                          onChange={(e) => setBirthDate(e.target.value)}
+                        />
+                        <MaterialInput
+                          type={'tel'}
+                          label={'Phone Number'}
+                          value={phoneNumber}
+                          maxlength={11}
+                          onChange={(e) => setPhoneNumber(e.target.value)}
+                          pattern="04[4-6 | 9]{1}-[0-9]{3}-[0-9]{3}"
+                        />
+                        <small
+                          style={{ fontSize: '10px' }}
+                          class="form-text text-muted">Format: 045-123-123</small>
+                        <br />
+                        <span className="label">Gender</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                          <div className="form-check">
+                            <label className="form-check-label">
+                              <input
+                                type="radio"
+                                className="form-check-input"
+                                name="gender"
+                                value={'Male'}
+                                onChange={e => setGender(e.target.value)}
+                              />
+                              Male
+                            </label>
+                          </div>
+                          <div className="form-check">
+                            <label className="form-check-label">
+                              <input
+                                type="radio"
+                                className="form-check-input"
+                                name="gender"
+                                value={'Female'}
+                                onChange={e => setGender(e.target.value)}
+                              />
+                              Female
+                            </label>
+                          </div>
+                        </div>
+                        <span className="label">Profile picture</span>
+                          <input type={'file'} 
+                            onChange={handleProfilePicture}
+                            className="form-control form-control-sm"
+                            />
 
-                <MaterialButton
-                  title={signup ? 'Register' : 'Login'}
-                  bgColor="#fb641b"
-                  textColor="#ffffff"
-                  style={{
-                    margin: '40px 0 20px 0'
-                  }}
-                  onClick={signup ? userSignUp : userLogin}
-                />
+                      </>
+                    )
+                  }
+                  <MaterialButton
+                    title={signup ? 'Register' : 'Login'}
+                    bgColor="#fb641b"
+                    textColor="#ffffff"
+                    style={{
+                      margin: '40px 0 20px 0'
+                    }}
+                    type={'submit'}
+                  />
+                  {
+                    signup && (
+                      <Form.Check
+                        type={'checkbox'}
+                        label={`Optional`}
+                        onClick={() => optionalPart ? setOptionalPart(false) : setOptionalPart(true)}
+                        checked={optionalPart}
+                      />
+                    )
+                  }
+
+                </form>
                 {
                   signup && (
                     <MaterialButton
@@ -202,7 +310,11 @@ const Header = (props) => {
                         margin: '30px 0 10px 0',
                         fontSize: '12px'
                       }}
-                      onClick={() => setSignup(false)}
+                      onClick={() => {
+                        setSignup(false)
+                        dispatch({ type: authConstants.RESET_MESSAGES })
+                      }
+                      }
                     />
                   )
                 }
@@ -211,7 +323,11 @@ const Header = (props) => {
                   {
                     !signup && (
                       <button
-                        onClick={() => setSignup(true)}
+                        onClick={() => {
+                          setSignup(true)
+                          dispatch({ type: authConstants.RESET_MESSAGES })
+                        }
+                        }
                         style={{
                           background: 'white',
                           border: 'none',

@@ -11,15 +11,21 @@ import { Link } from 'react-router-dom'
 import './style.css'
 
 
-const OrdersPage = () => {
+const OrdersPage = (props) => {
 
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
+    const auth = useSelector(state => state.auth)
 
     useEffect(() => {
-        dispatch(getOrders())
-    }, [])
+        auth.authenticate &&
+            dispatch(getOrders())
+    }, [auth.authenticate])
 
+    // useEffect(() => {
+    //     !localStorage.getItem('token') &&
+    //         props.history.push('/')
+    // }, [])
 
     return (
         <Layout>

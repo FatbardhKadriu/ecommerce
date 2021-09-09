@@ -78,9 +78,9 @@ const Signin = () => {
                             }} variant="primary" type="submit">
                                 Signin
                             </Button>
-                            <Form.Group style={{ float: 'right' }} >
+                            <Form.Group style={{ float: 'right', marginTop: '2%' }} >
                                 <Form.Text>
-                                    <Link to="/signup">
+                                    <Link to="/signup" style={{ textDecoration: 'none' }}>
                                         Don't have an account? Sign up.
                                     </Link>
                                 </Form.Text>

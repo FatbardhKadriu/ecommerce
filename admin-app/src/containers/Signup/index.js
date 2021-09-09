@@ -151,7 +151,7 @@ const Signup = (props) => {
                             />
                             <Form.Check
                                 type={'checkbox'}
-                                label={`Advanced options`}
+                                label={`Optional`}
                                 onClick={() => optionalPart ? setOptionalPart(false) : setOptionalPart(true)}
                                 checked={optionalPart}
                             />
@@ -220,6 +220,7 @@ const Signup = (props) => {
                                                     type={'tel'}
                                                     pattern="04[4-6 | 9]{1}-[0-9]{3}-[0-9]{3}"
                                                     value={phoneNumber}
+                                                    maxlength={11}
                                                     onChange={(e) => setPhoneNumber(e.target.value)}
                                                 />
                                                 <small
@@ -243,8 +244,8 @@ const Signup = (props) => {
                             </Button>
                             <Form.Group>
                                 <Form.Text>
-                                    <Link to="/signin">
-                                        Already signed up? Sign in
+                                    <Link to="/signin" style={{ textDecoration: 'none' }}>
+                                        Already signed up? Sign in.
                                     </Link>
                                 </Form.Text>
                             </Form.Group>

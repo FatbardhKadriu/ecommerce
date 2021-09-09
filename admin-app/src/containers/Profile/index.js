@@ -340,14 +340,14 @@ const Profile = () => {
                                         setConfirmPassword('')
                                     }
                                     }
-                                    checked={editPassword}
+                                    checked={editPassword && editForm}
                                     disabled={!editForm}
                                 />
                             </Col>
 
                         </Row>
                         {
-                            editPassword && (
+                            editPassword && editForm && (
                                 <>
                                     <InputData
                                         label={'Old password'}

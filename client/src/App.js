@@ -21,7 +21,6 @@ function App() {
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn())
     }
-
   }, [auth.authenticate])
 
   useEffect(() => {

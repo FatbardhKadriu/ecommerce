@@ -17,7 +17,6 @@ exports.getProfile = async (req, res) => {
 }
 
 exports.updateProfile = async (req, res) => {
-
     try {
         const userExist = await User.findOne({ _id: { $ne: req.user._id }, email: req.body.email })
         if (userExist)

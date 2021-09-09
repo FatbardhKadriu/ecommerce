@@ -61,7 +61,7 @@ const signin = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         )
-        const { _id, firstName, lastName, email, role, fullName, gender, username, birthdate, profilePicture } = user;
+        const { _id, email, role, fullName, profilePicture } = user;
         res.cookie('token', token, { expiresIn: '1d' })
         res.status(200).json({
             token,
