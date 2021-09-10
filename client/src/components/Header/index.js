@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import flipkartLogo from '../../images/logo/flipkart.png'
+import logo from '../../images/logo/ecommerce.jpg'
+import profilePic from '../../images/profile.jpeg'
 import goldenStar from '../../images/logo/golden-star.png'
-import { Form, FormLabel } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { IoIosArrowDown, IoIosSearch } from 'react-icons/io'
+import { IoIosSearch } from 'react-icons/io'
 import { CgProfile } from 'react-icons/cg'
 import { AiOutlineGift, AiOutlineHeart } from 'react-icons/ai'
 import { BiLogOut } from 'react-icons/bi'
@@ -20,6 +21,7 @@ import Cart from '../../components/UI/Cart'
 import './style.css'
 import { authConstants } from '../../actions/constants'
 import { useHistory } from 'react-router-dom'
+import { generatePublicUrl } from '../../urlConfig'
 
 const Header = (props) => {
 
@@ -81,6 +83,15 @@ const Header = (props) => {
       <DropdownMenu
         menu={
           <span className="fullName">
+            <img style={{
+              width: '20px',
+              height: '20px',
+              marginRight: '3px',
+              borderRadius: '50%'
+            }}
+              src={auth.user.profilePicture ? generatePublicUrl(auth.user.profilePicture) : profilePic}
+            />
+            {' '}
             {auth.user.fullName}
           </span>
         }
@@ -115,13 +126,13 @@ const Header = (props) => {
           </a>
         }
         menus={[
-          { 
-            label: 'My Profile', 
-            href: '/profile', 
+          {
+            label: 'My Profile',
+            href: '/profile',
             icon: <CgProfile color="#2A75F0" />,
             onClick: () => {
               !auth.authenticate && setLoginModal(true)
-            }  
+            }
           },
           {
             label: 'Orders', href: 'account/orders',
@@ -206,7 +217,7 @@ const Header = (props) => {
                       <>
                         <MaterialInput
                           type="email"
-                          label="Enter Email/Enter Mobile Number"
+                          label="Enter Email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
@@ -271,10 +282,10 @@ const Header = (props) => {
                           </div>
                         </div>
                         <span className="label">Profile picture</span>
-                          <input type={'file'} 
-                            onChange={handleProfilePicture}
-                            className="form-control form-control-sm"
-                            />
+                        <input type={'file'}
+                          onChange={handleProfilePicture}
+                          className="form-control form-control-sm"
+                        />
 
                       </>
                     )
@@ -336,7 +347,7 @@ const Header = (props) => {
                           fontSize: '12px',
                           margin: '0 0 0 50px'
                         }}>
-                        New to Flipkart? Create an account
+                        New to Ecommerce? Create an account
                       </button>
                     )
                   }
@@ -350,7 +361,7 @@ const Header = (props) => {
       <div className="subHeader">
         <div className="logo">
           <a href="/">
-            <img src={flipkartLogo} className="logoimage" alt="" />
+            <img src={logo} className="logoimage" alt="" />
           </a>
           <a style={{ marginTop: '-10px', color: 'white', textDecoration: 'none' }} href="/">
             <span className="exploreText">Explore</span>
@@ -379,7 +390,7 @@ const Header = (props) => {
             auth.authenticate ?
               renderLoggedInMenu() : renderNonLoggedInMenu()
           }
-          <DropdownMenu
+          {/* <DropdownMenu
             menu={
               <a href="/more" className="more">
                 <span>More</span>
@@ -393,7 +404,7 @@ const Header = (props) => {
               { label: 'Advertise', href: '', icon: null },
               { label: 'Download App', href: '', icon: null }
             ]}
-          />
+          /> */}
           <div>
             <a className="cart" href="/cart">
               <Cart count={Object.keys(cart.cartItems).length} />

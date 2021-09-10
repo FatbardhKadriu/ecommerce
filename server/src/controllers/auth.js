@@ -66,7 +66,7 @@ const signin = async (req, res) => {
 
         const token = generateJwtToken(user._id, user.role)
 
-        const { _id, email, role, fullName } = user;
+        const { _id, email, role, fullName, profilePicture } = user;
         res.status(200).json({
             token,
             user: {
@@ -74,6 +74,7 @@ const signin = async (req, res) => {
                 fullName,
                 email,
                 role,
+                profilePicture
             }
         })
     } catch (error) {

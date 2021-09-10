@@ -29,7 +29,7 @@ const MaterialInput = (props) => {
                 className={`label ${(focus || props.value !== "" || props.type === 'date') ? 'focus' : ''}`} style={{
                     top: 0,
                     lineHeight: 'none'
-                }}>{props.label}</label>
+                }}>{ props.required && ( <span style={{color: 'red', fontSize: '14px'}}>*</span> ) }{props.label}</label>
             <div style={{
                 display: 'flex',
                 flexDirection: 'row'

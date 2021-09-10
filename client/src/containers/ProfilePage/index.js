@@ -243,7 +243,7 @@ const ProfilePage = (props) => {
 
                 </Card>
                 <Card
-                    headerLeft={<h6>Admin profile</h6>}
+                    headerLeft={<h6>User profile</h6>}
                     headerRight={
                         <>
                             <Button onClick={() => editForm ? setEditForm(false) : setEditForm(true)}
