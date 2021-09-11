@@ -1,6 +1,7 @@
 const Category = require('../../models/Category')
 const Product = require('../../models/Product')
 const Order = require('../../models/Order')
+const User = require('../../models/User')
 
 function createCategories(categories, parentId = null) {
 
@@ -40,13 +41,25 @@ exports.initialData = async (req, res) => {
             .populate("items.productId", "name")
         const totalOrders = await Order.estimatedDocumentCount()
 
+        const totalUsers = await User.find({ role: 'user' }).countDocuments()
+
+        let sales = 0
+        let itemsSold = 0
+        for (ord of orders) {
+            sales += ord.totalAmount
+            itemsSold += ord.items.length
+        }
+
         res.status(200).json({
             categories: createCategories(categories),
             products,
             orders,
             totalCategories,
             totalProducts,
-            totalOrders
+            totalOrders,
+            totalUsers,
+            sales,
+            itemsSold
         })
     } catch (error) {
         console.log(error)

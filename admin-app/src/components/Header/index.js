@@ -65,14 +65,15 @@ const Header = (props) => {
     <Navbar fixed="top"
       collapseOnSelect
       expand="lg"
+      bg={auth.authenticate ? 'light' : 'dark'}
+      variant={auth.authenticate ? 'light' : 'dark'}
       style={{
         borderBottom: '1px solid #cecece',
-        background: 'white',
         zIndex: 1
       }}
        >
       <Container fluid>
-        <Link style={{ marginLeft: '18%' }} to="/" className="navbar-brand">Admin Dashboard</Link>
+        <Link style={{ marginLeft: '20%' }} to="/" className="navbar-brand">Admin Dashboard</Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">

@@ -1,5 +1,5 @@
 import axios from "../helpers/axios"
-import { categoryConstants, orderConstants, productConstants } from "./constants"
+import { categoryConstants, orderConstants, productConstants, userConstants } from "./constants"
 
 export const getInitialData = () => async (dispatch) => {
     try {
@@ -7,7 +7,7 @@ export const getInitialData = () => async (dispatch) => {
         if (res.status === 200) {
             const { categories, totalCategories,
                 products, totalProducts,
-                orders, totalOrders
+                orders, totalOrders, sales, itemsSold, totalUsers
             } = res.data
             dispatch({
                 type: categoryConstants.GET_ALL_CATEGORIES_SUCCESS,
@@ -19,7 +19,11 @@ export const getInitialData = () => async (dispatch) => {
             })
             dispatch({
                 type: orderConstants.GET_CUSTOMER_ORDER_SUCCESS,
-                payload: { orders, totalOrders }
+                payload: { orders, totalOrders, sales, itemsSold }
+            })
+            dispatch({
+                type: userConstants.GET_TOTAL_NUMBER_OF_USERS,
+                payload: { totalUsers }
             })
         }
     } catch (error) {

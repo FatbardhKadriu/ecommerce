@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     success: null,
     loading: false,
     profile: {},
+    totalUsers: 0,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -62,6 +63,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: false,
                 error: action.payload.error,
+            }
+        case userConstants.GET_TOTAL_NUMBER_OF_USERS: 
+            return {
+                ...state, 
+                totalUsers: action.payload.totalUsers
             }
         case userConstants.RESET_MESSAGES: {
             return {
