@@ -45,6 +45,7 @@ const Category = () => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
+                theme: 'colored'
             });
         }
         if (category.error) {

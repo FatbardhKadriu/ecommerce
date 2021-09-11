@@ -131,6 +131,7 @@ const ProfilePage = (props) => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
+                theme: 'colored'
             });
             setPwdError('')
             setEditPassword(false)

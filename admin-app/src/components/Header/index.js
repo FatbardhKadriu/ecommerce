@@ -18,7 +18,7 @@ const Header = (props) => {
   const renderLoggedInLinks = () => {
     return (
       <Nav>
-        <DropdownButton expand="lg" variant="dark" bg="dark" className="nav-item"
+        <DropdownButton expand="lg" variant="light" bg="light" className="nav-item"
           title={
             <>
               <span>
@@ -42,7 +42,6 @@ const Header = (props) => {
               color: 'black',
             }} to="/profile" >Profile</Link>
           </Dropdown.Item>
-
           <Dropdown.Item onClick={logout}>Signout</Dropdown.Item>
         </DropdownButton>
       </Nav>
@@ -63,9 +62,17 @@ const Header = (props) => {
   }
 
   return (
-    <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar fixed="top"
+      collapseOnSelect
+      expand="lg"
+      style={{
+        borderBottom: '1px solid #cecece',
+        background: 'white',
+        zIndex: 1
+      }}
+       >
       <Container fluid>
-        <Link style={{ marginLeft: '2%' }} to="/" className="navbar-brand">Admin Dashboard</Link>
+        <Link style={{ marginLeft: '18%' }} to="/" className="navbar-brand">Admin Dashboard</Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
