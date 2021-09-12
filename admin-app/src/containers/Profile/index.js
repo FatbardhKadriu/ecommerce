@@ -141,6 +141,7 @@ const Profile = () => {
                 progress: undefined,
                 theme: 'colored'
             });
+            setPwdError('')
         }
         dispatch({ type: userConstants.RESET_MESSAGES })
 
@@ -155,6 +156,10 @@ const Profile = () => {
         }
         if (password !== confirmPassword) {
             setPwdError(`Passwords don't match`)
+            return
+        }
+        if (password === oldPassword) {
+            setPwdError('New password can\'t be same as old password')
             return
         }
         const user = {

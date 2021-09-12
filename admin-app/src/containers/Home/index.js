@@ -80,7 +80,7 @@ const Home = () => {
                                 </div>
                                 <div className="card2">
                                     <h1>Sales</h1>
-                                    <p>€{order.sales.toLocaleString()}</p>
+                                    <p>€{order.sales?.toLocaleString()}</p>
                                 </div>
                                 <div className="card3">
                                     <h1>Users</h1>
