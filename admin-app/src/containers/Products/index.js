@@ -142,7 +142,7 @@ const Products = () => {
 
     const renderProducts = () => {
         return (
-            <Table style={{ fontSize: 12 }} responsive="sm">
+            <Table hover style={{ fontSize: 12 }} responsive="sm">
                 <thead>
                     <tr>
                         <th>#</th>

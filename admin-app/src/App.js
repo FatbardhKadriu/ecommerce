@@ -14,6 +14,8 @@ import Orders from './containers/Orders';
 import Category from './containers/Category';
 import NewPage from './containers/NewPage';
 import Profile from './containers/Profile';
+import Admins from './containers/Admins';
+import Users from './containers/Users';
 
 function App() {
 
@@ -38,6 +40,8 @@ function App() {
         <PrivateRoute path="/products" component={Products } />
         <PrivateRoute path="/orders" component={Orders} />
         <PrivateRoute path="/category" component={Category} />
+        <PrivateRoute path="/admins" component={Admins} />
+        <PrivateRoute path="/users" component={Users} />
 
         <Route path="/signin" component={Signin} />
         <Route path="/signup" component={Signup} />
