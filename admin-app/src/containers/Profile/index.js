@@ -149,7 +149,6 @@ const Profile = () => {
 
     const onProfileUpdate = (e) => {
         e.preventDefault()
-
         if (oldPassword !== '' && (password === '' || confirmPassword === '')) {
             setPwdError('New password is required')
             return
@@ -158,7 +157,7 @@ const Profile = () => {
             setPwdError(`Passwords don't match`)
             return
         }
-        if (password === oldPassword) {
+        if (oldPassword !== '' && password === oldPassword) {
             setPwdError('New password can\'t be same as old password')
             return
         }
