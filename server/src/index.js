@@ -20,6 +20,7 @@ const orderRoutes        = require('./routes/order')
 const adminOrderRoutes   = require('./routes/admin/order')
 const adminProfileRoutes = require('./routes/admin/profile')
 const userProfileRoutes  = require('./routes/profile')
+const adminUsersRoutes   = require('./routes/admin/users')
 
 env.config()
 
@@ -48,6 +49,7 @@ app.use('/api', orderRoutes)
 app.use('/api', adminOrderRoutes)
 app.use('/api', adminProfileRoutes)
 app.use('/api', userProfileRoutes)
+app.use('/api', adminUsersRoutes)
 
 app.get('/', (req, res, next) => {
     res.status(200).json({

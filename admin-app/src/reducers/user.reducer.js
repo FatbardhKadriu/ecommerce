@@ -6,6 +6,8 @@ const INITIAL_STATE = {
     loading: false,
     profile: {},
     totalUsers: 0,
+    users: [],
+    admins: []
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -64,10 +66,44 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 loading: false,
                 error: action.payload.error,
             }
-        case userConstants.GET_TOTAL_NUMBER_OF_USERS: 
+        case userConstants.GET_TOTAL_NUMBER_OF_USERS:
             return {
-                ...state, 
+                ...state,
                 totalUsers: action.payload.totalUsers
+            }
+        case userConstants.GET_ALL_USERS_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case userConstants.GET_ALL_USERS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                users: action.payload.users
+            }
+        case userConstants.GET_ALL_USERS_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+        case userConstants.GET_ALL_ADMINS_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case userConstants.GET_ALL_ADMINS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                admins: action.payload.admins
+            }
+        case userConstants.GET_ALL_ADMINS_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload.error
             }
         case userConstants.RESET_MESSAGES: {
             return {
