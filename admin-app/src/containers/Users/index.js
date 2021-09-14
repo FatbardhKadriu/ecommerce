@@ -7,18 +7,14 @@ import { getAllUsers } from '../../actions';
 const columns = [
     { field: 'id', headerName: 'ID', hide: true },
     {
-        field: 'firstName',
-        headerName: 'First name',
-        width: 160,
-    },
-    {
-        field: 'lastName',
-        headerName: 'Last name',
+        field: 'fullName',
+        headerName: 'Full Name',
         width: 160,
     },
     {
         field: 'email',
         headerName: 'Email',
+        type: 'email',
         width: 160,
     },
     {
@@ -27,9 +23,14 @@ const columns = [
         width: 160,
     },
     {
+        field: 'gender',
+        headerName: 'Gender',
+        width: 125,
+    },
+    {
         field: 'birthdate',
         headerName: 'Birthdate',
-        width: 160,
+        width: 134,
     },
     {
         field: 'phoneNumber',
@@ -38,15 +39,15 @@ const columns = [
     },
     {
         field: 'createdAt',
-        headerName: 'Created at',
-        width: 210,
+        headerName: 'Created on',
+        type: 'date',
+        width: 150,
     },
     {
         field: 'updatedAt',
-        headerName: 'Updated at',
-        width: 210,
+        headerName: 'Updated on',
+        width: 180,
     },
-
 ];
 
 const Users = () => {
@@ -60,19 +61,17 @@ const Users = () => {
     return (
         <Layout sidebar>
             <div style={{ width: '100%' }}>
-                {
-                    user.users?.length > 0 && (
-                        <DataGrid
-                            getRowId={row => row._id}
-                            autoHeight
-                            rows={user.users}
-                            columns={columns}
-                            pageSize={9}
-                            onCellClick={(e) => console.log(e)}
-                            disableSelectionOnClick
-                        />
-                    )
-                }
+                <DataGrid
+                    loading={user.users?.length === 0}
+                    density
+                    getRowId={row => row._id}
+                    autoHeight
+                    rows={user.users}
+                    columns={columns}
+                    rowsPerPageOptions={[5]}
+                    pageSize={9}
+                    disableSelectionOnClick
+                />
             </div>
         </Layout>
     )
