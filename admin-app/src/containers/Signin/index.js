@@ -35,11 +35,12 @@ const Signin = () => {
                             padding: '40px 20px 14px 20px',
                             border: ' 1px solid #cecece',
                             bordeRadius: '9px',
-                            width: '396px',
                             margin: 'auto',
                             boxShadow: '0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%)',
                         }}
-                        md={{ span: 4, offset: 4 }}>
+                        sm="10"
+                        md={{ span: 4, offset: 4 }}
+                        >
                         <Form onSubmit={userLogin}>
                             <Input
                                 type="email"

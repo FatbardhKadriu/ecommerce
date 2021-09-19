@@ -58,7 +58,7 @@ const Admins = () => {
 
     useEffect(() => {
         dispatch(getAllAdmins())
-    }, [])
+    }, [dispatch])
 
     if (auth.user.role !== 'super-admin') {
         return <Redirect to="/" />

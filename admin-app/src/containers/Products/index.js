@@ -57,7 +57,7 @@ const Products = () => {
         }
         dispatch({ type: productConstants.RESET_MESSAGES })
 
-    }, [product.success, product.error])
+    }, [product.success, product.error, dispatch])
 
     useEffect(() => {
         if (!show) {

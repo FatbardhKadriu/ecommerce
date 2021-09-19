@@ -66,7 +66,7 @@ const Orders = () => {
         if (orderId === "") {
             dispatch(getCustomerOrders())
         }
-    }, [orderId])
+    }, [orderId, dispatch])
 
     return (
         <Layout sidebar>

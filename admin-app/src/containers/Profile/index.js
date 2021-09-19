@@ -103,7 +103,7 @@ const Profile = () => {
 
     useEffect(() => {
         dispatch(getProfile())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         setFirstName(user.profile.firstName)
@@ -145,7 +145,7 @@ const Profile = () => {
         }
         dispatch({ type: userConstants.RESET_MESSAGES })
 
-    }, [user.success, user.error])
+    }, [user.success, user.error, dispatch])
 
     const onProfileUpdate = (e) => {
         e.preventDefault()

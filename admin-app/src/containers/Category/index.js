@@ -63,7 +63,7 @@ const Category = () => {
 
         dispatch({ type: categoryConstants.RESET_MESSAGES })
 
-    }, [category.loading, category.error, category.success])
+    }, [category.loading, category.error, category.success, dispatch])
 
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
@@ -127,10 +127,12 @@ const Category = () => {
         const checkedArray = []
         const expandedArray = []
         checked.length > 0 && checked.forEach((categoryId, index) => {
+            // eslint-disable-next-line 
             const category = categories.find((category, _index) => categoryId == category.value)
             category && checkedArray.push(category)
         })
         expanded.length > 0 && expanded.forEach((categoryId, index) => {
+            // eslint-disable-next-line
             const category = categories.find((category, _index) => categoryId == category.value)
             category && expandedArray.push(category)
         })
@@ -145,10 +147,12 @@ const Category = () => {
     const handleCategoryInput = (key, value, index, type) => {
         if (type === 'checked') {
             const updatedCheckedArray = checkedArray.map((item, _index) =>
+                // eslint-disable-next-line
                 index == _index ? { ...item, [key]: value } : item)
             setCheckedArray(updatedCheckedArray)
         } else if (type === 'expanded') {
             const updatedExpandedArray = expanded.map((item, _index) =>
+                // eslint-disable-next-line
                 index == _index ? { ...item, [key]: value } : item)
             setExpandedArray(updatedExpandedArray)
         }

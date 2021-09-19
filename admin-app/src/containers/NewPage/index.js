@@ -26,7 +26,7 @@ const NewPage = () => {
     useEffect(() => {
         setCategories(linearCategories(category.categories))
 
-    }, [category])
+    }, [category.categories])
 
     useEffect(() => {
         if (!page.loading) {
@@ -68,18 +68,17 @@ const NewPage = () => {
     }, [page.success, page.error])
 
     const onCategoryChange = (e) => {
+        // eslint-disable-next-line
         const category = categories.find(category => category.value == e.target.value)
         setCategoryId(e.target.value)
         setType(category.type)
     }
 
     const handleBannerImages = (e) => {
-        console.log(e)
         setBanners([...banners, e.target.files[0]])
     }
 
     const handleProductImages = (e) => {
-        console.log(e)
         setProducts([...products, e.target.files[0]])
     }
 

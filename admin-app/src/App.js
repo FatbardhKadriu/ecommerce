@@ -29,7 +29,7 @@ function App() {
       if (auth.authenticate) {
         dispatch(getInitialData())
       }
-  }, [auth.authenticate])
+  }, [auth.authenticate, dispatch])
   
   return (
     <div className="App">

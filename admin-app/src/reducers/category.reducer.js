@@ -11,6 +11,7 @@ const INITIAL_STATE = {
 const buildNewCategories = (parentId, categories, category) => {
     let myCategories = []
 
+    // eslint-disable-next-line
     if (parentId == undefined) {
         return [
             ...categories,
@@ -26,6 +27,7 @@ const buildNewCategories = (parentId, categories, category) => {
 
     for (const cat of categories) {
 
+        // eslint-disable-next-line
         if (cat._id == parentId) {
             const newCategory = {
                 _id: category._id,
@@ -123,7 +125,7 @@ const categoryReducer = (state = INITIAL_STATE, action) => {
                 error: action.payload.error,
                 loading: false
             }
-        case categoryConstants.RESET_MESSAGES: 
+        case categoryConstants.RESET_MESSAGES:
             return {
                 ...state,
                 error: null,

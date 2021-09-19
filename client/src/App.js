@@ -21,11 +21,11 @@ function App() {
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn())
     }
-  }, [auth.authenticate])
+  }, [auth.authenticate, dispatch])
 
   useEffect(() => {
     dispatch(updateCart())
-  }, [auth.authenticate])
+  }, [auth.authenticate, dispatch])
 
   return (
     <div className="App">

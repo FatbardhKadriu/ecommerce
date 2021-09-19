@@ -65,13 +65,13 @@ const Signup = (props) => {
         }
         dispatch({ type: userConstants.RESET_MESSAGES })
 
-    }, [user.success, user.error])
+    }, [user.success, user.error, dispatch])
 
     useEffect(() => {
         if (user.success !== null) {
             props.history.push('/signin')
         }
-    }, [user.success])
+    }, [user.success, props.history])
 
 
     const userSignup = (e) => {

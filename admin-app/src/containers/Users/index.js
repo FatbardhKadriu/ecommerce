@@ -56,7 +56,7 @@ const Users = () => {
 
     useEffect(() => {
         dispatch(getAllUsers())
-    }, [])
+    }, [dispatch])
 
     return (
         <Layout sidebar>

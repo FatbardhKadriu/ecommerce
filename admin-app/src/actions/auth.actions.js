@@ -25,7 +25,7 @@ export const login = (user) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: authConstants.LOGIN_FAILURE,
-            payload: { error: error.response.data.error }
+            payload: { error: error.response?.data?.error }
         })
     }
 
