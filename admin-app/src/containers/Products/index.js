@@ -143,6 +143,7 @@ const Products = () => {
     const renderProducts = () => {
         return (
             <Table hover style={{ fontSize: 12 }} responsive="sm">
+                {/* TODO: Products pagination */}
                 <thead>
                     <tr>
                         <th>#</th>
@@ -166,13 +167,13 @@ const Products = () => {
                                 <td>
                                     <Button
                                         style={{ marginRight: '8px', textAlign: 'center' }}
-                                        variant="info" onClick={() => showProductDetailsModal(product)}>
-                                        <IoMdInformationCircleOutline />Info
+                                        variant="secondary" onClick={() => showProductDetailsModal(product)}>
+                                        <IoMdInformationCircleOutline size={22} /> Info
                                     </Button>
                                     <Button
                                         onClick={() => setConfirmDelete(true)}
                                         variant="danger">
-                                        <IoIosTrash />Delete
+                                        <IoIosTrash size={22} />Delete
                                     </Button>
                                     <Modal 
                                         modaltitle="Confirm"
@@ -325,9 +326,9 @@ const Products = () => {
             <ToastContainer />
             <Row>
                 <Col md={12}>
-                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 15px 15px 0px' }}>
                         <h3>Products</h3>
-                        <Button variant="success" onClick={handleShow}><IoIosAdd />Add product</Button>
+                        <Button variant="success" onClick={handleShow}><IoIosAdd size={25} />Add product</Button>
                     </div>
                 </Col>
             </Row>

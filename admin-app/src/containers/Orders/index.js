@@ -94,6 +94,29 @@ const Orders = () => {
                     />
                 </div>
             </div>
+            {/* // TODO: Classify orders based on orderStatus: ordered, packed, shipped, delivered */}
+            {/* // TODO: Orders pagination */}
+            {/* <div>
+                <Tabs
+                    defaultActiveKey="ordered"
+                    transition={false}
+                    id="noanim-tab-example"
+                    className="mb-3"
+                >
+                    <Tab eventKey="ordered" title="Ordered">
+                        List of ordered orders
+                    </Tab>
+                    <Tab eventKey="packed" title="Packed">
+                        List of packed orders
+                    </Tab>
+                    <Tab eventKey="shipped" title="Shipped">
+                        List of shipped orders
+                    </Tab>
+                    <Tab eventKey="delivered" title="Delivered">
+                        List of delivered orders
+                    </Tab>
+                </Tabs>
+            </div> */}
             {order.orders.map((orderItem, index) => (
                 <Card
                     style={{
